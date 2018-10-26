@@ -8,5 +8,6 @@
     <title>Blog</title>
   </head>
   <body>
+    Welcome to my blog
   </body>
 </html>
