@@ -11,7 +11,12 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+mix.js('resources/js/app.js', 'public/js');
+
+mix.sass('resources/sass/app.scss', 'public/css', {
+    includePaths: [
+        'node_modules/bulma/sass',
+    ]
+})
 
 mix.inProduction() ? mix.version() : mix.browserSync({ proxy: 'localhost:8000' })
