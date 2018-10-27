@@ -6,6 +6,7 @@ import End from './components/end.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  { name: 'home', path: '/', component: Start },
   { name: 'start', path: '/start', component: Start },
   { name: 'end', path: '/end', component: End },
 ]

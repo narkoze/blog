@@ -2,7 +2,7 @@
   <nav class="navbar is-dark">
     <div class="navbar-brand">
       <a class="navbar-item">
-        Blog
+        <router-link :to="{ name: 'home' }">Blog</router-link>
       </a>
 
       <a class="navbar-burger burger">
