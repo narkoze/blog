@@ -15,7 +15,8 @@
         "cross-env": "^5.1",
         "imagemin": "^6.0.0",
         "laravel-mix": "^2.0",
-        "vue": "^2.5.17"
+        "vue": "^2.5.17",
+        "vue-router": "^3.0.1"
     },
     "devDependencies": {
         "browser-sync": "^2.26.3",
