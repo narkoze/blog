@@ -8,6 +8,12 @@
     <title>@lang('welcome.title')</title>
 
     <link rel="stylesheet" href="{{ mix('css/blog.css') }}">
+
+    <script>
+      window.Laravel = @json([
+        'locale' => Lang::locale()
+      ])
+    </script>
   </head>
   <body>
     <div id="blog">

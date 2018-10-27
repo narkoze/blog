@@ -5,6 +5,7 @@
 /.vscode
 /node_modules
 /public/hot
+/public/images/vendor
 /public/mix-manifest.json
 /public/storage
 /resources/js/vue-i18n-locales.generated.js

@@ -5,7 +5,7 @@
         :to="{ name: 'home' }"
         class="navbar-item"
       >
-        Blog
+        {{ $t('navbar.title') }}
       </router-link>
 
       <a class="navbar-burger burger">
@@ -26,13 +26,19 @@
       </div>
 
       <div class="navbar-end">
-        <router-link
-          :to="{ name: 'end' }"
-          class="navbar-item"
-        >
-          End
-        </router-link>
+        <locale></locale>
       </div>
     </div>
   </nav>
 </template>
+
+<script>
+  import Locale from './locale.vue'
+
+  export default {
+    components: {
+      Locale
+    }
+  }
+</script>
+
