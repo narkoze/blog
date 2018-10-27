@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Blog</title>
+    <title>@lang('welcome.title')</title>
 
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+    <link rel="stylesheet" href="{{ mix('css/blog.css') }}">
   </head>
   <body>
     <div id="blog">
-      @{{ greeting }}
+      <blog></blog>
     </div>
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/blog.js') }}"></script>
   </body>
 </html>
