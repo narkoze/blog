@@ -1,9 +1,12 @@
 <template>
   <nav class="navbar is-dark">
     <div class="navbar-brand">
-      <a class="navbar-item">
-        <router-link :to="{ name: 'home' }">Blog</router-link>
-      </a>
+      <router-link
+        :to="{ name: 'home' }"
+        class="navbar-item"
+      >
+        Blog
+      </router-link>
 
       <a class="navbar-burger burger">
         <span></span>
@@ -14,15 +17,21 @@
 
     <div class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item">
-          <router-link :to="{ name: 'start' }">Start</router-link>
-        </a>
+        <router-link
+          :to="{ name: 'start' }"
+          class="navbar-item"
+        >
+          Start
+        </router-link>
       </div>
 
       <div class="navbar-end">
-        <a class="navbar-item">
-          <router-link :to="{ name: 'end' }">End</router-link>
-        </a>
+        <router-link
+          :to="{ name: 'end' }"
+          class="navbar-item"
+        >
+          End
+        </router-link>
       </div>
     </div>
   </nav>
