@@ -18,6 +18,7 @@ routes.push({ path: '/', redirect: `/${i18n.locale}` })
 
 Vue.use(VueRouter)
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
@@ -29,12 +30,11 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-const blog = new Vue({
+export default new Vue({
+  el: '#blog',
   i18n,
   router,
   components: {
     Blog
   }
-}).$mount('#blog')
-
-export default blog
+})
