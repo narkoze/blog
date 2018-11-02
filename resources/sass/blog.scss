@@ -2,47 +2,52 @@
 @import "utilities/initial-variables";
 @import "utilities/functions";
 @import "utilities/derived-variables";
-@import "utilities/animations";
-@import "utilities/mixins";
-@import "utilities/controls";
 
+@import "utilities/animations";
+@import "utilities/controls";
+@import "utilities/mixins";
+
+@import "base/minireset";
 @import "base/generic";
 @import "base/helpers";
-@import "base/minireset";
 
-@import "elements/box";
-@import "elements/button";
+@import "components/message";
+@import "components/navbar";
+@import "components/modal";
+
 @import "elements/container";
-@import "elements/content";
+@import "elements/button";
+@import "elements/title";
 @import "elements/form";
 @import "elements/icon";
-@import "elements/image";
-@import "elements/notification";
-@import "elements/progress";
-@import "elements/table";
-@import "elements/tag";
-@import "elements/title";
-@import "elements/other";
-
-@import "components/breadcrumb";
-@import "components/card";
-@import "components/dropdown";
-@import "components/level";
-@import "components/media";
-@import "components/menu";
-@import "components/message";
-@import "components/modal";
-@import "components/navbar";
-@import "components/pagination";
-@import "components/panel";
-@import "components/tabs";
+@import "elements/box";
 
 @import "grid/columns";
-@import "grid/tiles";
 
-@import "layout/hero";
 @import "layout/section";
-@import "layout/footer";
+
+// @import "elements/content";
+// @import "elements/image";
+// @import "elements/notification";
+// @import "elements/progress";
+// @import "elements/table";
+// @import "elements/tag";
+// @import "elements/other";
+
+// @import "components/breadcrumb";
+// @import "components/card";
+// @import "components/dropdown";
+// @import "components/level";
+// @import "components/media";
+// @import "components/menu";
+// @import "components/pagination";
+// @import "components/panel";
+// @import "components/tabs";
+
+// @import "grid/tiles";
+
+// @import "layout/hero";
+// @import "layout/footer";
 
 
 // Flag icons
@@ -50,3 +55,9 @@
 .flag-icon {
     margin-right: 0.1875em;
 }
+
+// Font Awesome
+@import "fontawesome";
+@import "brands";
+@import "regular";
+@import "solid";

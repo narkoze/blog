@@ -3,7 +3,9 @@
 namespace Blog\Http\Controllers\Auth;
 
 use Blog\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
+use Blog\User;
 
 class VerificationController extends Controller
 {
@@ -18,14 +20,38 @@ class VerificationController extends Controller
     |
     */
 
-    use VerifiesEmails;
+    /**
+     * Mark the authenticated user's email address as verified.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verify(Request $request)
+    {
+        $user = User::findOrFail($request->route('id'));
+
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
+        $locale = app()->getLocale();
+        return redirect("/$locale/verified");
+    }
 
     /**
-     * Where to redirect users after verification.
+     * Resend the email verification notification.
      *
-     * @var string
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    protected $redirectTo = '/home';
+    public function resend(Request $request)
+    {
+        if (!$request->user()->hasVerifiedEmail()) {
+            $request->user()->sendCustomEmailVerificationNotification(app()->getLocale());
+        }
+
+        return response()->json();
+    }
 
     /**
      * Create a new controller instance.
@@ -34,7 +60,7 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:api')->only('resend');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }

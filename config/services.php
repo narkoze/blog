@@ -40,4 +40,7 @@ return [
         ],
     ],
 
+    'passport' => [
+        'endpoint' => env('PASSPORT_ENDPOINT')
+    ],
 ];

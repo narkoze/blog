@@ -5,7 +5,7 @@
         :to="{ name: 'home' }"
         class="navbar-item"
       >
-        {{ $t('navbar.title') }}
+        {{ $t('title') }}
       </router-link>
 
       <a class="navbar-burger burger">
@@ -17,28 +17,50 @@
 
     <div class="navbar-menu">
       <div class="navbar-start">
-        <router-link
-          :to="{ name: 'start' }"
-          class="navbar-item"
-        >
-          Start
-        </router-link>
       </div>
 
       <div class="navbar-end">
-        <locale></locale>
+        <dropdown-user
+          v-if="$root.auth.user"
+          class="navbar-item"
+        >
+        </dropdown-user>
+        <div class="navbar-item">
+          <button-signout v-if="$root.auth.token"></button-signout>
+          <button-signin v-else></button-signin>
+        </div>
+        <dropdown-locale class="navbar-item"></dropdown-locale>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
-  import Locale from './locale.vue'
+  import DropdownUser from './dropdowns/dropdown-user.vue'
+  import ButtonSignout from './buttons/button-signout.vue'
+  import ButtonSignin from './buttons/button-signin.vue'
+  import DropdownLocale from './dropdowns/dropdown-locale.vue'
 
   export default {
     components: {
-      Locale
+      DropdownUser,
+      ButtonSignout,
+      ButtonSignin,
+      DropdownLocale
     }
   }
 </script>
+
+<i18n>
+  {
+    "en": {
+      "title": "Blog",
+      "posts": "All posts"
+    },
+    "lv": {
+      "title": "Emuārs",
+      "posts": "Visas ziņas"
+    }
+  }
+</i18n>
 

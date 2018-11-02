@@ -1,0 +1,72 @@
+<template>
+  <div
+    @click="dropdownIsActive = !dropdownIsActive"
+    :class="['has-dropdown', { 'is-active': dropdownIsActive }]"
+    ref="dropdown"
+  >
+    <div class="navbar-link">
+      <div v-if="$i18n.locale === 'lv'">
+        <span class="flag-icon flag-icon-lv"></span>
+        LV
+      </div>
+      <div v-else>
+        <span class="flag-icon flag-icon-gb"></span>
+        EN
+      </div>
+    </div>
+
+    <div class="navbar-dropdown">
+      <a
+        v-if="$i18n.locale === 'en'"
+        @click="setLocale('lv')"
+        class="navbar-item"
+      >
+        <span class="flag-icon flag-icon-lv"></span>
+        LV
+      </a>
+      <a
+        v-else
+        @click="setLocale('en')"
+        class="navbar-item"
+      >
+        <span class="flag-icon flag-icon-gb"></span>
+        EN
+      </a>
+    </div>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios'
+
+  export default {
+    data: () => ({
+      dropdownIsActive: false
+    }),
+    created () {
+      window.addEventListener('click', this.closeDropdown)
+    },
+    methods: {
+      setLocale (locale) {
+        this.$i18n.locale = locale
+
+        this.$router.replace({
+          params: {
+            ...this.$route.params,
+            locale: locale
+          }
+        })
+
+        axios.defaults.baseURL = `/${locale}/api`
+      },
+      closeDropdown (e) {
+        if (!this.$refs.dropdown.contains(e.target)) {
+          this.dropdownIsActive = false
+        }
+      }
+    },
+    beforeDestroy () {
+      window.removeEventListener('click', this.closeDropdown)
+    }
+  }
+</script>

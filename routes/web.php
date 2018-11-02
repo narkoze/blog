@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('{locale}/email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 
-Route::get('/{any}', function () {
-    return view('welcome');
-})->where('any', '.*');
+Route::get(
+    '/{any}',
+    function () {
+        return view('welcome');
+    }
+)->where('any', '.*');

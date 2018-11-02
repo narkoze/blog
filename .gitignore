@@ -4,6 +4,7 @@
 /.vagrant
 /.vscode
 /node_modules
+/public/fonts/vendor
 /public/hot
 /public/images/vendor
 /public/mix-manifest.json

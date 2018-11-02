@@ -4,6 +4,7 @@ namespace Blog\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,8 +25,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function () {
+            DB::table('oauth_access_tokens')
+                ->where('expires_at', '<', now())
+                ->delete();
+
+            DB::table('oauth_refresh_tokens')
+                ->where('expires_at', '<', now())
+                ->delete();
+        })->daily();
     }
 
     /**
