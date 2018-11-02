@@ -2,8 +2,7 @@
 
 namespace Blog\Http\Controllers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 use Blog\User;
 use DB;
@@ -18,19 +17,32 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $tokenRequest = app()->handle(Request::create(
-            config('services.passport.endpoint'),
-            'POST',
-            [
+        $guzzleClient = new GuzzleClient;
+
+        $tokenRequest = $guzzleClient->post(config('services.passport.endpoint'), [
+            'form_params' => [
                 'username' => $request->email,
                 'password' => $request->password,
                 'grant_type' => 'password',
                 'client_id' => 2,
                 'client_secret' => DB::table('oauth_clients')->whereId(2)->first()->secret,
-            ]
-        ));
+            ],
+        ]);
+        $tokenResponse = json_decode((string) $tokenRequest->getBody(), true);
 
-        $tokenResponse = json_decode((string) $tokenRequest->getContent(), true);
+        // Temporary for local dev
+        // $tokenRequest = app()->handle(Request::create(
+        //     config('services.passport.endpoint'),
+        //     'POST',
+        //     [
+        //         'username' => $request->email,
+        //         'password' => $request->password,
+        //         'grant_type' => 'password',
+        //         'client_id' => 2,
+        //         'client_secret' => DB::table('oauth_clients')->whereId(2)->first()->secret,
+        //     ]
+        // ));
+        // $tokenResponse = json_decode((string) $tokenRequest->getContent(), true);
 
         $token = $tokenResponse['access_token'];
         $tokenType = $tokenResponse['token_type'];
