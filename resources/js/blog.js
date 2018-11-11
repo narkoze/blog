@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import routes from './routes'
-import VueI18n from 'vue-i18n'
+import LocaleHandler from './mixins/locale-handler'
 import lang from './vue-i18n-locales.generated'
 import Blog from './components/blog.vue'
+import VueRouter from 'vue-router'
+import VueI18n from 'vue-i18n'
+import routes from './routes'
 import axios from 'axios'
+import Vue from 'vue'
 
 Vue.use(VueI18n)
 const i18n = new VueI18n({
@@ -46,10 +47,13 @@ router.beforeEach((to, from, next) => {
 export default new Vue({
   el: '#blog',
   i18n,
+  router,
+  mixins: [
+    LocaleHandler,
+  ],
   components: {
     Blog
   },
-  router,
   data: () => ({
     user: null,
     notifications: [],
@@ -62,6 +66,7 @@ export default new Vue({
     let userStorage = localStorage.getItem('user')
     if (userStorage) {
       this.user = JSON.parse(userStorage)
+      this.handleLocale(this.user.locale)
     }
 
     let tokenStorage = localStorage.getItem('token')
