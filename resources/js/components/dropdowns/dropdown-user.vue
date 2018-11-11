@@ -1,42 +1,30 @@
 <template>
   <div
-    @click="getAuth"
+    @click="dropdownIsActive = !dropdownIsActive"
     :class="['has-dropdown', { 'is-active': dropdownIsActive }]"
     ref="dropdown"
   >
     <div class="navbar-link has-text-primary">
-      {{ $root.auth.user.name }}
+      {{ $root.user.name }}
     </div>
 
-    <div class="navbar-dropdown has-text-centered">
-      <a
-        v-if="!$root.auth.user.email_verified_at"
-        @click="$root.showModalEmailresend = true"
+    <div class="navbar-dropdown">
+      <router-link
+        :to="{ name: 'profile' }"
+        @click.native="$emit('closeNavbar')"
         class="navbar-item"
       >
         <span class="icon">
-          <i class="fas fa-exclamation-triangle fa-xs has-text-warning"></i>
+          <i class="fas fa-user"></i>
         </span>
-        <span>{{ $t('verify') }}</span>
-      </a>
-
-      <i
-        v-if="disabled"
-        class="navbar-item fa fa-spinner fa-pulse"
-      >
-      </i>
+        <span>{{ $t('profile') }}</span>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-  import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
-
   export default {
-    mixins: [
-      ErrorHandler,
-    ],
     data: () => ({
       dropdownIsActive: false
     }),
@@ -48,23 +36,6 @@
         if (!this.$refs.dropdown.contains(e.target)) {
           this.dropdownIsActive = false
         }
-      },
-      getAuth () {
-        this.dropdownIsActive = !this.dropdownIsActive
-        if (!this.dropdownIsActive) return
-
-        this.disabled = true
-
-        axios
-          .get('auth')
-          .then(response => {
-            this.disabled = false
-
-            let user = response.data
-            this.$root.auth.user = user
-            localStorage.setItem('user', JSON.stringify(user))
-          })
-          .catch(this.handleError)
       }
     },
     beforeDestroy () {
@@ -76,9 +47,11 @@
 <i18n>
   {
     "en": {
+      "profile": "Profile",
       "verify": "Verify your e-mail address"
     },
     "lv": {
+      "profile": "Profils",
       "verify": "Aplieciniet savu e-pasta adresi"
     }
   }

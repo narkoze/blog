@@ -12,14 +12,14 @@
 
         <form>
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.email || errors.error }]">
               {{ $t('email') }}
               <p class="control has-icons-left">
                 <input
                   v-model="email"
                   name="email"
                   type="email"
-                  :class="['input', { 'is-danger': errors.email }]"
+                  :class="['input', { 'is-danger': errors.email || errors.error }]"
                   :disabled="disabled"
                 >
                 <span class="icon is-small is-left">
@@ -32,7 +32,7 @@
           </div>
 
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.password }]">
               {{ $t('password') }}
               <p class="control has-icons-left">
                 <input
@@ -89,11 +89,13 @@
 </template>
 
 <script>
+  import LocaleHandler from '../../mixins/locale-handler'
   import ErrorHandler from '../../mixins/error-handler'
   import axios from 'axios'
 
   export default {
     mixins: [
+      LocaleHandler,
       ErrorHandler,
     ],
     data: () => ({
@@ -111,23 +113,19 @@
             password: this.password
           })
           .then(response => {
-            let token = response.data
-            this.$root.auth.token = token
-            axios.defaults.headers.common['Authorization'] = token
-            localStorage.setItem('access_token', token)
+            this.disabled = false
 
-            axios
-              .get('auth')
-              .then(response => {
-                this.disabled = false
+            let token = response.data.token
+            axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
+            localStorage.setItem('token', JSON.stringify(token))
 
-                let user = response.data
-                this.$root.auth.user = user
-                localStorage.setItem('user', JSON.stringify(user))
+            let user = response.data.user
+            this.$root.user = user
+            localStorage.setItem('user', JSON.stringify(user))
 
-                this.$emit('close')
-              })
-              .catch(this.handleError)
+            this.handleLocale(user.locale)
+
+            this.$emit('close')
           })
           .catch(this.handleError)
       }
@@ -149,7 +147,7 @@
     "lv": {
       "signin": "Ienākt",
       "rememberme": "Atcerēties mani",
-      "signup": "Pierakstīties",
+      "signup": "Reģistrēties",
       "email": "E-pasts",
       "password": "Parole",
       "forgotpassword": "Aizmirsi paroli?",

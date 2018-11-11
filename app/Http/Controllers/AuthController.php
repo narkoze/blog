@@ -2,7 +2,10 @@
 
 namespace Blog\Http\Controllers;
 
+use Blog\Http\Resources\User as UserResource;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client as GuzzleClient;
+use Blog\Services\UserService;
 use Illuminate\Http\Request;
 use Blog\User;
 use DB;
@@ -17,55 +20,35 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $guzzleClient = new GuzzleClient;
+        $apiClient = DB::table('oauth_clients')->whereId(2)->first();
+        if (!$apiClient) {
+            return response()->json(['message' => 'API Client not found'], 500);
+        }
 
-        $tokenRequest = $guzzleClient->post(config('services.passport.endpoint'), [
-            'form_params' => [
-                'username' => $request->email,
-                'password' => $request->password,
-                'grant_type' => 'password',
-                'client_id' => 2,
-                'client_secret' => DB::table('oauth_clients')->whereId(2)->first()->secret,
-            ],
+        try {
+            $guzzleClient = new GuzzleClient;
+            $tokenRequest = $guzzleClient->post(config('services.passport.endpoint'), [
+                'form_params' => [
+                    'username' => $request->email,
+                    'password' => $request->password,
+                    'grant_type' => 'password',
+                    'client_id' => $apiClient->id,
+                    'client_secret' => $apiClient->secret,
+                ],
+            ]);
+        } catch (RequestException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        return response()->json([
+            'token' => json_decode((string) $tokenRequest->getBody(), true),
+            'user' => new UserResource(User::whereEmail($request->email)->first()),
         ]);
-        $tokenResponse = json_decode((string) $tokenRequest->getBody(), true);
-
-        // Temporary for local dev
-        // $tokenRequest = app()->handle(Request::create(
-        //     config('services.passport.endpoint'),
-        //     'POST',
-        //     [
-        //         'username' => $request->email,
-        //         'password' => $request->password,
-        //         'grant_type' => 'password',
-        //         'client_id' => 2,
-        //         'client_secret' => DB::table('oauth_clients')->whereId(2)->first()->secret,
-        //     ]
-        // ));
-        // $tokenResponse = json_decode((string) $tokenRequest->getContent(), true);
-
-        $token = $tokenResponse['access_token'];
-        $tokenType = $tokenResponse['token_type'];
-
-        return response()->json("$tokenType $token");
     }
 
-    public function auth(Request $request)
+    public function signout(Request $request, UserService $userServ)
     {
-        return $request->user();
-    }
-
-    public function signout()
-    {
-        $tokens = auth()->user()->tokens->pluck('id');
-
-        DB::table('oauth_access_tokens')
-            ->whereIn('id', $tokens)
-            ->delete();
-
-        DB::table('oauth_refresh_tokens')
-            ->whereIn('access_token_id', $tokens)
-            ->delete();
+        $userServ->signout($request->user());
 
         return response()->json(null, 204);
     }

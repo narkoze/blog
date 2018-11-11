@@ -2,40 +2,34 @@
 @import "utilities/initial-variables";
 @import "utilities/functions";
 @import "utilities/derived-variables";
-
 @import "utilities/animations";
 @import "utilities/controls";
 @import "utilities/mixins";
 
+
 @import "base/minireset";
 @import "base/generic";
+html {
+    background: url('/img/background.jpg') no-repeat center center fixed;
+    background-color: #53575a;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+
+    height: -webkit-calc(100% + 56px);
+       height: -moz-calc(100% + 56px);
+         height: -o-calc(100% + 56px);
+            height: calc(100% + 56px);
+}
+
+
 @import "base/helpers";
-
-@import "components/message";
-@import "components/navbar";
-@import "components/modal";
-
-@import "elements/container";
-@import "elements/button";
-@import "elements/title";
-@import "elements/form";
-@import "elements/icon";
-@import "elements/box";
-
-@import "grid/columns";
-
-@import "layout/section";
-
-// @import "elements/content";
-// @import "elements/image";
-// @import "elements/notification";
-// @import "elements/progress";
-// @import "elements/table";
-// @import "elements/tag";
-// @import "elements/other";
+.is-pointer {
+    cursor: pointer;
+}
 
 // @import "components/breadcrumb";
-// @import "components/card";
 // @import "components/dropdown";
 // @import "components/level";
 // @import "components/media";
@@ -43,11 +37,131 @@
 // @import "components/pagination";
 // @import "components/panel";
 // @import "components/tabs";
+@import "components/message";
+@import "components/navbar";
+a.navbar-item:hover,
+a.navbar-item.is-active,
+.navbar-link:hover,
+.navbar-link.is-active {
+  background-color: #fafafa;
+  color: initial;
+}
+
+
+@import "components/modal";
+@import "components/card";
+.card.is-medium {
+    max-width: 768px;
+    margin: 0 auto;
+}
+
+
+// @import "elements/progress";
+// @import "elements/table";
+// @import "elements/tag";
+@import "elements/image";
+.image-container {
+    display: table;
+    overflow: hidden;
+    position: relative;
+    width: 256px;
+    height: 256px;
+    margin-bottom: 0.75rem;
+
+    -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+            box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+
+    img.profile {
+        display: block;
+        cursor: zoom-in;
+        object-fit: cover;
+
+        transition: transform .5s;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    i {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+@import "elements/content";
+
+$notification-radius: 0;
+@import "elements/notification";
+.notification {
+    overflow: hidden;
+    cursor: pointer;
+    height: 52px;
+    padding: 0 1.25rem;
+    line-height: 52px;
+    filter: brightness(100%);
+
+    &:hover {
+        filter: brightness(98%);
+    }
+}
+.notification:not(:last-child) {
+    margin-bottom: .2rem;
+}
+.notifications {
+    position: fixed;
+    width: 100%;
+    z-index: 41;
+    top: 0;
+}
+
+
+@import "elements/container";
+@import "elements/button";
+.button {
+    border-radius: 0;
+}
+
+
+@import "elements/title";
+@import "elements/other";
+@import "elements/form";
+.field {
+    margin-bottom: 0.75rem;
+}
+.field-label {
+    -webkit-box-flex: 2;
+            -ms-flex-positive: 2;
+                flex-grow: 2;
+}
+.label > p.control {
+    margin-top: 0.5rem;
+}
+
+@import "elements/icon";
+
+
+$box-radius: 0;
+@import "elements/box";
+
 
 // @import "grid/tiles";
+@import "grid/columns";
+.is-gapless-x {
+    margin-bottom: 0 !important;
+
+    & > .column {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
 
 // @import "layout/hero";
 // @import "layout/footer";
+@import "layout/section";
+
+
+// Bulma checkradio
+@import 'bulma-checkradio';
 
 
 // Flag icons
@@ -56,8 +170,29 @@
     margin-right: 0.1875em;
 }
 
+
 // Font Awesome
 @import "fontawesome";
 @import "brands";
 @import "regular";
 @import "solid";
+
+
+// Spinkit
+@import 'spinners/10-fading-circle';
+.sk-fading-circle {
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    display: inline-block;
+}
+
+
+// Other
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}

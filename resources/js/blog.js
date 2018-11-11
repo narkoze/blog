@@ -13,9 +13,6 @@ const i18n = new VueI18n({
 })
 
 axios.defaults.baseURL = `/${i18n.locale}/api`
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('access_token')
 
 routes.forEach(route => {
   route.path = `/:locale/${route.path}`
@@ -29,28 +26,53 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+    next({
+      name: 'home',
+      params: {
+        locale: i18n.locale
+      }
+    })
+  }
+
   let lang = i18n.locale
   if (Object.keys(i18n.messages).includes(lang)) {
     i18n.locale = lang
   }
+
   next()
 })
 
 export default new Vue({
   el: '#blog',
   i18n,
-  router,
   components: {
     Blog
   },
+  router,
   data: () => ({
-    auth: {
-      token: null || axios.defaults.headers.common['Authorization'],
-      user: null || JSON.parse(localStorage.getItem('user'))
-    },
+    user: null,
+    notifications: [],
     showModalSignin: false,
     showModalSignup: false,
     showModalEmailresend: false,
     showModalPasswordresetemail: false
-  })
+  }),
+  created () {
+    let userStorage = localStorage.getItem('user')
+    if (userStorage) {
+      this.user = JSON.parse(userStorage)
+    }
+
+    let tokenStorage = localStorage.getItem('token')
+    if (tokenStorage) {
+      let token = JSON.parse(tokenStorage)
+      axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
+    }
+  },
+  methods: {
+    notify (status, message) {
+      this.notifications.push({ id: Math.random(), status, message })
+    }
+  }
 })

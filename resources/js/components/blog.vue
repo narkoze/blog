@@ -1,7 +1,7 @@
 <template>
   <div>
+    <notifications></notifications>
     <navbar></navbar>
-
     <router-view></router-view>
 
     <modal-emailresend
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+  import Notifications from './notifications.vue'
   import Navbar from './navbar.vue'
   import ModalEmailresend from './modals/modal-emailresend.vue'
   import ModalSignin from './modals/modal-signin.vue'
@@ -39,6 +40,7 @@
 
   export default {
     components: {
+      Notifications,
       Navbar,
       ModalEmailresend,
       ModalSignin,

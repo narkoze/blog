@@ -37,9 +37,12 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import LocaleHandler from '../../mixins/locale-handler'
 
   export default {
+    mixins: [
+      LocaleHandler,
+    ],
     data: () => ({
       dropdownIsActive: false
     }),
@@ -48,16 +51,8 @@
     },
     methods: {
       setLocale (locale) {
-        this.$i18n.locale = locale
-
-        this.$router.replace({
-          params: {
-            ...this.$route.params,
-            locale: locale
-          }
-        })
-
-        axios.defaults.baseURL = `/${locale}/api`
+        this.handleLocale(locale)
+        this.$emit('closeNavbar')
       },
       closeDropdown (e) {
         if (!this.$refs.dropdown.contains(e.target)) {

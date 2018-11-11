@@ -2,12 +2,13 @@
 
 namespace Blog;
 
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Blog\Notifications\PasswordResetNotification;
-use Blog\Notifications\EmailVerificationNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Blog\Notifications\EmailVerificationNotification;
+use Blog\Notifications\PasswordResetNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -19,19 +20,40 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'locale',
     ];
 
     /**
-     * The attributes that should be visible for arrays.
+     * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $visible = [
-        'id',
-        'name',
+    protected $hidden = [
+        'password'
+    ];
+
+    protected $dates = [
         'email_verified_at',
     ];
+
+    protected $casts = [
+        'image' => 'collection',
+    ];
+
+    public function getImagesAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+
+        return [
+            'original' => Storage::disk('public')->url("user/original/{$this->image['filename']}"),
+            'medium' => Storage::disk('public')->url("user/medium/{$this->image['filename']}"),
+            'small' => Storage::disk('public')->url("user/small/{$this->image['filename']}"),
+        ];
+    }
 
     /**
      * Send the email verification notification.

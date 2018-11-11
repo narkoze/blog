@@ -1,35 +1,42 @@
 <template>
-  <nav class="navbar is-dark">
+  <nav class="navbar is-fixed-top is-dark">
     <div class="navbar-brand">
       <router-link
+        @click.native="navbarIsActive = false"
         :to="{ name: 'home' }"
         class="navbar-item"
       >
         {{ $t('title') }}
       </router-link>
 
-      <a class="navbar-burger burger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </a>
+      <div
+        @click="navbarIsActive = !navbarIsActive"
+        :class="['navbar-burger burger', { 'is-active': navbarIsActive }]"
+      >
+        <span></span><span></span><span></span>
+      </div>
     </div>
 
-    <div class="navbar-menu">
+    <div :class="['navbar-menu', { 'is-active': navbarIsActive }]">
       <div class="navbar-start">
       </div>
 
       <div class="navbar-end">
         <dropdown-user
-          v-if="$root.auth.user"
+          v-if="$root.user"
           class="navbar-item"
+          @closeNavbar="navbarIsActive = false"
         >
         </dropdown-user>
         <div class="navbar-item">
-          <button-signout v-if="$root.auth.token"></button-signout>
+          <button-signout v-if="$root.user"></button-signout>
           <button-signin v-else></button-signin>
         </div>
-        <dropdown-locale class="navbar-item"></dropdown-locale>
+        <dropdown-locale
+          class="navbar-item"
+          @closeNavbar="navbarIsActive = false"
+        >
+        </dropdown-locale>
       </div>
     </div>
   </nav>
@@ -47,7 +54,10 @@
       ButtonSignout,
       ButtonSignin,
       DropdownLocale
-    }
+    },
+    data: () => ({
+      navbarIsActive: false
+    })
   }
 </script>
 

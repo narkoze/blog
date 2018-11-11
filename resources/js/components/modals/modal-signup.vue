@@ -12,7 +12,7 @@
 
         <form>
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.name }]">
               {{ $t('name') }}
               <p class="control has-icons-left">
                 <input
@@ -31,7 +31,7 @@
           </div>
 
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.email }]">
               {{ $t('email') }}
               <p class="control has-icons-left">
                 <input
@@ -50,7 +50,7 @@
           </div>
 
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.password }]">
               {{ $t('password') }}
               <p class="control has-icons-left">
                 <input
@@ -69,7 +69,7 @@
           </div>
 
           <div class="field">
-            <label class="label">
+            <label :class="['label', { 'has-text-danger': errors.password_confirmation }]">
               {{ $t('password_confirmation') }}
               <p class="control has-icons-left">
                 <input
@@ -135,6 +135,8 @@
           })
           .then(response => {
             this.$emit('close')
+
+            this.$root.notify('success', this.$t('signup.success'))
           })
           .catch(this.handleError)
       }
@@ -149,14 +151,16 @@
       "name": "Name",
       "email": "E-mail",
       "password": "Password",
-      "password_confirmation": "Password again"
+      "password_confirmation": "Password again",
+      "signup.success": "You have successfully signed up and a confirmation link has been sent to your e-mail address"
     },
     "lv": {
-      "signup": "Pierakstīties",
+      "signup": "Reģistrēties",
       "name": "Vārds",
       "email": "E-pasts",
       "password": "Parole",
-      "password_confirmation": "Parole vēlreiz"
+      "password_confirmation": "Parole vēlreiz",
+      "signup.success": "Jūs esat veiksmīgi reģistrējies un uz jūsu e-pasta adresi tika nosūtīta apstiprinājuma saite"
     }
   }
 </i18n>

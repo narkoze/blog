@@ -11,17 +11,16 @@ export default {
         case 401:
           this.errors = error.response.data
 
-          this.$root.auth.token = this.$root.auth.user = null
-          localStorage.removeItem('access_token')
-          localStorage.removeItem('user')
+          localStorage.removeItem('token')
 
-          this.$root.showModalSignin = true
+          this.$root.user = {}
+          localStorage.removeItem('user')
           break
         case 422:
           this.errors = error.response.data.errors
           break
         default:
-          console.log('There was an error and yes - this is a notification')
+          this.$root.notify('error', `${error.response.status}: ${error.response.statusText}, ${error.response.data.message}`)
       }
     }
   }

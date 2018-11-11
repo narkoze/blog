@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,6 +10,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('signup', 'Auth\RegisterController@register');
 Route::post('passwordresetemail', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 Route::post('passwordreset', 'Auth\ResetPasswordController@reset');
@@ -20,7 +19,12 @@ Route::post('signin', 'AuthController@signin');
 Route::group([
     'middleware' => 'auth:api',
 ], function () {
-    Route::get('auth', 'AuthController@auth');
     Route::get('signout', 'AuthController@signout');
     Route::get('emailresend/{id}', 'Auth\VerificationController@resend');
+
+    Route::get('profile', 'Profile\ProfileController@index');
+    Route::put('profile', 'Profile\ProfileController@update');
+    Route::delete('profile', 'Profile\ProfileController@destroy');
+    Route::post('profile/image', 'Profile\ImageController@index');
+    Route::delete('profile/image', 'Profile\ImageController@destroy');
 });

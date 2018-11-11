@@ -10,7 +10,7 @@
       <div class="box">
         <h1 class="title">{{ $t('title') }}</h1>
 
-        <article class="message is-danger">
+        <article class="message is-warning">
           <div class="message-body">
             {{ $t('beforeproceeding') }}
           </div>
@@ -47,9 +47,11 @@
         this.disabled = true
 
         axios
-          .get(`emailresend/${this.$root.auth.user.id}`)
+          .get(`emailresend/${this.$root.user.id}`)
           .then(() => {
             this.$emit('close')
+
+            this.$root.notify('success', this.$t('resend.success'))
           })
           .catch(this.handleError)
       }
@@ -62,12 +64,14 @@
     "en": {
       "title": "Verify your e-mail address",
       "beforeproceeding": "Before proceeding, please check your email for a verification link",
-      "resend": "Send a verification email"
+      "resend": "Send a verification email",
+      "resend.success": "Verification link has been successfully sent"
     },
     "lv": {
       "title": "Aplieciniet savu e-pasta adresi",
       "beforeproceeding": "Pirms turpiniet, lūdzu pārbaudiet e-pastu vai jums jau nav apliecinājuma saite",
-      "resend": "Sūtīt apliecinājuma e-pastu"
+      "resend": "Sūtīt apliecinājuma e-pastu",
+      "resend.success": "Apliecinājuma saite veiksmīgi nosūtīta"
     }
   }
 </i18n>

@@ -22,9 +22,22 @@ mix.i18n().js('resources/js/blog.js', 'public/js')
 mix.sass('resources/sass/blog.scss', 'public/css', {
   includePaths: [
     'node_modules/bulma/sass',
+    'node_modules/bulma-checkradio/dist/css/',
     'node_modules/flag-icon-css/sass',
     'node_modules/@fortawesome/fontawesome-free/scss',
+    'node_modules/spinkit/scss',
   ]
 })
 
-mix.inProduction() ? mix.version() : mix.browserSync({ proxy: 'localhost:8000' })
+if (mix.inProduction()) {
+  mix.version()
+} else {
+  mix.browserSync({
+    proxy: 'blog.test',
+    open: false,
+    files: [
+      'resources/js/*',
+      'resources/sass/*',
+    ]
+  })
+}

@@ -11,7 +11,7 @@
         <h1 class="title">{{ $t('title')}}</h1>
 
         <div class="field">
-          <label class="label">
+          <label :class="['label', { 'has-text-danger': errors.email }]">
             {{ $t('email') }}
             <p class="control has-icons-left">
               <input
@@ -70,6 +70,8 @@
           })
           .then(() => {
             this.$emit('close')
+
+            this.$root.notify('success', this.$t('sendResetLink.success'))
           })
           .catch(this.handleError)
       }
@@ -82,12 +84,14 @@
     "en": {
       "title": "Reset password",
       "email": "E-mail",
-      "sendresetlink": "Send reset e-mail"
+      "sendresetlink": "Send reset e-mail",
+      "sendResetLink.success": "Reset link successfully has been sent to your e-mail address"
     },
     "lv": {
       "title": "Atiestatīt paroli",
       "email": "E-pasts",
-      "sendresetlink": "Sūtīt atiestatīšanas e-pastu"
+      "sendresetlink": "Sūtīt atiestatīšanas e-pastu",
+      "sendResetLink.success": "Atiestatīšanas saite veiksmīgi nosūtīta uz jūsu e-pasta adresi"
     }
   }
 </i18n>

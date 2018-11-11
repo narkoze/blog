@@ -28,10 +28,13 @@
           .then(response => {
             this.disabled = false
 
-            delete axios.defaults.headers.common['Authorization']
-            this.$root.auth.token = this.$root.auth.user = null
-            localStorage.removeItem('access_token')
+            delete axios.defaults.headers.common.Authorization
+            localStorage.removeItem('token')
+
+            this.$root.user = null
             localStorage.removeItem('user')
+
+            this.$router.push({ name: 'home' })
           })
           .catch(this.handleError)
       }
