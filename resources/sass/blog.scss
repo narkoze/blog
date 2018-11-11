@@ -10,6 +10,7 @@
 @import "base/minireset";
 @import "base/generic";
 html {
+    overflow: auto;
     background: url('/img/background.jpg') no-repeat center center fixed;
     background-color: #53575a;
     -webkit-background-size: cover;
@@ -17,10 +18,12 @@ html {
          -o-background-size: cover;
             background-size: cover;
 
-    height: -webkit-calc(100% + 56px);
-       height: -moz-calc(100% + 56px);
-         height: -o-calc(100% + 56px);
-            height: calc(100% + 56px);
+    @media screen and (max-width: $desktop) {
+        height: -webkit-calc(100% + 56px);
+           height: -moz-calc(100% + 56px);
+             height: -o-calc(100% + 56px);
+                height: calc(100% + 56px);
+    }
 }
 
 
