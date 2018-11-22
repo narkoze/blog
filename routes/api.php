@@ -36,7 +36,8 @@ Route::group([
         'prefix' => 'admin',
     ], function () {
         Route::apiResources([
-            'post' => 'Admin\PostController'
+            'post' => 'Admin\PostController',
+            'role' => 'Admin\RoleController',
         ]);
     });
 });

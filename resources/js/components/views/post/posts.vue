@@ -167,7 +167,7 @@
 
             this.posts = response.data.data
             this.handlePage(response.data.meta, response.data.links)
-            this.handleQuery(response.data.params)
+            this.handleQuery(response.data.params, 'posts')
 
             if (this.$route.hash) {
               this.$nextTick(() => {

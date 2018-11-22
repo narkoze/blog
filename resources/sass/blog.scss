@@ -273,6 +273,9 @@ $notification-radius: 0;
 @import "elements/other";
 
 @import "elements/form";
+.textarea {
+  border-radius: 0;
+}
 .field {
   margin-bottom: 0.75rem;
 }

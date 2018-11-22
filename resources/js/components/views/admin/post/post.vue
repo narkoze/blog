@@ -250,7 +250,6 @@
               name: 'admin-post-edit',
               params: {
                 id: response.data.data.id
-                // post: response.data.data
               }
             })
           })

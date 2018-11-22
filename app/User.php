@@ -42,6 +42,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'image' => 'collection',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     public function getImagesAttribute()
     {
         if (!$this->image) {

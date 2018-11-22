@@ -3,7 +3,9 @@ export default {
     replaceRoute: true
   }),
   methods: {
-    handleQuery (params) {
+    handleQuery (params, routeName) {
+      if (this.$route.name !== routeName) return
+
       let paramsWithValues = {}
       Object.keys(params).forEach(key => {
         if (params[key] !== null) {

@@ -265,10 +265,10 @@
             this.disabled = this.sorting = this.filtering = this.removingFilters = false
             this.posts = response.data.data
             this.handlePage(response.data.meta, response.data.links)
-            this.handleQuery(response.data.params)
+            this.handleQuery(response.data.params, 'admin-posts')
           })
           .catch(error => {
-            this.sorting = this.filtering = this.pageChanging = this.removingFilters = false
+            this.sorting = this.pageChanging = this.filtering = this.removingFilters = false
             this.handleError(error)
           })
       },

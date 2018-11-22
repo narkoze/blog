@@ -3,7 +3,7 @@
     name="menu-admin"
     appear
   >
-    <div class="menu-admin">
+    <div class="menu-admin is-nowrap">
       <p class="menu-admin-label">
         {{ $t('posts') }}
       </p>
@@ -30,6 +30,19 @@
           {{ $t('newpost') }}
         </router-link>
       </ul>
+
+      <p class="menu-admin-label">
+        {{ $t('users') }}
+      </p>
+      <ul>
+        <router-link
+          :to="{ name: 'admin-roles' }"
+          :class="{ 'is-active': $route.name === 'admin-roles' }"
+          tag="li"
+        >
+          {{ $t('allroles') }}
+        </router-link>
+      </ul>
     </div>
   </transition>
 </template>
@@ -39,12 +52,16 @@
     "en": {
       "posts": "Posts",
       "allposts": "All posts",
-      "newpost": "New post"
+      "newpost": "New post",
+      "users": "Users",
+      "allroles": "Roles"
     },
     "lv": {
       "posts": "Ziņas",
       "allposts": "Visas ziņas",
-      "newpost": "Jauna ziņa"
+      "newpost": "Jauna ziņa",
+      "users": "Lietotāji",
+      "allroles": "Lomas"
     }
   }
 </i18n>
