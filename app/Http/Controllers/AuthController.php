@@ -2,11 +2,11 @@
 
 namespace Blog\Http\Controllers;
 
-use Blog\Http\Resources\User as UserResource;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client as GuzzleClient;
 use Blog\Services\UserService;
 use Illuminate\Http\Request;
+use Blog\UserResource;
 use Blog\User;
 use DB;
 

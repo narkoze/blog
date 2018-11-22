@@ -28,6 +28,9 @@ mix.sass('resources/sass/blog.scss', 'public/css', {
     'node_modules/spinkit/scss',
   ]
 })
+mix.sass('resources/sass/tinymce.scss', 'public/css', 'tinymce')
+
+mix.copyDirectory('node_modules/tinymce/skins', 'public/css/tinymce/skins')
 
 if (mix.inProduction()) {
   mix.version()

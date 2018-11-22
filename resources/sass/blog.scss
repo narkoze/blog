@@ -10,26 +10,47 @@
 @import "base/minireset";
 @import "base/generic";
 html {
-    overflow: auto;
-    background: url('/img/background.jpg') no-repeat center center fixed;
-    background-color: #53575a;
-    -webkit-background-size: cover;
-       -moz-background-size: cover;
-         -o-background-size: cover;
-            background-size: cover;
+  background: url('/img/background.jpg') no-repeat center center fixed;
+  background-color: #53575a;
+  -webkit-background-size: cover;
+     -moz-background-size: cover;
+      -ms-background-size: cover;
+       -o-background-size: cover;
+          background-size: cover;
 
-    @media screen and (max-width: $desktop) {
-        height: -webkit-calc(100% + 56px);
-           height: -moz-calc(100% + 56px);
-             height: -o-calc(100% + 56px);
-                height: calc(100% + 56px);
-    }
+  @media screen and (max-width: $desktop) {
+    height: -webkit-calc(100% + 56px);
+       height: -moz-calc(100% + 56px);
+        height: -ms-calc(100% + 56px);
+         height: -o-calc(100% + 56px);
+            height: calc(100% + 56px);
+  }
+
+  &.is-modal-active {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+  }
 }
-
 
 @import "base/helpers";
 .is-pointer {
-    cursor: pointer;
+  cursor: pointer;
+}
+.is-default {
+  cursor: default !important;
+}
+.is-scrollable {
+  max-width: 100%;
+  overflow-y: auto;
+}
+.is-link-divider {
+  color: $grey-lighter;
+  font-size: 13px;
+  line-height: 1.5em;
+}
+.is-nowrap {
+  white-space: nowrap;
 }
 
 // @import "components/breadcrumb";
@@ -37,9 +58,87 @@ html {
 // @import "components/level";
 // @import "components/media";
 // @import "components/menu";
-// @import "components/pagination";
+.menu-admin {
+  background: $grey-dark;
+  position: fixed;
+  z-index: 5;
+
+  ul {
+    li {
+      cursor: pointer;
+      padding: 8px 16px;
+      color: $white-ter;
+
+      &.is-active {
+        color: $black;
+        background: $white;
+      }
+
+      &:hover:not(.is-active) {
+        background: #292929;
+      }
+    }
+  }
+
+  @media screen and (min-width: $desktop) {
+    width: 210px;
+    height: 100vh;
+    overflow-y: auto;
+    margin-top: -40px;
+    padding-top: 41px;
+
+    .menu-admin-label {
+      text-transform: uppercase;
+      font-size: small;
+      color: $grey-light;
+      margin: 10px 4px;
+    }
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+     -ms-background-size: cover;
+      -o-background-size: cover;
+         background-size: cover;
+
+    $box-shadow: 2px 0px 5px 0px rgba(10, 10, 10, .5);
+    -webkit-box-shadow: $box-shadow;
+       -moz-box-shadow: $box-shadow;
+        -ms-box-shadow: $box-shadow;
+         -o-box-shadow: $box-shadow;
+            box-shadow: $box-shadow;
+  }
+
+  @media screen and (max-width: $desktop) {
+    width: 100%;
+    height: 40px;
+    overflow-x: scroll;
+
+    ul, li {
+      display: table-cell;
+    }
+
+    .menu-admin-label {
+      display: none;
+    }
+
+    $box-shadow: 0px 2px 5px 0px rgba(10, 10, 10, .5);
+    -webkit-box-shadow: $box-shadow;
+       -moz-box-shadow: $box-shadow;
+        -ms-box-shadow: $box-shadow;
+         -o-box-shadow: $box-shadow;
+            box-shadow: $box-shadow;
+  }
+}
+.menu-admin-enter-active, .menu-admin-leave-active {
+  transition: width .1s;
+}
+.menu-admin-enter, .menu-admin-leave-to {
+  width: 0;
+}
+
 // @import "components/panel";
 // @import "components/tabs";
+@import "components/pagination";
 @import "components/message";
 @import "components/navbar";
 a.navbar-item:hover,
@@ -54,94 +153,153 @@ a.navbar-item.is-active,
 @import "components/modal";
 @import "components/card";
 .card.is-medium {
-    max-width: 768px;
-    margin: 0 auto;
+  max-width: 768px;
+  margin: 0 auto;
+
+  &.has-margin-bottom {
+    margin-bottom: 3rem;
+  }
+}
+.card-header-post {
+  padding: 1em;
+}
+.card-footer-post {
+  padding: 1em 2em;
+  width: 100%;
+  background-color: $white-ter;
+  line-height: 2.2;
 }
 
-
 // @import "elements/progress";
-// @import "elements/table";
 // @import "elements/tag";
+@import "elements/table";
 @import "elements/image";
 .image-container {
-    display: table;
-    overflow: hidden;
-    position: relative;
-    width: 256px;
-    height: 256px;
-    margin-bottom: 0.75rem;
+  display: table;
+  overflow: hidden;
+  position: relative;
+  width: 256px;
+  height: 256px;
+  margin-bottom: 0.75rem;
 
-    -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
-            box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+  $box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+  -webkit-box-shadow: $box-shadow;
+     -moz-box-shadow: $box-shadow;
+      -ms-box-shadow: $box-shadow;
+       -o-box-shadow: $box-shadow;
+          box-shadow: $box-shadow;
 
-    img.profile {
-        display: block;
-        cursor: zoom-in;
-        object-fit: cover;
+  img.profile {
+    display: block;
+    cursor: zoom-in;
+    object-fit: cover;
 
-        transition: transform .5s;
-        &:hover {
-            transform: scale(1.1);
-        }
+    transition: transform .5s;
+    &:hover {
+      transform: scale(1.1);
     }
+  }
 
-    i {
-        display: table-cell;
-        vertical-align: middle;
-    }
+  i {
+    display: table-cell;
+    vertical-align: middle;
+  }
 }
 
 @import "elements/content";
+.content-post {
+  padding: 1em;
+}
+
 
 $notification-radius: 0;
 @import "elements/notification";
 .notification {
-    overflow: hidden;
-    cursor: pointer;
-    height: 52px;
-    padding: 0 1.25rem;
-    line-height: 52px;
-    filter: brightness(100%);
+  overflow: hidden;
+  cursor: pointer;
+  height: 52px;
+  padding: 0 1.25rem;
+  line-height: 52px;
+  filter: brightness(100%);
 
-    &:hover {
-        filter: brightness(98%);
-    }
+  &:hover {
+    filter: brightness(98%);
+  }
 }
 .notification:not(:last-child) {
-    margin-bottom: .2rem;
+  margin-bottom: .2rem;
 }
 .notifications {
-    position: fixed;
-    width: 100%;
-    z-index: 41;
-    top: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 41;
+  top: 0;
 }
 
 
 @import "elements/container";
-@import "elements/button";
-.button {
-    border-radius: 0;
+.container-admin {
+  @media screen and (min-width: $desktop) {
+    > * {
+      margin: 40px;
+      position: absolute;
+      left: 210px;
+      right: 0;
+    }
+  }
+  @media screen and (max-width: $desktop) {
+    padding-top: 40px;
+    > * {
+      position: absolute;
+      left: 0;
+      right: 0;
+    }
+  }
 }
 
+@import "elements/button";
+.button {
+  border-radius: 0;
+}
+.is-post-button-group > a.button {
+  @media screen and (max-width: $tablet - 395px) {
+    float: none !important;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+}
 
 @import "elements/title";
 @import "elements/other";
+
 @import "elements/form";
 .field {
-    margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .field-label {
-    -webkit-box-flex: 2;
-            -ms-flex-positive: 2;
-                flex-grow: 2;
+  -webkit-box-flex: 2;
+          -ms-flex-positive: 2;
+              flex-grow: 2;
 }
 .label > p.control {
-    margin-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+input {
+  border-radius: 0 !important;
 }
 
 @import "elements/icon";
-
+.control.has-icons-right .icon {
+  &.is-clickable {
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 1;
+  }
+}
+.control.has-icons-right .input:focus ~ .icon,
+.control.has-icons-right .input:hover ~ .icon {
+  color: $cyan;
+}
 
 $box-radius: 0;
 @import "elements/box";
@@ -150,16 +308,25 @@ $box-radius: 0;
 // @import "grid/tiles";
 @import "grid/columns";
 .is-gapless-x {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 
-    & > .column {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
+  & > .column {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
-// @import "layout/hero";
 // @import "layout/footer";
+@import "layout/hero";
+.hero.is-medium .hero-body {
+  @media screen and (min-width: $desktop) {
+    padding-bottom: 1rem;
+  }
+  @media screen and (max-width: $desktop) {
+    padding-bottom: 0;
+  }
+}
+
 @import "layout/section";
 
 
@@ -170,7 +337,7 @@ $box-radius: 0;
 // Flag icons
 @import "flag-icon";
 .flag-icon {
-    margin-right: 0.1875em;
+  margin-right: 0.1875em;
 }
 
 
@@ -184,18 +351,120 @@ $box-radius: 0;
 // Spinkit
 @import 'spinners/10-fading-circle';
 .sk-fading-circle {
-    margin: 0;
-    width: 25px;
-    height: 25px;
-    position: relative;
-    display: inline-block;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+
+  width: 25px;
+  height: 25px;
+  &.is-small {
+    width: 12px;
+    height: 12px;
+  }
+  &.is-medium {
+    width: 24px;
+    height: 24px;
+  }
+  &.is-large {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sk-circle.white::before {
+    background-color: $white;
+  }
+}
+
+
+// Vue-Multiselect
+.multiselect.is-multiselect {
+  min-height: 36px;
+
+  .multiselect__tags {
+    min-height: 36px;
+    border-color: #dbdbdb;
+    border-radius: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    &:hover {
+      border: 1px solid #b5b5b5;
+    }
+  }
+
+  .multiselect__single {
+    padding: 0;
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  .multiselect__option--highlight {
+    background: $info;
+  }
+  .multiselect__option--selected.multiselect__option--highlight {
+    background: $red;
+  }
+
+  .arrow {
+    color: $grey-lighter;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    padding-top: 8px;
+    height: 2.25em;
+    width: 2.25em;
+    z-index: 1;
+    right: 0;
+    top: 0;
+  }
+
+  &:hover > .arrow {
+    color: $cyan;
+  }
+
+  &.multiselect--active .multiselect__tags {
+    border: 1px solid #3273dc;
+    box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+  }
+}
+.label.is-for-multiselect:hover + .multiselect:not(.multiselect--active) .multiselect__tags {
+  border: 1px solid #b5b5b5;
 }
 
 
 // Other
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .3s;
+  transition: opacity .3s;
 }
 .fade-enter, .fade-leave-to {
-    opacity: 0;
+  opacity: 0;
+}
+a {
+  color: $cyan;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
+}
+.has-hoverable-actions {
+  .hoverable-actions {
+    visibility: hidden;
+  }
+  &:hover {
+    .hoverable-actions {
+      visibility: visible;
+    }
+  }
+}
+[title].hover {
+  border-bottom: 1px dotted $grey;
+}
+.searchlight {
+  background: yellow;
+}
+blockquote {
+  background-color: whitesmoke;
+  border-left: 5px solid #dbdbdb;
+  padding: 1.25em 1.5em;
 }

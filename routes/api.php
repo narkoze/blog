@@ -16,6 +16,10 @@ Route::post('passwordresetemail', 'Auth\ForgotPasswordController@sendResetLinkEm
 Route::post('passwordreset', 'Auth\ResetPasswordController@reset');
 Route::post('signin', 'AuthController@signin');
 
+Route::apiResources([
+    'post' => 'PostController',
+]);
+
 Route::group([
     'middleware' => 'auth:api',
 ], function () {
@@ -27,4 +31,12 @@ Route::group([
     Route::delete('profile', 'Profile\ProfileController@destroy');
     Route::post('profile/image', 'Profile\ImageController@index');
     Route::delete('profile/image', 'Profile\ImageController@destroy');
+
+    Route::group([
+        'prefix' => 'admin',
+    ], function () {
+        Route::apiResources([
+            'post' => 'Admin\PostController'
+        ]);
+    });
 });

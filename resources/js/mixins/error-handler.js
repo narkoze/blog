@@ -13,8 +13,10 @@ export default {
 
           localStorage.removeItem('token')
 
-          this.$root.user = {}
+          this.$root.user = null
           localStorage.removeItem('user')
+
+          this.$router.push({ name: 'home' })
           break
         case 422:
           this.errors = error.response.data.errors

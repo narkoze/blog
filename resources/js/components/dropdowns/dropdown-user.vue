@@ -4,7 +4,7 @@
     :class="['has-dropdown', { 'is-active': dropdownIsActive }]"
     ref="dropdown"
   >
-    <div class="navbar-link has-text-primary">
+    <div class="navbar-link">
       {{ $root.user.name }}
     </div>
 
@@ -12,7 +12,7 @@
       <router-link
         :to="{ name: 'profile' }"
         @click.native="$emit('closeNavbar')"
-        class="navbar-item"
+        class="navbar-item is-active-hidden"
       >
         <span class="icon">
           <i class="fas fa-user"></i>

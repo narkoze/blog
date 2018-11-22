@@ -3,8 +3,13 @@
     <div class="navbar-brand">
       <router-link
         @click.native="navbarIsActive = false"
-        :to="{ name: 'home' }"
-        class="navbar-item"
+        :to="{
+          name: 'posts',
+          query: {
+            page: 1
+          }
+        }"
+        class="navbar-item has-text-weight-bold is-active-hidden"
       >
         {{ $t('title') }}
       </router-link>
@@ -19,6 +24,18 @@
 
     <div :class="['navbar-menu', { 'is-active': navbarIsActive }]">
       <div class="navbar-start">
+        <router-link
+          @click.native="navbarIsActive = false"
+          :to="{
+            name: 'posts',
+            query: {
+              page: 1
+            }
+          }"
+          class="navbar-item"
+        >
+          {{ $t('posts') }}
+        </router-link>
       </div>
 
       <div class="navbar-end">
@@ -28,15 +45,27 @@
           @closeNavbar="navbarIsActive = false"
         >
         </dropdown-user>
+
         <div class="navbar-item">
-          <button-signout v-if="$root.user"></button-signout>
-          <button-signin v-else></button-signin>
+          <p>
+            <button-signout v-if="$root.user"></button-signout>
+            <button-signin v-else></button-signin>
+
+            <router-link
+              v-if="$root.user"
+              @click.native="navbarIsActive = false"
+              :to="{ name: 'admin' }"
+              class="button is-link"
+            >
+              <span class="icon">
+                <i class="fas fa-cogs"></i>
+              </span>
+              <span>{{ $t('admin') }}</span>
+            </router-link>
+          </p>
         </div>
-        <dropdown-locale
-          class="navbar-item"
-          @closeNavbar="navbarIsActive = false"
-        >
-        </dropdown-locale>
+
+        <dropdown-locale class="navbar-item"></dropdown-locale>
       </div>
     </div>
   </nav>
@@ -65,10 +94,14 @@
   {
     "en": {
       "title": "Blog",
+      "posts": "All posts",
+      "admin": "Administrator",
       "posts": "All posts"
     },
     "lv": {
       "title": "Emuārs",
+      "posts": "Visas ziņas",
+      "admin": "Administrators",
       "posts": "Visas ziņas"
     }
   }

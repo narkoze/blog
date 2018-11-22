@@ -7,12 +7,13 @@ export default {
 
       this.$router.replace({
         params: {
-          ...this.$route.params,
           locale: locale
         }
       })
 
       axios.defaults.baseURL = `/${locale}/api`
+
+      this.$events.$emit('locale-changed')
     }
   }
 }

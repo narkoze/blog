@@ -6,6 +6,7 @@ import VueI18n from 'vue-i18n'
 import routes from './routes'
 import axios from 'axios'
 import Vue from 'vue'
+import moment from 'moment'
 
 Vue.use(VueI18n)
 const i18n = new VueI18n({
@@ -17,17 +18,28 @@ axios.defaults.baseURL = `/${i18n.locale}/api`
 
 routes.forEach(route => {
   route.path = `/:locale/${route.path}`
+
+  if (route.hasOwnProperty('children')) {
+    route.children.forEach(children => {
+      children.path = `${route.path}/${children.path}`
+
+      if (Object.keys(route.meta).length) {
+        children.meta = route.meta
+      }
+    })
+  }
 })
 routes.push({ path: '/', redirect: `/${i18n.locale}` })
 
 Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
-  routes
+  routes,
+  scrollBehavior: () => ({ x: 0, y: 0 })
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('token')) {
     next({
       name: 'home',
       params: {
@@ -42,6 +54,22 @@ router.beforeEach((to, from, next) => {
   }
 
   next()
+})
+
+Vue.prototype.$events = new Vue()
+
+Vue.filter('dateString', value => {
+  let date = moment(value)
+
+  if (!date.isValid()) return ''
+
+  return date.format('YYYY-MM-DD')
+})
+Vue.filter('highlight', (text, search) => {
+  if (!text || !search) return text
+
+  search = search.trim()
+  return text.replace(new RegExp(search, 'ig'), search => `<searchlight class="searchlight">${search}</searchlight>`)
 })
 
 export default new Vue({
@@ -73,6 +101,11 @@ export default new Vue({
     if (tokenStorage) {
       let token = JSON.parse(tokenStorage)
       axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
+    }
+  },
+  watch: {
+    '$route.path' (path) {
+      document.title = `${i18n.locale === 'en' ? 'Blog' : 'Emuārs'}${path}`
     }
   },
   methods: {

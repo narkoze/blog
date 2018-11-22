@@ -102,6 +102,9 @@
       email: 'demo@piemeram.lv',
       password: 'demons'
     }),
+    mounted () {
+      document.getElementsByTagName('html')[0].classList.add('is-modal-active')
+    },
     methods: {
       signin () {
         this.disabled = true
@@ -129,6 +132,9 @@
           })
           .catch(this.handleError)
       }
+    },
+    beforeDestroy () {
+      document.getElementsByTagName('html')[0].classList.remove('is-modal-active')
     }
   }
 </script>

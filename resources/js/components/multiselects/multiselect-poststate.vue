@@ -1,0 +1,69 @@
+<template>
+  <div class="field">
+    <label
+      @click="$refs.multiselect.$el.focus()"
+      class="label is-for-multiselect"
+    >
+      {{ label }}
+    </label>
+    <multiselect
+      ref="multiselect"
+      :options="options"
+      :value="selected"
+      :custom-label="customLabel"
+      :show-labels="false"
+      :show-no-options="false"
+      :searchable="false"
+      class="is-multiselect is-pointer"
+      placeholder=""
+      @input="state => $emit('selected', state)"
+    >
+      <span
+        slot="caret"
+        class="arrow"
+      >
+        <i class="fas fa-angle-down fa-lg"></i>
+      </span>
+    </multiselect>
+  </div>
+</template>
+
+<script>
+  import Multiselect from 'vue-multiselect'
+
+  export default {
+    components: {
+      Multiselect
+    },
+    props: [
+      'label',
+      'selected'
+    ],
+    data: () => ({
+      options: [
+        'published',
+        'draft',
+      ]
+    }),
+    methods: {
+      customLabel (value) {
+        return this.$t(value)
+      }
+    }
+  }
+</script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
+<i18n>
+  {
+    "en": {
+      "draft": "Draft",
+      "published": "Published"
+    },
+    "lv": {
+      "draft": "Melnraksts",
+      "published": "Publicēts"
+    }
+  }
+</i18n>

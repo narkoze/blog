@@ -2,11 +2,11 @@
 
 namespace Blog\Http\Controllers\Profile;
 
-use Blog\Http\Resources\User as UserResource;
 use Blog\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Blog\Services\UserService;
 use Illuminate\Http\Request;
+use Blog\UserResource;
 use Blog\User;
 
 class ProfileController extends Controller

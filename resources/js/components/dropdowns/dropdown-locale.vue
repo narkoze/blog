@@ -18,7 +18,7 @@
     <div class="navbar-dropdown">
       <a
         v-if="$i18n.locale === 'en'"
-        @click="setLocale('lv')"
+        @click="handleLocale('lv')"
         class="navbar-item"
       >
         <span class="flag-icon flag-icon-lv"></span>
@@ -26,7 +26,7 @@
       </a>
       <a
         v-else
-        @click="setLocale('en')"
+        @click="handleLocale('en')"
         class="navbar-item"
       >
         <span class="flag-icon flag-icon-gb"></span>
@@ -50,10 +50,7 @@
       window.addEventListener('click', this.closeDropdown)
     },
     methods: {
-      setLocale (locale) {
-        this.handleLocale(locale)
-        this.$emit('closeNavbar')
-      },
+      ...this.handleLocale,
       closeDropdown (e) {
         if (!this.$refs.dropdown.contains(e.target)) {
           this.dropdownIsActive = false

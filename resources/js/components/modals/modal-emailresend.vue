@@ -42,6 +42,9 @@
     mixins: [
       ErrorHandler,
     ],
+    mounted () {
+      document.getElementsByTagName('html')[0].classList.add('is-modal-active')
+    },
     methods: {
       resend () {
         this.disabled = true
@@ -55,6 +58,9 @@
           })
           .catch(this.handleError)
       }
+    },
+    beforeDestroy () {
+      document.getElementsByTagName('html')[0].classList.remove('is-modal-active')
     }
   }
 </script>

@@ -1,20 +1,20 @@
 <template>
-  <transition
-    name="fade"
-    appear
-  >
-    <section class="section">
-      <div class="container">
+  <div>
+    <transition
+      name="fade"
+      appear
+    >
+      <section class="section">
         <div class="card is-medium">
           <div class="card-content">
-            <h1 class="title">
-              {{ $t('title') }}
-              <spinner v-if="disabled"></spinner>
-            </h1>
+            <div class="content">
+              <h1 class="title">
+                {{ $t('title') }}
+                <spinner v-if="disabled"></spinner>
+              </h1>
 
-            <div v-if="user">
               <div
-                v-if="!user.email_verified"
+                v-if="user.hasOwnProperty('email_verified') && !user.email_verified"
                 class="field"
               >
                 <a
@@ -30,7 +30,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.image }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.image }]"
+                    for="image"
+                  >
                     {{ $t('image') }}
                   </label>
                 </div>
@@ -53,6 +56,7 @@
                   <p v-if="errors.image" class="help is-danger">{{ errors.image.join() }}</p>
 
                   <input
+                    id="image"
                     type="file"
                     accept="image/*"
                     title=" "
@@ -80,7 +84,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.name }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.name }]"
+                    for="name"
+                  >
                     {{ $t('name') }}
                   </label>
                 </div>
@@ -88,6 +95,7 @@
                   <div class="field">
                     <p class="control has-icons-left">
                       <input
+                        id="name"
                         v-model="user.name"
                         type="text"
                         :class="['input', { 'is-danger': errors.name }]"
@@ -104,7 +112,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.email }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.email }]"
+                    for="email"
+                  >
                     {{ $t('email') }}
                   </label>
                 </div>
@@ -112,6 +123,7 @@
                   <div class="field">
                     <p class="control has-icons-left">
                       <input
+                        id="email"
                         v-model="user.email"
                         type="email"
                         :class="['input', { 'is-danger': errors.email }]"
@@ -158,7 +170,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.password }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.password }]"
+                    for="password"
+                  >
                     {{ $t('password') }}
                   </label>
                 </div>
@@ -166,6 +181,7 @@
                   <div class="field">
                     <p class="control has-icons-left">
                       <input
+                        id="password"
                         v-model="user.password"
                         type="password"
                         :class="['input', { 'is-danger': errors.password }]"
@@ -182,7 +198,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.new_password }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.new_password }]"
+                    for="new_password"
+                  >
                     {{ $t('new_password') }}
                   </label>
                 </div>
@@ -190,6 +209,7 @@
                   <div class="field">
                     <p class="control has-icons-left">
                       <input
+                        id="new_password"
                         v-model="user.new_password"
                         type="password"
                         :class="['input', { 'is-danger': errors.new_password }]"
@@ -206,7 +226,10 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <label :class="['label', { 'has-text-danger': errors.new_password_confirmation }]">
+                  <label
+                    :class="['label', { 'has-text-danger': errors.new_password_confirmation }]"
+                    for="new_password_confirmation"
+                  >
                     {{ $t('new_password_confirmation') }}
                   </label>
                 </div>
@@ -214,6 +237,7 @@
                   <div class="field">
                     <p class="control has-icons-left">
                       <input
+                        id="new_password_confirmation"
                         v-model="user.new_password_confirmation"
                         type="password"
                         :class="['input', { 'is-danger': errors.new_password_confirmation }]"
@@ -253,29 +277,29 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
+    </transition>
 
-      <modal-confirm
-        v-if="showModalConfirm"
-        @confirmed="confirm"
-        @close="showModalConfirm = false"
-      >
-        {{ $t(showModalConfirm) }}
-      </modal-confirm>
+    <modal-confirm
+      v-if="showModalConfirm"
+      @confirmed="confirm"
+      @close="showModalConfirm = false"
+    >
+      {{ $t(showModalConfirm) }}
+    </modal-confirm>
 
-      <photoswipe
-        v-if="showPhotoswipe"
-        :items="[{
-          title: user.name,
-          src: user.images.original,
-          w: user.image.width,
-          h: user.image.height
-        }]"
-        @close="showPhotoswipe = false"
-      >
-      </photoswipe>
-    </section>
-  </transition>
+    <photoswipe
+      v-if="showPhotoswipe"
+      :items="[{
+        title: user.name,
+        src: user.images.original,
+        w: user.image.width,
+        h: user.image.height
+      }]"
+      @close="showPhotoswipe = false"
+    >
+    </photoswipe>
+  </div>
 </template>
 
 <script>
@@ -297,7 +321,7 @@
       ErrorHandler,
     ],
     data: () => ({
-      user: null,
+      user: {},
       updating: false,
       destroying: false,
       showModalConfirm: false,

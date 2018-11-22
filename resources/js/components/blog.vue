@@ -2,6 +2,23 @@
   <div>
     <notifications></notifications>
     <navbar></navbar>
+
+    <section
+      v-if="!$route.meta.requiresAdmin && !$route.meta.requiresAuth"
+      class="hero is-medium"
+    >
+      <div class="hero-body">
+        <div class="container has-text-centered">
+          <h1 class="title is-size-2 has-text-white-ter">
+            {{ $t('title') }}
+          </h1>
+          <h2 class="subtitle has-text-grey-lighter">
+            {{ $t('subtitle') }}
+          </h2>
+        </div>
+      </div>
+    </section>
+
     <router-view></router-view>
 
     <modal-emailresend
@@ -49,3 +66,16 @@
     }
   }
 </script>
+
+<i18n>
+  {
+    "en": {
+      "title": "BLOG",
+      "subtitle": "Simply created with Laravel, Vue and Bulma"
+    },
+    "lv": {
+      "title": "EMUĀRS",
+      "subtitle": "Vienkārši uztaisīts ar Laravel, Vue un Bulma"
+    }
+  }
+</i18n>
