@@ -273,7 +273,9 @@ $notification-radius: 0;
 @import "elements/other";
 
 @import "elements/form";
-.textarea {
+.textarea,
+.select select
+{
   border-radius: 0;
 }
 .field {

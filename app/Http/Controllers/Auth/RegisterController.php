@@ -77,6 +77,7 @@ class RegisterController extends Controller
         $user->fill($data);
         $user->locale = app()->getLocale();
         $user->password = Hash::make($data['password']);
+        $user->role()->associate(2);
         $user->save();
 
         return $user;

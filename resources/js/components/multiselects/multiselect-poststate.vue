@@ -16,7 +16,7 @@
       :searchable="false"
       class="is-multiselect is-pointer"
       placeholder=""
-      @input="state => $emit('selected', state)"
+      @input="selected => $emit('selected', selected)"
     >
       <span
         slot="caret"

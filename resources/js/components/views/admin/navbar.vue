@@ -36,6 +36,14 @@
       </p>
       <ul>
         <router-link
+          :to="{ name: 'admin-users' }"
+          :class="{ 'is-active': $route.name === 'admin-users' }"
+          tag="li"
+        >
+          {{ $t('allusers') }}
+        </router-link>
+
+        <router-link
           :to="{ name: 'admin-roles' }"
           :class="{ 'is-active': $route.name === 'admin-roles' }"
           tag="li"
@@ -54,6 +62,7 @@
       "allposts": "All posts",
       "newpost": "New post",
       "users": "Users",
+      "allusers": "Users",
       "allroles": "Roles"
     },
     "lv": {
@@ -61,6 +70,7 @@
       "allposts": "Visas ziņas",
       "newpost": "Jauna ziņa",
       "users": "Lietotāji",
+      "allusers": "Lietotāji",
       "allroles": "Lomas"
     }
   }

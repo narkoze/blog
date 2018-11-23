@@ -2,8 +2,8 @@
 
 namespace Blog\Http\Controllers;
 
-use Blog\PostResourceCollection;
 use Illuminate\Http\Request;
+use Blog\PostResourceCollection;
 use Blog\PostResource;
 use Blog\Post;
 
@@ -26,12 +26,10 @@ class PostController extends Controller
 
     public function show(Request $request, $locale, Post $post)
     {
-        // $post = Post::whereId($postId);
-        // if ($request->user()->isAdmin()) {
-        //     return new PostResource($post->first());
-        // }
-
-        // $post = $post->whereNotNull('published_at')->firstOrFail();
+        if (!$post->published_at) {
+            abort_unless(auth('api')->user(), 404);
+            abort_unless(in_array(auth('api')->user()->role->id, [1, 3, 4]), 404);
+        }
 
         return new PostResource($post);
     }

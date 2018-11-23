@@ -34,10 +34,12 @@ Route::group([
 
     Route::group([
         'prefix' => 'admin',
+        'middleware' => 'admin'
     ], function () {
         Route::apiResources([
             'post' => 'Admin\PostController',
             'role' => 'Admin\RoleController',
+            'user' => 'Admin\UserController',
         ]);
     });
 });

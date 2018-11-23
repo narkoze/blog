@@ -52,7 +52,7 @@
             <button-signin v-else></button-signin>
 
             <router-link
-              v-if="$root.user"
+              v-if="$root.user && $root.user.role.id !== 2"
               @click.native="navbarIsActive = false"
               :to="{ name: 'admin' }"
               class="button is-link"

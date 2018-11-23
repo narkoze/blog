@@ -12,10 +12,11 @@ class PostRepository
     public function params(): array
     {
         return [
-            'sortDirection' => 'desc',
+            'page' => null,
             'sortBy' => 'dates',
-            'search' => null,
+            'sortDirection' => 'desc',
             'state' => null,
+            'search' => null,
         ];
     }
 

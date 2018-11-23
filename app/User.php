@@ -31,7 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
+        'email',
     ];
 
     protected $dates = [
@@ -50,6 +51,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id')
+            ->whereNotNull('published_at');
+    }
+
     public function getImagesAttribute()
     {
         if (!$this->image) {
@@ -61,6 +71,15 @@ class User extends Authenticatable implements MustVerifyEmail
             'medium' => Storage::disk('public')->url("user/medium/{$this->image['filename']}"),
             'small' => Storage::disk('public')->url("user/small/{$this->image['filename']}"),
         ];
+    }
+
+    public function getEmailMaskedAttribute()
+    {
+        $parts = explode("@", $this->email);
+        $name = implode(array_slice($parts, 0, count($parts) -1), '@');
+        $len  = floor(strlen($name) / 2);
+
+        return substr($name, 0, $len) . str_repeat('*', $len) . "@" . end($parts);
     }
 
     /**

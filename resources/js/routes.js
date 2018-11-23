@@ -5,6 +5,7 @@ import Profile from './components/views/profile.vue'
 import Admin from './components/views/admin/admin.vue'
 import AdminPost from './components/views/admin/post/post.vue'
 import AdminPosts from './components/views/admin/post/posts.vue'
+import AdminUsers from './components/views/admin/users.vue'
 import AdminRole from './components/views/admin/role/role.vue'
 import AdminRoles from './components/views/admin/role/roles.vue'
 import PasswordReset from './components/views/password-reset.vue'
@@ -28,19 +29,12 @@ export default [
   {
     name: 'profile',
     path: 'profile',
-    component: Profile,
-    meta: {
-      requiresAuth: true
-    }
+    component: Profile
   },
   {
     name: 'admin',
     path: 'admin',
     component: Admin,
-    meta: {
-      requiresAuth: true,
-      requiresAdmin: true // in progress
-    },
     redirect: {
       name: 'admin-posts'
     },
@@ -62,6 +56,11 @@ export default [
         component: AdminPosts
       },
       {
+        name: 'admin-users',
+        path: 'users',
+        component: AdminUsers
+      },
+      {
         name: 'admin-role',
         path: 'role',
         component: AdminRole
@@ -80,10 +79,12 @@ export default [
     ]
   },
   {
+    name: 'verified',
     path: 'verified',
     component: EmailVerified
   },
   {
+    name: 'passwordreset',
     path: 'passwordreset/:token/:email',
     component: PasswordReset
   },

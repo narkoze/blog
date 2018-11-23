@@ -22,10 +22,6 @@ routes.forEach(route => {
   if (route.hasOwnProperty('children')) {
     route.children.forEach(children => {
       children.path = `${route.path}/${children.path}`
-
-      if (Object.keys(route.meta).length) {
-        children.meta = route.meta
-      }
     })
   }
 })
@@ -39,15 +35,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth) && !localStorage.getItem('token')) {
-    next({
-      name: 'home',
-      params: {
-        locale: i18n.locale
-      }
-    })
-  }
-
   let lang = i18n.locale
   if (Object.keys(i18n.messages).includes(lang)) {
     i18n.locale = lang

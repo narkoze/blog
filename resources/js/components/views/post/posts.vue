@@ -78,6 +78,7 @@
               &nbsp;&nbsp;
 
               <router-link
+                v-if="$root.user && $root.user.role.id !== 2"
                 :to="{
                   name: 'admin-post-edit',
                   params: {

@@ -12,20 +12,24 @@
           </h1>
 
           <div class="field">
-            <router-link
-              :to="{
-                name: 'admin-role',
-                post: {
-                  id: null
-                }
+            <a
+              @click="() => {
+                [1, 3].includes($root.user.role.id) &&
+                $router.push({
+                  name: 'admin-role',
+                  post: {
+                    id: null
+                  }
+                })
               }"
               class="button is-primary"
+              :disabled="![1, 3].includes($root.user.role.id)"
             >
               <span>
                 <i class="fas fa-plus"></i>
                 {{ $t('newrole') }}
               </span>
-            </router-link>
+            </a>
           </div>
 
           <div class="field">
@@ -94,30 +98,36 @@
                   class="has-hoverable-actions"
                 >
                   <td>
-                    <router-link
-                      :to="{
-                        name: 'admin-role-edit',
-                        params: {
-                          id: role.id,
-                          role: role
-                        }
-                      }"
-                    >
-                      <b v-html="$options.filters.highlight($i18n.locale === 'en' ? role.name_en : role.name_lv, params.search)"></b>
-                    </router-link>
-
-                    <div class="hoverable-actions">
-                      <router-link
-                        :to="{
+                    <a
+                      @click="() => {
+                        [1, 3].includes($root.user.role.id) &&
+                        $router.push({
                           name: 'admin-role-edit',
                           params: {
                             id: role.id,
                             role: role
                           }
+                        })
+                      }"
+                    >
+                      <b v-html="$options.filters.highlight($i18n.locale === 'en' ? role.name_en : role.name_lv, params.search)"></b>
+                    </a>
+
+                    <div class="hoverable-actions">
+                      <a
+                        @click="() => {
+                          [1, 3].includes($root.user.role.id) &&
+                          $router.push({
+                            name: 'admin-role-edit',
+                            params: {
+                              id: role.id,
+                              role: role
+                            }
+                          })
                         }"
                       >
                         <small>{{ $t('edit') }}</small>
-                      </router-link>
+                      </a>
                     </div>
                   </td>
 

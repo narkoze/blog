@@ -9,8 +9,9 @@ class RoleRepository
     public function params(): array
     {
         return [
-            'sortDirection' => 'desc',
+            'page' => null,
             'sortBy' => 'created_at',
+            'sortDirection' => 'desc',
             'search' => null,
         ];
     }
@@ -19,8 +20,7 @@ class RoleRepository
     {
         $params = $params + $this->params();
 
-        $query = Role::withCount('users')
-            ->orderBy($params['sortBy'], $params['sortDirection']);
+        $query = Role::orderBy($params['sortBy'], $params['sortDirection']);
 
         $search = trim($params['search']);
         if ($search) {

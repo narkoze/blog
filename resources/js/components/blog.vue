@@ -4,7 +4,13 @@
     <navbar></navbar>
 
     <section
-      v-if="!$route.meta.requiresAdmin && !$route.meta.requiresAuth"
+      v-if="[
+        'home',
+        'posts',
+        'post',
+        'verified',
+        'passwordreset',
+      ].includes($route.name)"
       class="hero is-medium"
     >
       <div class="hero-body">
