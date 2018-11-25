@@ -42,17 +42,6 @@
   </div>
 </template>
 
-<script>
-  export default {
-    mounted () {
-      document.getElementsByTagName('html')[0].classList.add('is-modal-active')
-    },
-    beforeDestroy () {
-      document.getElementsByTagName('html')[0].classList.remove('is-modal-active')
-    }
-  }
-</script>
-
 <i18n>
   {
     "en": {

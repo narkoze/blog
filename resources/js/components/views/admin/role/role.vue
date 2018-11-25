@@ -119,6 +119,7 @@
       },
       create () {
         this.disabled = true
+        this.errors = {}
 
         let method = this.role.id ? 'put' : 'post'
         let route = this.role.id

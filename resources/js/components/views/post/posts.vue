@@ -87,6 +87,24 @@
 
               &nbsp;&nbsp;
 
+              <span class="is-nowrap">
+                <i class="fas fa-comments"></i>
+                <a
+                  @click="to({
+                    name: 'post',
+                    params: {
+                      id: post.id,
+                      post: post,
+                      scrollToComments: true
+                    }
+                  })"
+                >
+                  {{ $t('comments', { count: post.comments.length }) }}
+                </a>
+              </span>
+
+              &nbsp;&nbsp;
+
               <router-link
                 v-if="$root.user && $root.user.role.id !== 2"
                 :to="{
@@ -232,11 +250,13 @@
   {
     "en": {
       "edit": "Edit",
-      "pagebrake": "Keep reading..."
+      "pagebrake": "Keep reading...",
+      "comments": "{count} Comments"
     },
     "lv": {
       "edit": "Labot",
-      "pagebrake": "Turpini lasīt..."
+      "pagebrake": "Turpini lasīt...",
+      "comments": "{count} Komentāri"
     }
   }
 </i18n>

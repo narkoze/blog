@@ -25,12 +25,6 @@ html {
          height: -o-calc(100% + 56px);
             height: calc(100% + 56px);
   }
-
-  &.is-modal-active {
-    overflow: hidden !important;
-    position: fixed;
-    width: 100%;
-  }
 }
 
 @import "base/helpers";
@@ -58,11 +52,14 @@ html {
 .is-paddingless-bottom {
   padding-bottom: 0 !important;
 }
+.is-paddingless-top {
+  padding-top: 0 !important;
+}
 
 // @import "components/breadcrumb";
 // @import "components/dropdown";
 // @import "components/level";
-// @import "components/media";
+@import "components/media";
 // @import "components/menu";
 .menu-admin {
   background: $grey-dark;

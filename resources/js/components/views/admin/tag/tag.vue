@@ -129,6 +129,7 @@
       },
       create () {
         this.disabled = true
+        this.errors = {}
 
         let method = this.tag.id ? 'put' : 'post'
         let route = this.tag.id
