@@ -30,10 +30,22 @@
 
           <div class="card-content">
             <div class="content">
-              <div
-                v-html="$i18n.locale === 'en' ? post.content_en : post.content_lv"
-                ref="html"
-              >
+              <div class="content-post">
+                <div
+                  v-html="$i18n.locale === 'en' ? post.content_en : post.content_lv"
+                  ref="html"
+                >
+                </div>
+
+                <div class="tags has-margin-top">
+                  <span
+                    v-for="tag in post.tags"
+                    :key="tag.id"
+                    class="tag is-dark"
+                  >
+                    {{ $i18n.locale === 'en' ? tag.name_en : tag.name_lv }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

@@ -12,24 +12,20 @@
           </h1>
 
           <div class="field">
-            <a
-              @click="() => {
-                [1, 3].includes($root.user.role.id) &&
-                $router.push({
-                  name: 'admin-role',
-                  role: {
-                    id: null
-                  }
-                })
+            <router-link
+              :to="{
+                name: 'admin-tag',
+                tag: {
+                  id: null
+                }
               }"
               class="button is-primary"
-              :disabled="![1, 3].includes($root.user.role.id)"
             >
               <span>
                 <i class="fas fa-plus"></i>
-                {{ $t('newrole') }}
+                {{ $t('newtag') }}
               </span>
-            </a>
+            </router-link>
           </div>
 
           <div class="field">
@@ -68,73 +64,40 @@
                   >
                     {{ $t('name') }}
                   </sortdirection>
-
-                  <sortdirection
-                    :column="$i18n.locale === 'en' ? 'description_en' : 'description_lv'"
-                    :sort="params.sortBy"
-                    :direction="params.sortDirection"
-                    :disabled="sorting"
-                    @changed="sort"
-                  >
-                    {{ $t('description') }}
-                  </sortdirection>
-
-                  <sortdirection
-                    column="users_count"
-                    :sort="params.sortBy"
-                    :direction="params.sortDirection"
-                    :disabled="sorting"
-                    @changed="sort"
-                    class="has-text-right"
-                  >
-                    {{ $t('users_count') }}
-                  </sortdirection>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  v-for="role in roles"
-                  :key="role.id"
+                  v-for="tag in tags"
+                  :key="tag.id"
                   class="has-hoverable-actions"
                 >
                   <td>
-                    <a
-                      @click="() => {
-                        [1, 3].includes($root.user.role.id) &&
-                        $router.push({
-                          name: 'admin-role-edit',
-                          params: {
-                            id: role.id,
-                            role: role
-                          }
-                        })
+                    <router-link
+                      :to="{
+                        name: 'admin-tag-edit',
+                        params: {
+                          id: tag.id,
+                          tag: tag
+                        }
                       }"
                     >
-                      <b v-html="$options.filters.highlight($i18n.locale === 'en' ? role.name_en : role.name_lv, params.search)"></b>
-                    </a>
+                      <b v-html="$options.filters.highlight($i18n.locale === 'en' ? tag.name_en : tag.name_lv, params.search)"></b>
+                    </router-link>
 
                     <div class="hoverable-actions">
-                      <a
-                        @click="() => {
-                          [1, 3].includes($root.user.role.id) &&
-                          $router.push({
-                            name: 'admin-role-edit',
-                            params: {
-                              id: role.id,
-                              role: role
-                            }
-                          })
+                      <router-link
+                        :to="{
+                          name: 'admin-tag-edit',
+                          params: {
+                            id: tag.id,
+                            tag: tag
+                          }
                         }"
                       >
                         <small>{{ $t('edit') }}</small>
-                      </a>
+                      </router-link>
                     </div>
-                  </td>
-
-                  <td v-html="$options.filters.highlight($i18n.locale === 'en' ? role.description_en : role.description_lv, params.search)"></td>
-
-                  <td class="has-text-right">
-                    {{ role.users_count || '' }}
                   </td>
                 </tr>
               </tbody>
@@ -180,7 +143,7 @@
       PageHandler,
     ],
     data: () => ({
-      roles: []
+      tags: []
     }),
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -200,7 +163,7 @@
     },
     mounted () {
       window.onpopstate = () => {
-        if (this.$route.name === 'admin-roles') {
+        if (this.$route.name === 'admin-tags') {
           this.get(this.$route.query)
         }
       }
@@ -211,12 +174,12 @@
         this.params.page = page
 
         axios
-          .get('admin/role', { params: query || this.params })
+          .get('admin/tag', { params: query || this.params })
           .then(response => {
             this.disabled = this.sorting = false
-            this.roles = response.data.data
+            this.tags = response.data.data
             this.handlePage(response.data.meta, response.data.links)
-            this.handleQuery(response.data.params, 'admin-roles')
+            this.handleQuery(response.data.params, 'admin-tags')
           })
           .catch(error => {
             this.sorting = this.pageChanging = false
@@ -243,22 +206,18 @@
 <i18n>
   {
     "en": {
-      "title": "Roles",
+      "title": "Tags",
       "search": "Search",
-      "name": "Role",
-      "description": "Description",
-      "users_count": "User count",
+      "name": "Tag",
       "edit": "Edit",
-      "newrole": "Create role"
+      "newtag": "Create tag"
     },
     "lv": {
-      "title": "Lomas",
+      "title": "Tēmturi",
       "search": "Meklēt",
-      "name": "Loma",
-      "description": "Apraksts",
-      "users_count": "Lietotāju skaits",
+      "name": "Tēmturis",
       "edit": "Labot",
-      "newrole": "Izveidot lomu"
+      "newtag": "Izveidot tēmturi"
     }
   }
 </i18n>

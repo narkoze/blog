@@ -6,63 +6,67 @@
     >
       <div class="card">
         <div class="card-content">
-          <div class="content">
-            <h1 class="title">
-              {{ post.id ? $t('title.edit') : $t('title.new') }}
-              <spinner v-if="disabled"></spinner>
-            </h1>
+          <h1 class="title">
+            {{ post.id ? $t('title.edit') : $t('title.new') }}
+            <spinner v-if="disabled"></spinner>
+          </h1>
 
-            <div class="columns">
-              <div
-                v-for="fields in fields"
-                :key="fields.name"
-                :is="fields"
-                class="column"
-              >
-              </div>
+          <div class="columns">
+            <div
+              v-for="fields in fields"
+              :key="fields.name"
+              :is="fields"
+              class="column is-paddingless-bottom"
+            >
             </div>
+          </div>
 
-            <div class="is-post-button-group">
-              <a
-                @click="publish()"
-                :class="['button is-info', { 'is-loading': publishing }]"
-                :disabled="disabled"
-              >
-                {{ post.published_at ? $t('update') : $t('publish') }}
-              </a>
+          <multiselect-tags
+            :selected="post.tags"
+            @selected="tags => post.tags = tags"
+          >
+          </multiselect-tags>
 
-              <a
-                @click="publish(true)"
-                :class="['button', { 'is-loading': saving }]"
-                :disabled="disabled"
-              >
-                {{ $t('save') }}
-              </a>
+          <div class="is-button-group">
+            <a
+              @click="publish()"
+              :class="['button is-info', { 'is-loading': publishing }]"
+              :disabled="disabled"
+            >
+              {{ post.published_at ? $t('update') : $t('publish') }}
+            </a>
 
-              <router-link
-                v-if="post.id"
-                :to="{
-                  name: 'post',
-                  params: {
-                    id: post.id,
-                    post: post
-                  }
-                }"
-                class="button"
-                :disabled="disabled"
-              >
-                {{ post.published_at ? $t('view') : $t('preview') }}
-              </router-link>
+            <a
+              @click="publish(true)"
+              :class="['button', { 'is-loading': saving }]"
+              :disabled="disabled"
+            >
+              {{ $t('save') }}
+            </a>
 
-              <a
-                v-if="post.id"
-                @click="showModalConfirm = true"
-                :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
-                :disabled="disabled"
-              >
-                {{ $t('destroy') }}
-              </a>
-            </div>
+            <router-link
+              v-if="post.id"
+              :to="{
+                name: 'post',
+                params: {
+                  id: post.id,
+                  post: post
+                }
+              }"
+              class="button"
+              :disabled="disabled"
+            >
+              {{ post.published_at ? $t('view') : $t('preview') }}
+            </router-link>
+
+            <a
+              v-if="post.id"
+              @click="showModalConfirm = true"
+              :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
+              :disabled="disabled"
+            >
+              {{ $t('destroy') }}
+            </a>
           </div>
         </div>
       </div>
@@ -82,6 +86,7 @@
 </template>
 
 <script>
+  import MultiselectTags from '../../../multiselects/multiselect-tags.vue'
   import ErrorHandler from '../../../../mixins/error-handler'
   import ModalConfirm from '../../../modals/modal-confirm.vue'
   import PostFieldsEn from './post-fields-en.vue'
@@ -102,6 +107,7 @@
 
   export default {
     components: {
+      MultiselectTags,
       ModalConfirm,
       Spinner
     },
@@ -110,7 +116,9 @@
     ],
     data: function () {
       return {
-        post: this.$route.params.post || {},
+        post: this.$route.params.post || {
+          tags: []
+        },
         publishing: false,
         deleting: false,
         saving: false,

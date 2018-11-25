@@ -4,7 +4,7 @@
       @click="$refs.multiselect.$el.focus()"
       class="label is-for-multiselect"
     >
-      {{ label }}
+      {{ $t('label') }}
     </label>
     <multiselect
       ref="multiselect"
@@ -36,8 +36,7 @@
       Multiselect
     },
     props: [
-      'label',
-      'selected'
+      'selected',
     ],
     data: () => ({
       options: [
@@ -58,10 +57,12 @@
 <i18n>
   {
     "en": {
+      "label": "State",
       "draft": "Draft",
       "published": "Published"
     },
     "lv": {
+      "label": "Status",
       "draft": "Melnraksts",
       "published": "Publicēts"
     }

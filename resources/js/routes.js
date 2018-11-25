@@ -5,6 +5,8 @@ import Profile from './components/views/profile.vue'
 import Admin from './components/views/admin/admin.vue'
 import AdminPost from './components/views/admin/post/post.vue'
 import AdminPosts from './components/views/admin/post/posts.vue'
+import AdminTag from './components/views/admin/tag/tag.vue'
+import AdminTags from './components/views/admin/tag/tags.vue'
 import AdminUsers from './components/views/admin/users.vue'
 import AdminRole from './components/views/admin/role/role.vue'
 import AdminRoles from './components/views/admin/role/roles.vue'
@@ -56,6 +58,22 @@ export default [
         component: AdminPosts
       },
       {
+        name: 'admin-tag',
+        path: 'tag',
+        component: AdminTag
+      },
+      {
+        name: 'admin-tag-edit',
+        path: 'tag/:id',
+        component: AdminTag,
+        props: true
+      },
+      {
+        name: 'admin-tags',
+        path: 'tags',
+        component: AdminTags
+      },
+      {
         name: 'admin-users',
         path: 'users',
         component: AdminUsers
@@ -75,7 +93,7 @@ export default [
         name: 'admin-roles',
         path: 'roles',
         component: AdminRoles
-      }
+      },
     ]
   },
   {

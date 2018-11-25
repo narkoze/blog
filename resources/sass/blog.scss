@@ -37,6 +37,9 @@ html {
 .is-pointer {
   cursor: pointer;
 }
+.is-text {
+  cursor: text;
+}
 .is-default {
   cursor: default !important;
 }
@@ -51,6 +54,9 @@ html {
 }
 .is-nowrap {
   white-space: nowrap;
+}
+.is-paddingless-bottom {
+  padding-bottom: 0 !important;
 }
 
 // @import "components/breadcrumb";
@@ -171,7 +177,16 @@ a.navbar-item.is-active,
 }
 
 // @import "elements/progress";
-// @import "elements/tag";
+@import "elements/tag";
+.tags.has-margin-top {
+  margin-top: 1.5rem;
+}
+.is-multiselect-tags {
+  display: inline-flex;
+  margin-bottom: 0 !important;
+}
+
+
 @import "elements/table";
 @import "elements/image";
 .image-container {
@@ -208,7 +223,7 @@ a.navbar-item.is-active,
 
 @import "elements/content";
 .content-post {
-  padding: 1em;
+  padding: 1em 1em 0 1em;
 }
 
 
@@ -261,7 +276,7 @@ $notification-radius: 0;
 .button {
   border-radius: 0;
 }
-.is-post-button-group > a.button {
+.is-button-group > a.button {
   @media screen and (max-width: $tablet - 395px) {
     float: none !important;
     width: 100%;
@@ -378,6 +393,9 @@ $box-radius: 0;
   .sk-circle.white::before {
     background-color: $white;
   }
+  .sk-circle.grey::before {
+    background-color: $grey-lighter;
+  }
 }
 
 
@@ -402,8 +420,29 @@ $box-radius: 0;
     line-height: 1.5;
   }
 
+  .multiselect__tag {
+    background: $grey-dark;
+  }
+  .multiselect__tag-icon {
+    &:hover {
+      background: transparent;
+
+      &::after {
+        color: $white;
+      }
+    }
+
+    &::after {
+      color: $black;
+    }
+  }
+
   .multiselect__option--highlight {
     background: $info;
+    &::after {
+      background: transparent;
+      font-weight: 700;
+    }
   }
   .multiselect__option--selected.multiselect__option--highlight {
     background: $red;

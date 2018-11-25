@@ -4,7 +4,7 @@ namespace Blog;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoleResource extends JsonResource
+class TagResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,8 @@ class RoleResource extends JsonResource
             'id' => $this->id,
             'name_en' => $this->name_en,
             'name_lv' => $this->name_lv,
-            'description_en' => $this->description_en,
-            'description_lv' => $this->description_lv,
             // 'created_at' => (string) $this->created_at,
             // 'updated_at' => (string) $this->updated_at,
-            'users_count' => $this->users()->count(),
         ];
     }
 }

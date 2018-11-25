@@ -24,6 +24,7 @@ class PostResource extends JsonResource
             'published_at' => (string) $this->published_at,
             // 'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
+            'tags' => new TagResourceCollection($this->tags),
         ];
     }
 }

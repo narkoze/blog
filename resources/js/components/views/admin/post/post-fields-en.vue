@@ -18,7 +18,7 @@
       <p v-if="$parent.errors.title_en" class="help is-danger">{{ $parent.errors.title_en.join() }}</p>
     </div>
 
-    <div class="field">
+    <div class="field is-marginless">
       <spinner v-if="!$parent.content_en_initialized"></spinner>
       <label :class="['label', { 'children-error': $parent.errors.content_en }]">
         <textarea

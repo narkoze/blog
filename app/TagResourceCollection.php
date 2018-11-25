@@ -4,7 +4,7 @@ namespace Blog;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PostResourceCollection extends ResourceCollection
+class TagResourceCollection extends ResourceCollection
 {
     /**
      * Transform the resource into an array.

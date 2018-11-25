@@ -29,6 +29,14 @@
           <i class="fas fa-plus"></i>
           {{ $t('newpost') }}
         </router-link>
+
+        <router-link
+          :to="{ name: 'admin-tags' }"
+          :class="{ 'is-active': $route.name === 'admin-tags' }"
+          tag="li"
+        >
+          {{ $t('alltags') }}
+        </router-link>
       </ul>
 
       <p class="menu-admin-label">
@@ -63,7 +71,8 @@
       "newpost": "New post",
       "users": "Users",
       "allusers": "Users",
-      "allroles": "Roles"
+      "allroles": "Roles",
+      "alltags": "Tags"
     },
     "lv": {
       "posts": "Ziņas",
@@ -71,7 +80,8 @@
       "newpost": "Jauna ziņa",
       "users": "Lietotāji",
       "allusers": "Lietotāji",
-      "allroles": "Lomas"
+      "allroles": "Lomas",
+      "alltags": "Tēmturi"
     }
   }
 </i18n>

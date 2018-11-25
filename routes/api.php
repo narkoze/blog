@@ -40,6 +40,7 @@ Route::group([
             'post' => 'Admin\PostController',
             'role' => 'Admin\RoleController',
             'user' => 'Admin\UserController',
+            'tag' => 'Admin\TagController',
         ]);
     });
 });

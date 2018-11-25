@@ -8,7 +8,7 @@
         <div class="card-content">
           <div class="content">
             <h1 class="title">
-              {{ role.id ? $t('title.edit') : $t('title.new') }}
+              {{ tag.id ? $t('title.edit') : $t('title.new') }}
               <spinner v-if="disabled"></spinner>
             </h1>
 
@@ -28,11 +28,11 @@
                 :class="['button is-info', { 'is-loading': creating }]"
                 :disabled="disabled"
               >
-                {{ role.id ? $t('update') : $t('create') }}
+                {{ tag.id ? $t('update') : $t('create') }}
               </a>
 
               <a
-                v-if="role.id"
+                v-if="tag.id"
                 @click="showModalConfirm = true"
                 :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
                 :disabled="disabled"
@@ -53,7 +53,7 @@
       }"
       @close="showModalConfirm = false"
     >
-      {{ $t('destroy.confirm', { title: $i18n.locale === 'en' ? role.name_en : role.name_lv }) }}
+      {{ $t('destroy.confirm', { title: $i18n.locale === 'en' ? tag.name_en : tag.name_lv }) }}
     </modal-confirm>
   </div>
 </template>
@@ -61,8 +61,8 @@
 <script>
   import ModalConfirm from '../../../modals/modal-confirm.vue'
   import ErrorHandler from '../../../../mixins/error-handler'
-  import RoleFieldsEn from './role-fields-en.vue'
-  import RoleFieldsLv from './role-fields-lv.vue'
+  import TagFieldsEn from './tag-fields-en.vue'
+  import TagFieldsLv from './tag-fields-lv.vue'
   import Spinner from '../../../spinner.vue'
   import axios from 'axios'
   export default {
@@ -75,29 +75,39 @@
     ],
     data: function () {
       return {
-        role: this.$route.params.role || {},
+        tag: this.$route.params.tag || {},
         creating: false,
         deleting: false,
         showModalConfirm: false
       }
     },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        if (Object.keys(to.query).length) {
+          vm.tag = {
+            name_en: to.query.tag,
+            name_lv: to.query.tag
+          }
+        }
+      })
+    },
     created () {
-      if (this.role.id === undefined && this.$route.params.id) {
+      if (this.tag.id === undefined && this.$route.params.id) {
         this.get()
       }
     },
     watch: {
-      '$route.params.id' (roleId) {
-        if (!roleId) {
-          this.role = {}
+      '$route.params.id' (tagId) {
+        if (!tagId) {
+          this.tag = {}
         }
       }
     },
     computed: {
       fields () {
         let fields = [
-          RoleFieldsEn,
-          RoleFieldsLv,
+          TagFieldsEn,
+          TagFieldsLv,
         ]
 
         return this.$root.$i18n.locale === 'lv'
@@ -110,30 +120,30 @@
         this.disabled = true
 
         axios
-          .get(`admin/role/${this.$route.params.id}`)
+          .get(`admin/tag/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
-            this.role = response.data.data
+            this.tag = response.data.data
           })
           .catch(this.handleError)
       },
       create () {
         this.disabled = true
 
-        let method = this.role.id ? 'put' : 'post'
-        let route = this.role.id
-          ? `admin/role/${this.role.id}`
-          : 'admin/role'
+        let method = this.tag.id ? 'put' : 'post'
+        let route = this.tag.id
+          ? `admin/tag/${this.tag.id}`
+          : 'admin/tag'
 
-        axios[method](route, this.role)
+        axios[method](route, this.tag)
           .then(response => {
-            this.$root.notify('success', this.$t(`${method}.success`, { title: this.$i18n.locale === 'en' ? this.role.name_en : this.role.name_lv }))
+            this.$root.notify('success', this.$t(`${method}.success`, { title: this.$i18n.locale === 'en' ? this.tag.name_en : this.tag.name_lv }))
 
             this.disabled = false
-            this.role = response.data.data
+            this.tag = response.data.data
 
             this.$router.push({
-              name: 'admin-role-edit',
+              name: 'admin-tag-edit',
               params: {
                 id: response.data.data.id
               }
@@ -145,9 +155,9 @@
         this.disabled = this.deleting = true
 
         axios
-          .delete(`admin/role/${this.role.id}`)
+          .delete(`admin/tag/${this.tag.id}`)
           .then(() => {
-            this.$router.push({ name: 'admin-roles' })
+            this.$router.push({ name: 'admin-tags' })
             this.$root.notify('success', this.$t('destroy.success'))
           })
           .catch(this.handleError)
@@ -162,26 +172,26 @@
 <i18n>
   {
     "en": {
-      "title.edit": "Edit role",
-      "title.new": "Create new role",
+      "title.edit": "Edit tag",
+      "title.new": "Create new tag",
       "create": "Create",
       "destroy": "Delete",
       "destroy.confirm": "Delete \"{title}\"?",
-      "destroy.success": "Role successfully deleted",
+      "destroy.success": "Tag successfully deleted",
       "update": "Update",
-      "put.success": "Role \"{title}\" successfully updated",
-      "post.success": "Role \"{title}\" successfully created"
+      "put.success": "Tag \"{title}\" successfully updated",
+      "post.success": "Tag \"{title}\" successfully created"
     },
     "lv": {
-      "title.edit": "Labot lomu",
-      "title.new": "Izveidot jaunu lomu",
+      "title.edit": "Labot tēmturi",
+      "title.new": "Izveidot jaunu tēmturi",
       "create": "Izveidot",
       "destroy": "Dzēst",
       "destroy.confirm": "Dzēst \"{title}\"?",
-      "destroy.success": "Loma veiksmīgi izdzēsta",
+      "destroy.success": "Tēmturis veiksmīgi izdzēsta",
       "update": "Atjaunot",
-      "put.success": "Loma \"{title}\" veiksmīgi atjaunota",
-      "post.success": "Loma \"{title}\" veiksmīgi izveidota"
+      "put.success": "Tēmturis \"{title}\" veiksmīgi atjaunota",
+      "post.success": "Tēmturis \"{title}\" veiksmīgi izveidota"
     }
   }
 </i18n>

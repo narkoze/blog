@@ -83,5 +83,6 @@ class PostController extends Controller
         }
 
         $post->save();
+        $post->tags()->sync(array_pluck($request->tags, 'id'));
     }
 }

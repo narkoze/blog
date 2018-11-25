@@ -13,12 +13,11 @@
 
           <div class="columns">
             <div class="column is-3">
-              <multiselect-poststate
-                :label="$t('state')"
+              <multiselect-state
                 :selected="params.state"
                 @selected="state => params.state = state"
               >
-              </multiselect-poststate>
+              </multiselect-state>
 
               <div class="buttons">
                 <a
@@ -76,6 +75,10 @@
                       >
                         {{ $t('posttitle') }}
                       </sortdirection>
+
+                      <th>
+                        {{ $t('tags') }}
+                      </th>
 
                       <sortdirection
                         column="authors.name"
@@ -152,6 +155,18 @@
                       </td>
 
                       <td>
+                        <div class="tags">
+                          <span
+                            v-for="tag in post.tags"
+                            :key="tag.id"
+                            class="tag is-dark"
+                          >
+                            {{ $i18n.locale === 'en' ? tag.name_en : tag.name_lv }}
+                          </span>
+                        </div>
+                      </td>
+
+                      <td>
                         <a>
                           {{ post.author.name }}
                         </a>
@@ -203,7 +218,7 @@
 
 <script>
   import SortdirectionHandler from '../../../../mixins/sortdirection-handler'
-  import MultiselectPoststate from '../../../multiselects/multiselect-poststate.vue'
+  import MultiselectState from '../../../multiselects/multiselect-state.vue'
   import ErrorHandler from '../../../../mixins/error-handler'
   import QueryHandler from '../../../../mixins/query-handler'
   import PageHandler from '../../../../mixins/page-handler'
@@ -215,7 +230,7 @@
 
   export default {
     components: {
-      MultiselectPoststate,
+      MultiselectState,
       Sortdirection,
       Pagination,
       Spinner
@@ -312,9 +327,9 @@
       "published": "Published",
       "saved": "Modified",
       "search": "Search",
-      "state": "Status",
       "title": "Posts",
-      "view": "View"
+      "view": "View",
+      "tags": "Tags"
     },
     "lv": {
       "author": "Autors",
@@ -328,9 +343,9 @@
       "published": "Publicēts",
       "saved": "Labots",
       "search": "Meklēt",
-      "state": "Status",
       "title": "Ziņas",
-      "view": "Skatīt"
+      "view": "Skatīt",
+      "tags": "Tēmturi"
     }
   }
 </i18n>
