@@ -90,6 +90,7 @@
               <span class="is-nowrap">
                 <i class="fas fa-comments"></i>
                 <a
+                  v-if="post.comments.length"
                   @click="to({
                     name: 'post',
                     params: {
@@ -101,6 +102,9 @@
                 >
                   {{ $t('comments', { count: post.comments.length }) }}
                 </a>
+                <span v-else>
+                  {{ $t('comments', { count: 0 }) }}
+                </span>
               </span>
 
               &nbsp;&nbsp;

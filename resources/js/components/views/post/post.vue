@@ -100,9 +100,8 @@
               <h1 class="subtitle is-4 has-text-grey-dark">
                 {{ $t('comments') }}
 
-                <span v-if="comments.length">({{ comments.length }})</span>
-                <span v-if="commentsLoading && !comments.length">
-                  (<spinner v-if="commentsLoading"></spinner>)
+                <span v-if="commentsLoading">
+                  (<spinner></spinner>)
                 </span>
               </h1>
             </div>
@@ -111,14 +110,19 @@
           <div class="card-content">
             <div class="content">
               <article
+                v-if="comments.length"
                 v-for="comment in comments"
                 :key="comment.id"
                 class="media has-hoverable-actions"
               >
                 <figure class="media-left">
-                  <p class="image is-64x64">
+                  <div class="media-image-container">
                     <img
                       v-if="comment.author.image"
+                      @click="() => {
+                        selectedUser = comment.author
+                        showPhotoswipe = true
+                      }"
                       :src="comment.author.image && `${comment.author.images.small}`"
                     >
                     <i
@@ -126,7 +130,7 @@
                       class="fas fa-user has-text-grey-lighter fa-4x has-text-centered"
                     >
                     </i>
-                  </p>
+                  </div>
                 </figure>
                 <div class="media-content">
                   <div class="content">
@@ -134,7 +138,7 @@
                       <strong>{{ comment.author.name }}</strong>
 
                       <span
-                        v-if="$root.user && $root.user.id === comment.author.id "
+                        v-if="$root.user && ($root.user.id === comment.author.id || [1,3].includes($root.user.role.id))"
                         class="is-pulled-right hoverable-actions"
                       >
                         <a
@@ -163,11 +167,18 @@
                 </div>
               </article>
 
-              <article class="media">
+              <article
+                v-if="$root.user"
+                class="media"
+              >
                 <figure class="media-left">
-                  <p class="image is-64x64">
+                  <div class="media-image-container">
                     <img
                       v-if="$root.user && $root.user.image"
+                      @click="() => {
+                        selectedUser = $root.user
+                        showPhotoswipe = true
+                      }"
                       :src="$root.user.image && `${$root.user.images.small}`"
                     >
                     <i
@@ -175,7 +186,7 @@
                       class="fas fa-user has-text-grey-lighter fa-4x has-text-centered"
                     >
                     </i>
-                  </p>
+                  </div>
                 </figure>
 
                 <div class="media-content">
@@ -229,18 +240,32 @@
     >
       {{ $t('destroyComment.confirm') }}
     </modal-confirm>
+
+    <photoswipe
+      v-if="showPhotoswipe"
+      :items="[{
+        title: selectedUser.name,
+        src: selectedUser.images.original,
+        w: selectedUser.image.width,
+        h: selectedUser.image.height
+      }]"
+      @close="showPhotoswipe = false"
+    >
+    </photoswipe>
   </div>
 </template>
 
 <script>
   import ModalConfirm from '../../modals/modal-confirm.vue'
   import ErrorHandler from '../../../mixins/error-handler'
+  import Photoswipe from '../../photoswipe.vue'
   import Spinner from '../../spinner.vue'
   import axios from 'axios'
 
   export default {
     components: {
       ModalConfirm,
+      Photoswipe,
       Spinner
     },
     mixins: [
@@ -255,7 +280,9 @@
         commentsLoading: false,
         creatingComment: false,
         destroyingComment: false,
-        showModalConfirm: false
+        showModalConfirm: false,
+        showPhotoswipe: false,
+        selectedUser: {}
       }
     },
     created () {
@@ -267,6 +294,9 @@
     mounted () {
       if (this.$route.params.scrollToPagebreak) {
         this.scrollToPagebreak()
+      }
+      if (this.$route.params.scrollToComments) {
+        this.scrollToComments()
       }
     },
     methods: {
@@ -289,10 +319,6 @@
           .then(response => {
             this.commentsLoading = false
             this.comments = response.data.data
-
-            if (this.$route.params.scrollToComments) {
-              this.scrollToComments()
-            }
           })
           .catch(error => {
             this.commentsLoading = false

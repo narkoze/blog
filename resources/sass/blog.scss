@@ -60,6 +60,29 @@ html {
 // @import "components/dropdown";
 // @import "components/level";
 @import "components/media";
+.media-image-container {
+  display: table;
+  overflow: hidden;
+  position: relative;
+  width: 64px;
+  height: 64px;
+
+  img {
+    display: block !important;
+    cursor: zoom-in;
+    object-fit: cover;
+
+    transition: transform .5s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  i {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
 // @import "components/menu";
 .menu-admin {
   background: $grey-dark;

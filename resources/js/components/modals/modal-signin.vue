@@ -27,7 +27,7 @@
                 </span>
               </p>
             </label>
-            <p v-if="errors.error" class="help is-danger">{{ $tc(errors.error) ? $t(errors.error) : errors.message }}</p>
+            <p v-if="Object.keys(errors).length" class="help is-danger">{{ $t('invalid_credentials') }}</p>
             <p v-if="errors.email" class="help is-danger">{{ errors.email.join() }}</p>
           </div>
 
