@@ -3,6 +3,7 @@ import Posts from './components/views/post/posts.vue'
 import Post from './components/views/post/post.vue'
 import Profile from './components/views/profile.vue'
 import Admin from './components/views/admin/admin.vue'
+import AdminDashboard from './components/views/admin/dashboard.vue'
 import AdminPost from './components/views/admin/post/post.vue'
 import AdminPosts from './components/views/admin/post/posts.vue'
 import AdminTag from './components/views/admin/tag/tag.vue'
@@ -38,9 +39,14 @@ export default [
     path: 'admin',
     component: Admin,
     redirect: {
-      name: 'admin-posts'
+      name: 'admin-dashboard'
     },
     children: [
+      {
+        name: 'admin-dashboard',
+        path: 'dashboard',
+        component: AdminDashboard
+      },
       {
         name: 'admin-post',
         path: 'post',

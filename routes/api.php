@@ -42,6 +42,12 @@ Route::group([
         'prefix' => 'admin',
         'middleware' => 'admin'
     ], function () {
+        Route::get('dashboard/counts', 'Admin\DashboardController@counts');
+        Route::get('dashboard/users', 'Admin\DashboardController@users');
+        Route::get('dashboard/posts', 'Admin\DashboardController@posts');
+        Route::get('dashboard/comments', 'Admin\DashboardController@comments');
+        Route::get('dashboard/tags', 'Admin\DashboardController@tags');
+
         Route::apiResources([
             'post' => 'Admin\PostController',
             'role' => 'Admin\RoleController',

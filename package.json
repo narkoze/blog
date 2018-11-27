@@ -15,6 +15,7 @@
         "axios": "^0.18",
         "bulma": "^0.7.2",
         "bulma-checkradio": "^2.1.0",
+        "chart.js": "^2.7.3",
         "cross-env": "^5.1",
         "flag-icon-css": "^3.2.1",
         "imagemin": "^6.0.0",

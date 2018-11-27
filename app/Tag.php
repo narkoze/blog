@@ -18,4 +18,20 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function publications()
+    {
+        return $this->belongsToMany(Post::class)->whereNotNull('published_at');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function drafts()
+    {
+        return $this->belongsToMany(Post::class)->whereNull('published_at');
+    }
 }

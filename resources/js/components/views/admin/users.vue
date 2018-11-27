@@ -216,7 +216,6 @@
             this.disabled = this.sorting = false
             this.users = response.data.data
             this.users.map(user => {
-              // user.role = user.role || { id: null }
               user.role_id = user.role.id
               this.$set(user, 'role_changing', false)
             })
@@ -264,12 +263,6 @@
             let responseUser = response.data.data
             responseUser.role_id = responseUser.role.id
             Object.assign(user, responseUser)
-            //   if (responseUser.role) {
-            // } else {
-            //   responseUser.role_id = null
-            //   responseUser.role = { id: null }
-            // }
-
 
             this.$root.notify('success', this.$t('updateUser.success'))
           })

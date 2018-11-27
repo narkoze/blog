@@ -4,6 +4,16 @@
     appear
   >
     <div class="menu-admin is-nowrap">
+      <ul>
+        <router-link
+          :to="{ name: 'admin-dashboard' }"
+          :class="{ 'is-active': $route.name === 'admin-dashboard' }"
+          tag="li"
+        >
+          {{ $t('dashboard') }}
+        </router-link>
+      </ul>
+
       <p class="menu-admin-label">
         {{ $t('posts') }}
       </p>
@@ -72,7 +82,8 @@
       "users": "Users",
       "allusers": "Users",
       "allroles": "Roles",
-      "alltags": "Tags"
+      "alltags": "Tags",
+      "dashboard": "Dashboard"
     },
     "lv": {
       "posts": "Ziņas",
@@ -81,7 +92,8 @@
       "users": "Lietotāji",
       "allusers": "Lietotāji",
       "allroles": "Lomas",
-      "alltags": "Tēmturi"
+      "alltags": "Tēmturi",
+      "dashboard": "Informācija"
     }
   }
 </i18n>

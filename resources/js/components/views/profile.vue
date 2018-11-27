@@ -10,7 +10,12 @@
             <div class="content">
               <h1 class="title">
                 {{ $t('title') }}
-                <spinner v-if="disabled"></spinner>
+                <span v-if="disabled">
+                  (<spinner></spinner>)
+                </span>
+                <span v-else>
+                  ({{ $i18n.locale === 'en' ? user.role.name_en : user.role.name_lv }})
+                </span>
               </h1>
 
               <div

@@ -127,12 +127,16 @@
         content_lv_initialized: false
       }
     },
-    created () {
-      this.$events.$on('locale-changed', () => {
-        this.initTinymce()
-      })
-    },
     mounted () {
+      this.$events.$on('locale-changed', () => {
+        tinymce.remove()
+        this.$nextTick(() => {
+          ['content_en', 'content_lv'].forEach(editorId => {
+            tinymce.EditorManager.execCommand('mceAddEditor', true, editorId)
+          })
+        })
+      })
+
       if (this.post.id === undefined && this.$route.params.id) {
         this.get()
       } else {
@@ -142,8 +146,11 @@
     watch: {
       '$route.params.id' (postId) {
         if (!postId) {
-          this.post = {}
-          this.initTinymce()
+          this.post = {
+            tags: []
+          }
+          tinymce.remove()
+          this.$nextTick(this.initTinymce)
         }
       }
     },
@@ -161,50 +168,47 @@
     },
     methods: {
       initTinymce () {
-        tinymce.remove()
-        this.$nextTick(() =>
-          tinymce.init({
-            selector: '#content_en, #content_lv',
-            language: this.$root.$i18n.locale,
-            language_url: tinymceLocale,
-            skin_url: '/css/tinymce/skins/lightgray',
-            plugins: 'lists textcolor colorpicker pagebreak link table hr paste',
-            toolbar: 'styleselect | bold italic underline strikethrough superscript subscript forecolor removeformat | bullist numlist | outdent indent | alignleft aligncenter alignright alignjustify | link blockquote table hr pagebreak | undo redo',
-            style_formats: [
-              { title: this.$t('paragraph'), block: 'p' },
-              { title: this.$t('title1'), block: 'h1', classes: 'title is-1' },
-              { title: this.$t('title2'), block: 'h2', classes: 'title is-2' },
-              { title: this.$t('title3'), block: 'h3', classes: 'title is-3' },
-              { title: this.$t('title4'), block: 'h4', classes: 'title is-4' },
-              { title: this.$t('title5'), block: 'h5', classes: 'title is-5' },
-              { title: this.$t('title6'), block: 'h6', classes: 'title is-6' },
-            ],
-            table_default_attributes: {
-              class: 'table is-striped is-narrow is-hoverable is-fullwidth'
-            },
-            pagebreak_split_block: true,
-            pagebreak_separator: '<!-- pagebreak -->',
-            content_css: '/css/tinymce.css',
-            height: '50vh',
-            menubar: false,
-            branding: false,
-            paste_as_text: true,
-            setup: editor => {
-              editor.on('init', () => {
-                switch (editor.id) {
-                  case 'content_en': this.content_en_initialized = true; break
-                  case 'content_lv': this.content_lv_initialized = true; break
-                }
-              })
-            },
-            init_instance_callback: editor => {
-              editor.on('KeyUp', () => { this.getContent(editor) })
-              editor.on('Change', () => { this.getContent(editor) })
-              editor.on('focus', () => { document.querySelector(`#${editor.editorContainer.getAttribute('id')}`).classList.add('is-active') })
-              editor.on('blur', () => { document.querySelector(`#${editor.editorContainer.getAttribute('id')}`).classList.remove('is-active') })
-            }
-          })
-        )
+        tinymce.init({
+          selector: '#content_en, #content_lv',
+          language: this.$root.$i18n.locale,
+          language_url: tinymceLocale,
+          skin_url: '/css/tinymce/skins/lightgray',
+          plugins: 'lists textcolor colorpicker pagebreak link table hr paste',
+          toolbar: 'styleselect | bold italic underline strikethrough superscript subscript forecolor removeformat | bullist numlist | outdent indent | alignleft aligncenter alignright alignjustify | link blockquote table hr pagebreak | undo redo',
+          style_formats: [
+            { title: this.$t('paragraph'), block: 'p' },
+            { title: this.$t('title1'), block: 'h1', classes: 'title is-1' },
+            { title: this.$t('title2'), block: 'h2', classes: 'title is-2' },
+            { title: this.$t('title3'), block: 'h3', classes: 'title is-3' },
+            { title: this.$t('title4'), block: 'h4', classes: 'title is-4' },
+            { title: this.$t('title5'), block: 'h5', classes: 'title is-5' },
+            { title: this.$t('title6'), block: 'h6', classes: 'title is-6' },
+          ],
+          table_default_attributes: {
+            class: 'table is-striped is-narrow is-hoverable is-fullwidth'
+          },
+          pagebreak_split_block: true,
+          pagebreak_separator: '<!-- pagebreak -->',
+          content_css: '/css/tinymce.css',
+          height: '50vh',
+          menubar: false,
+          branding: false,
+          paste_as_text: true,
+          setup: editor => {
+            editor.on('init', () => {
+              switch (editor.id) {
+                case 'content_en': this.content_en_initialized = true; break
+                case 'content_lv': this.content_lv_initialized = true; break
+              }
+            })
+          },
+          init_instance_callback: editor => {
+            editor.on('KeyUp', () => { this.getContent(editor) })
+            editor.on('Change', () => { this.getContent(editor) })
+            editor.on('focus', () => { document.querySelector(`#${editor.editorContainer.getAttribute('id')}`).classList.add('is-active') })
+            editor.on('blur', () => { document.querySelector(`#${editor.editorContainer.getAttribute('id')}`).classList.remove('is-active') })
+          }
+        })
       },
       getContent (editor) {
         switch (editor.id) {
@@ -225,7 +229,7 @@
           .then(response => {
             this.disabled = false
             this.post = response.data.data
-            this.initTinymce()
+            this.$nextTick(this.initTinymce)
           })
           .catch(this.handleError)
       },
