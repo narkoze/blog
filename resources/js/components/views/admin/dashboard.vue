@@ -350,19 +350,21 @@
 
         if (this.chart.ctx) this.chart.ctx.destroy()
 
-        this.chart.ctx = new Chart(this.$refs.chart.getContext('2d'), {
-          type: type,
-          options: {
-            title: {
-              display: true,
-              text: [
-                this.$t(name),
-                this.$t(`${name}.description`)
-              ]
-            },
-            responsive: true,
-            maintainAspectRatio: false
-          }
+        this.$nextTick(() => {
+          this.chart.ctx = new Chart(this.$refs.chart.getContext('2d'), {
+            type: type,
+            options: {
+              title: {
+                display: true,
+                text: [
+                  this.$t(name),
+                  this.$t(`${name}.description`),
+                ]
+              },
+              responsive: true,
+              maintainAspectRatio: false
+            }
+          })
         })
       },
       scrollToChart () {

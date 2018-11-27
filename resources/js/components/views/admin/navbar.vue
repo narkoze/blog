@@ -15,6 +15,27 @@
       </ul>
 
       <p class="menu-admin-label">
+        {{ $t('users') }}
+      </p>
+      <ul>
+        <router-link
+          :to="{ name: 'admin-users' }"
+          :class="{ 'is-active': $route.name === 'admin-users' }"
+          tag="li"
+        >
+          {{ $t('allusers') }}
+        </router-link>
+
+        <router-link
+          :to="{ name: 'admin-roles' }"
+          :class="{ 'is-active': $route.name === 'admin-roles' }"
+          tag="li"
+        >
+          {{ $t('allroles') }}
+        </router-link>
+      </ul>
+
+      <p class="menu-admin-label">
         {{ $t('posts') }}
       </p>
       <ul>
@@ -46,27 +67,6 @@
           tag="li"
         >
           {{ $t('alltags') }}
-        </router-link>
-      </ul>
-
-      <p class="menu-admin-label">
-        {{ $t('users') }}
-      </p>
-      <ul>
-        <router-link
-          :to="{ name: 'admin-users' }"
-          :class="{ 'is-active': $route.name === 'admin-users' }"
-          tag="li"
-        >
-          {{ $t('allusers') }}
-        </router-link>
-
-        <router-link
-          :to="{ name: 'admin-roles' }"
-          :class="{ 'is-active': $route.name === 'admin-roles' }"
-          tag="li"
-        >
-          {{ $t('allroles') }}
         </router-link>
       </ul>
     </div>
