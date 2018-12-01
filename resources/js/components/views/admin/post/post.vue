@@ -305,7 +305,7 @@
             <img
               class="image"
               width="${image.width > 365 ? 365 : image.width}"
-              src="/${image.images.medium}"
+              src="${image.images.medium}"
               data-title="${image.name}"
               data-original-src="${image.images.original}"
               data-width="${image.width}"
