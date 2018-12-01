@@ -301,8 +301,6 @@
       },
       insertImages (images) {
         images.forEach(image => {
-          console.log(image.images.medium)
-
           tinymce.activeEditor.insertContent(`
             <img
               class="image"
@@ -314,8 +312,6 @@
               data-height="${image.height}"
             >
           `)
-
-          console.log(`src="${image.images.medium}"`)
         })
       }
     },
