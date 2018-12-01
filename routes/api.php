@@ -53,6 +53,7 @@ Route::group([
             'role' => 'Admin\RoleController',
             'user' => 'Admin\UserController',
             'tag' => 'Admin\TagController',
+            'image' => 'Admin\ImageController',
         ]);
     });
 });

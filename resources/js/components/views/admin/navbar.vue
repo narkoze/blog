@@ -28,7 +28,7 @@
 
         <router-link
           :to="{ name: 'admin-roles' }"
-          :class="{ 'is-active': $route.name === 'admin-roles' }"
+          :class="{ 'is-active': ['admin-roles', 'admin-role', 'admin-role-edit'].includes($route.name) }"
           tag="li"
         >
           {{ $t('allroles') }}
@@ -41,7 +41,7 @@
       <ul>
         <router-link
           :to="{ name: 'admin-posts' }"
-          :class="{ 'is-active': $route.name === 'admin-posts' }"
+          :class="{ 'is-active': ['admin-posts', 'admin-post-edit'].includes($route.name) }"
           tag="li"
         >
           {{ $t('allposts') }}
@@ -63,10 +63,18 @@
 
         <router-link
           :to="{ name: 'admin-tags' }"
-          :class="{ 'is-active': $route.name === 'admin-tags' }"
+          :class="{ 'is-active': ['admin-tags', 'admin-tag', 'admin-tag-edit'].includes($route.name) }"
           tag="li"
         >
           {{ $t('alltags') }}
+        </router-link>
+
+        <router-link
+          :to="{ name: 'admin-images' }"
+          :class="{ 'is-active': ['admin-images', 'admin-image-edit', 'admin-image-upload'].includes($route.name) }"
+          tag="li"
+        >
+          {{ $t('allimages') }}
         </router-link>
       </ul>
     </div>
@@ -83,6 +91,7 @@
       "allusers": "Users",
       "allroles": "Roles",
       "alltags": "Tags",
+      "allimages": "Images",
       "dashboard": "Dashboard"
     },
     "lv": {
@@ -93,6 +102,7 @@
       "allusers": "Lietotāji",
       "allroles": "Lomas",
       "alltags": "Tēmturi",
+      "allimages": "Attēli",
       "dashboard": "Informācija"
     }
   }

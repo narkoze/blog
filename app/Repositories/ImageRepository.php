@@ -2,34 +2,37 @@
 
 namespace Blog\Repositories;
 
-use Blog\Role;
+use Blog\Image;
 
-class RoleRepository
+class ImageRepository
 {
     public function params(): array
     {
         return [
             'page' => null,
-            'sortBy' => 'created_at',
+            'sortBy' => 'updated_at',
             'sortDirection' => 'desc',
             'search' => null,
         ];
     }
 
-    public function roles($locale, $params = [])
+    public function images($params = [])
     {
         $params = $params + $this->params();
 
-        $query = Role::select([
-            'roles.*',
-        ])->withCount('users');
+        $query = Image::select([
+            'images.*',
+        ])->with([
+            'author',
+        ]);
 
         $search = trim($params['search']);
         if ($search) {
-            $query->where(function ($query) use ($search, $locale) {
-                $query->whereRaw("name_$locale ILIKE ?", "%$search%")
-                    ->orWhereRaw("description_$locale ILIKE ?", "%$search%");
-            });
+            $query->whereRaw("name ILIKE ?", "%$search%");
+        }
+
+        if ($params['sortBy'] == 'authors.name') {
+            $query->leftJoin('users as authors', 'authors.id', '=', 'images.author_id');
         }
 
         $query->orderBy($params['sortBy'], $params['sortDirection']);

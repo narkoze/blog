@@ -6,6 +6,9 @@ import Admin from './components/views/admin/admin.vue'
 import AdminDashboard from './components/views/admin/dashboard.vue'
 import AdminPost from './components/views/admin/post/post.vue'
 import AdminPosts from './components/views/admin/post/posts.vue'
+import AdminImage from './components/views/admin/image/image.vue'
+import AdminImages from './components/views/admin/image/images.vue'
+import AdminImageUpload from './components/views/admin/image/image-upload.vue'
 import AdminTag from './components/views/admin/tag/tag.vue'
 import AdminTags from './components/views/admin/tag/tags.vue'
 import AdminUsers from './components/views/admin/users.vue'
@@ -62,6 +65,22 @@ export default [
         name: 'admin-posts',
         path: 'posts',
         component: AdminPosts
+      },
+      {
+        name: 'admin-images',
+        path: 'images',
+        component: AdminImages
+      },
+      {
+        name: 'admin-image-edit',
+        path: 'image/:id',
+        component: AdminImage,
+        props: true
+      },
+      {
+        name: 'admin-image-upload',
+        path: 'images/upload',
+        component: AdminImageUpload
       },
       {
         name: 'admin-tag',

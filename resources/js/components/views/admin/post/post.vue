@@ -62,7 +62,7 @@
             <a
               v-if="post.id"
               @click="showModalConfirm = true"
-              :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
+              :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': destroying }]"
               :disabled="disabled"
             >
               {{ $t('destroy') }}
@@ -71,6 +71,16 @@
         </div>
       </div>
     </transition>
+
+    <modal-image
+      v-if="showImages"
+      @close="showImages = false"
+      @selected="images => {
+        showImages = false
+        insertImages(images)
+      }"
+    >
+    </modal-image>
 
     <modal-confirm
       v-if="showModalConfirm"
@@ -87,8 +97,9 @@
 
 <script>
   import MultiselectTags from '../../../multiselects/multiselect-tags.vue'
-  import ErrorHandler from '../../../../mixins/error-handler'
   import ModalConfirm from '../../../modals/modal-confirm.vue'
+  import ErrorHandler from '../../../../mixins/error-handler'
+  import ModalImage from '../../../modals/modal-image.vue'
   import PostFieldsEn from './post-fields-en.vue'
   import PostFieldsLv from './post-fields-lv.vue'
   import Spinner from '../../../spinner.vue'
@@ -109,6 +120,7 @@
     components: {
       MultiselectTags,
       ModalConfirm,
+      ModalImage,
       Spinner
     },
     mixins: [
@@ -120,21 +132,18 @@
           tags: []
         },
         publishing: false,
-        deleting: false,
+        destroying: false,
         saving: false,
         showModalConfirm: false,
         content_en_initialized: false,
-        content_lv_initialized: false
+        content_lv_initialized: false,
+        showImages: false
       }
     },
     mounted () {
       this.$events.$on('locale-changed', () => {
         tinymce.remove()
-        this.$nextTick(() => {
-          ['content_en', 'content_lv'].forEach(editorId => {
-            tinymce.EditorManager.execCommand('mceAddEditor', true, editorId)
-          })
-        })
+        this.$nextTick(this.initTinymce)
       })
 
       if (this.post.id === undefined && this.$route.params.id) {
@@ -174,7 +183,7 @@
           language_url: tinymceLocale,
           skin_url: '/css/tinymce/skins/lightgray',
           plugins: 'lists textcolor colorpicker pagebreak link table hr paste',
-          toolbar: 'styleselect | bold italic underline strikethrough superscript subscript forecolor removeformat | bullist numlist | outdent indent | alignleft aligncenter alignright alignjustify | link blockquote table hr pagebreak | undo redo',
+          toolbar: 'styleselect | bold italic underline strikethrough superscript subscript forecolor removeformat | bullist numlist | outdent indent | alignleft aligncenter alignright alignjustify | image link blockquote table hr pagebreak | undo redo',
           style_formats: [
             { title: this.$t('paragraph'), block: 'p' },
             { title: this.$t('title1'), block: 'h1', classes: 'title is-1' },
@@ -199,6 +208,14 @@
               switch (editor.id) {
                 case 'content_en': this.content_en_initialized = true; break
                 case 'content_lv': this.content_lv_initialized = true; break
+              }
+            })
+            editor.addButton('image', {
+              title: this.$t('addimages'),
+              icon: 'image',
+              onclick: () => {
+                this.showImages = true
+                editor.focus()
               }
             })
           },
@@ -272,7 +289,7 @@
           })
       },
       destroy () {
-        this.disabled = this.deleting = true
+        this.disabled = this.destroying = true
 
         axios
           .delete(`admin/post/${this.post.id}`)
@@ -281,6 +298,21 @@
             this.$root.notify('success', this.$t('destroy.success'))
           })
           .catch(this.handleError)
+      },
+      insertImages (images) {
+        images.forEach(image => {
+          tinymce.activeEditor.insertContent(`
+            <img
+              class="image"
+              width="${image.width > 365 ? 365 : image.width}"
+              src="${image.images.medium}"
+              data-title="${image.name}"
+              data-original-src="${image.images.original}"
+              data-width="${image.width}"
+              data-height="${image.height}"
+            >
+          `)
+        })
       }
     },
     beforeDestroy () {
@@ -343,7 +375,8 @@
       "title6": "Heading 6",
       "update.success": "Post \"{title}\" successfully updated",
       "update": "Update",
-      "view": "View"
+      "view": "View",
+      "addimages": "Add images"
     },
     "lv": {
       "destroy.confirm": "Dzēst \"{title}\"?",
@@ -365,7 +398,8 @@
       "title6": "6. līmeņa virsraksts",
       "update.success": "Ziņa \"{title}\" veiksmīgi atjaunota",
       "update": "Atjaunot",
-      "view": "Skatīt"
+      "view": "Skatīt",
+      "addimages": "Pievienot attēlus"
     }
   }
 </i18n>

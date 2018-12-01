@@ -13,14 +13,18 @@
 
           <div class="columns">
             <div class="column">
-              <div class="card">
+              <div class="card dashboard">
                 <header class="card-header">
                   <p class="card-header-title">
                     {{ $t('users') }}
                   </p>
                 </header>
                 <div class="card-content has-text-centered">
-                  <spinner v-if="disabled"></spinner>
+                  <spinner
+                    v-if="gettingUserChart"
+                    class="is-large"
+                  >
+                  </spinner>
                   <h1
                     v-else
                     class="title is-1 has-text-weight-bold"
@@ -33,14 +37,18 @@
               </div>
             </div>
             <div class="column">
-              <div class="card">
+              <div class="card dashboard">
                 <header class="card-header">
                   <p class="card-header-title">
                     {{ $t('posts') }}
                   </p>
                 </header>
                 <div class="card-content has-text-centered">
-                  <spinner v-if="disabled"></spinner>
+                  <spinner
+                    v-if="gettingPostChart"
+                    class="is-large"
+                  >
+                  </spinner>
                   <h1
                     v-else
                     class="title is-1 has-text-weight-bold"
@@ -53,14 +61,18 @@
               </div>
             </div>
             <div class="column">
-              <div class="card">
+              <div class="card dashboard">
                 <header class="card-header">
                   <p class="card-header-title">
                     {{ $t('comments') }}
                   </p>
                 </header>
                 <div class="card-content has-text-centered">
-                  <spinner v-if="disabled"></spinner>
+                  <spinner
+                    v-if="gettingCommentChart"
+                    class="is-large"
+                  >
+                  </spinner>
                   <h1
                     v-else
                     class="title is-1 has-text-weight-bold"
@@ -73,14 +85,18 @@
               </div>
             </div>
             <div class="column">
-              <div class="card">
+              <div class="card dashboard">
                 <header class="card-header">
                   <p class="card-header-title">
                     {{ $t('tags') }}
                   </p>
                 </header>
                 <div class="card-content has-text-centered">
-                  <spinner v-if="disabled"></spinner>
+                  <spinner
+                    v-if="gettingTagChart"
+                    class="is-large"
+                  >
+                  </spinner>
                   <h1
                     v-else
                     class="title is-1 has-text-weight-bold"
@@ -139,7 +155,11 @@
         name: null,
         ctx: null,
         loading: false
-      }
+      },
+      gettingUserChart: false,
+      gettingPostChart: false,
+      gettingCommentChart: false,
+      gettingTagChart: false
     }),
     created () {
       this.getCounts()
@@ -169,14 +189,16 @@
           .catch(this.handleError)
       },
       getUserChart (scroll = false) {
-        scroll && this.scrollToChart()
-
+        this.disabled = this.gettingUserChart = true
         this.createChart('users', 'bar')
+
+        scroll && this.scrollToChart()
 
         axios
           .get('admin/dashboard/users')
           .then(response => {
-            this.chart.loading = false
+            if (this.$route.name !== 'admin-dashboard') return
+            this.disabled = this.chart.loading = this.gettingUserChart = false
 
             let currentMonth = moment().month() + 1
             let currentYear = moment().year()
@@ -204,17 +226,22 @@
 
             this.chart.ctx.update()
           })
-          .catch(this.handleError)
+          .catch(error => {
+            this.chart.loading = this.gettingUserChart = false
+            this.handleError(error)
+          })
       },
       getPostChart (scroll = false) {
-        scroll && this.scrollToChart()
-
+        this.disabled = this.gettingPostChart = true
         this.createChart('posts', 'line')
+
+        scroll && this.scrollToChart()
 
         axios
           .get('admin/dashboard/posts')
           .then(response => {
-            this.chart.loading = false
+            if (this.$route.name !== 'admin-dashboard') return
+            this.disabled = this.chart.loading = this.gettingPostChart = false
 
             let currentMonth = moment().month() + 1
             let currentYear = moment().year()
@@ -224,7 +251,6 @@
                 this.$t(month)
               ])
             })
-
             this.chart.ctx.data.datasets.push({
               label: this.$t('postlabel'),
               data: response.data.posts,
@@ -232,7 +258,6 @@
               borderColor: 'hsl(171, 100%, 41%)',
               fill: false
             })
-
             this.chart.ctx.data.datasets.push({
               label: this.$t('draftlabel'),
               data: response.data.drafts,
@@ -240,7 +265,6 @@
               borderColor: 'hsl(0, 0%, 86%)',
               fill: false
             })
-
             this.chart.ctx.options.scales = {
               yAxes: [{
                 ticks: {
@@ -249,28 +273,30 @@
                 }
               }]
             }
-
             this.chart.ctx.options.tooltips = {
               mode: 'nearest',
               intersect: false
             }
-
             this.chart.ctx.update()
           })
-          .catch(this.handleError)
+          .catch(error => {
+            this.chart.loading = this.gettingPostChart = false
+            this.handleError(error)
+          })
       },
       getCommentChart (scroll = false) {
-        scroll && this.scrollToChart()
-
+        this.disabled = this.gettingCommentChart = true
         this.createChart('comments', 'pie')
+
+        scroll && this.scrollToChart()
 
         axios
           .get('admin/dashboard/comments')
           .then(response => {
-            this.chart.loading = false
+            if (this.$route.name !== 'admin-dashboard') return
+            this.disabled = this.chart.loading = this.gettingCommentChart = false
 
             this.chart.ctx.data.labels = response.data.posts
-
             this.chart.ctx.data.datasets.push({
               data: response.data.counts,
               backgroundColor: [
@@ -286,20 +312,24 @@
                 'hsl(48, 100%, 67%)',
               ]
             })
-
             this.chart.ctx.update()
           })
-          .catch(this.handleError)
+          .catch(error => {
+            this.chart.loading = this.gettingCommentChart = false
+            this.handleError(error)
+          })
       },
       getTagChart (scroll = false) {
-        scroll && this.scrollToChart()
-
+        this.disabled = this.gettingTagChart = true
         this.createChart('tags', 'horizontalBar')
+
+        scroll && this.scrollToChart()
 
         axios
           .get('admin/dashboard/tags')
           .then(response => {
-            this.chart.loading = false
+            if (this.$route.name !== 'admin-dashboard') return
+            this.disabled = this.chart.loading = this.gettingTagChart = false
 
             this.chart.ctx.data.labels = response.data.tags
 
@@ -342,7 +372,10 @@
 
             this.chart.ctx.update()
           })
-          .catch(this.handleError)
+          .catch(error => {
+            this.chart.loading = this.gettingTagChart = false
+            this.handleError(error)
+          })
       },
       createChart (name, type) {
         this.chart.loading = true

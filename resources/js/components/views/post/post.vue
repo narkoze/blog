@@ -31,11 +31,15 @@
           <div class="card-content">
             <div class="content">
               <div class="content-post">
-                <div
-                  v-html="$i18n.locale === 'en' ? post.content_en : post.content_lv"
+                <post-content
                   ref="html"
+                  :template="getContent(post)"
+                  @previewImages="i => {
+                    imageIndex = i
+                    showPhotoswipe = true
+                  }"
                 >
-                </div>
+                </post-content>
 
                 <div class="tags has-margin-top">
                   <span
@@ -119,10 +123,6 @@
                   <div class="media-image-container">
                     <img
                       v-if="comment.author.image"
-                      @click="() => {
-                        selectedUser = comment.author
-                        showPhotoswipe = true
-                      }"
                       :src="comment.author.image && `${comment.author.images.small}`"
                     >
                     <i
@@ -175,10 +175,6 @@
                   <div class="media-image-container">
                     <img
                       v-if="$root.user && $root.user.image"
-                      @click="() => {
-                        selectedUser = $root.user
-                        showPhotoswipe = true
-                      }"
                       :src="$root.user.image && `${$root.user.images.small}`"
                     >
                     <i
@@ -243,12 +239,8 @@
 
     <photoswipe
       v-if="showPhotoswipe"
-      :items="[{
-        title: selectedUser.name,
-        src: selectedUser.images.original,
-        w: selectedUser.image.width,
-        h: selectedUser.image.height
-      }]"
+      :items="images"
+      :index="imageIndex"
       @close="showPhotoswipe = false"
     >
     </photoswipe>
@@ -259,12 +251,14 @@
   import ModalConfirm from '../../modals/modal-confirm.vue'
   import ErrorHandler from '../../../mixins/error-handler'
   import Photoswipe from '../../photoswipe.vue'
+  import PostContent from './post-content.vue'
   import Spinner from '../../spinner.vue'
   import axios from 'axios'
 
   export default {
     components: {
       ModalConfirm,
+      PostContent,
       Photoswipe,
       Spinner
     },
@@ -282,7 +276,8 @@
         destroyingComment: false,
         showModalConfirm: false,
         showPhotoswipe: false,
-        selectedUser: {}
+        images: [],
+        imageIndex: 0
       }
     },
     created () {
@@ -310,6 +305,31 @@
             this.post = response.data.data
           })
           .catch(this.handleError)
+      },
+      getContent (post) {
+        let dom = new DOMParser()
+        let document = dom.parseFromString(this.$i18n.locale === 'en' ? post.content_en : post.content_lv, 'text/html')
+        let imageElements = Array.from(document.getElementsByTagName('img'))
+        let images = []
+        imageElements.forEach((img, i) => {
+          images.push({
+            title: img.getAttribute('data-title'),
+            src: img.getAttribute('data-original-src'),
+            w: img.getAttribute('data-width'),
+            h: img.getAttribute('data-height')
+          })
+
+          img.setAttribute('v-on:click', `$parent.previewImages(${i})`)
+          img.classList.add('zoom-in')
+
+          let imgContainer = document.createElement('span')
+          imgContainer.style.cssText = img.style.cssText
+          imgContainer.classList.add('image-container-post')
+          img.insertAdjacentElement('beforebegin', imgContainer)
+          imgContainer.appendChild(img)
+        })
+        this.images = images
+        return document.body.innerHTML
       },
       getComments () {
         this.commentsLoading = true
@@ -371,7 +391,7 @@
       },
       scrollToPagebreak () {
         this.$nextTick(() => {
-          for (let node of this.$refs.html.childNodes) {
+          for (let node of this.$refs.html.$el.childNodes) {
             if (node.nodeType === 8 && node.nodeValue === ' pagebreak ') {
               window.scroll({
                 top: node.previousElementSibling.getBoundingClientRect().top + window.scrollY - 52,

@@ -2,10 +2,7 @@
 
 namespace Blog\Repositories;
 
-use Illuminate\Support\Carbon;
-use Blog\PostResource;
 use Blog\Post;
-use DB;
 
 class PostRepository
 {
@@ -24,11 +21,12 @@ class PostRepository
     {
         $params = $params + $this->params();
 
-        $query = Post::
-            select('posts.*')
-            ->with([
-                'author',
-            ]);
+        $query = Post::select([
+            'posts.*',
+        ])
+        ->with([
+            'author',
+        ]);
 
         $search = trim($params['search']);
         if ($search) {

@@ -34,7 +34,7 @@
               <a
                 v-if="role.id"
                 @click="showModalConfirm = true"
-                :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
+                :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': destroying }]"
                 :disabled="disabled"
               >
                 {{ $t('destroy') }}
@@ -77,7 +77,7 @@
       return {
         role: this.$route.params.role || {},
         creating: false,
-        deleting: false,
+        destroying: false,
         showModalConfirm: false
       }
     },
@@ -143,7 +143,7 @@
           .catch(this.handleError)
       },
       destroy () {
-        this.disabled = this.deleting = true
+        this.disabled = this.destroying = true
 
         axios
           .delete(`admin/role/${this.role.id}`)

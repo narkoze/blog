@@ -20,7 +20,9 @@ class UserRepository
     {
         $params = $params + $this->params();
 
-        $query = User::select(['users.*']);
+        $query = User::select([
+            'users.*',
+        ])->withCount('posts');
 
         $search = trim($params['search']);
         if ($search) {

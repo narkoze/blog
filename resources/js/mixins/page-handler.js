@@ -1,5 +1,8 @@
 export default {
   data: () => ({
+    params: {
+      page: 1
+    },
     paginator: null,
     pageChanging: false
   }),

@@ -32,7 +32,7 @@
                   name: 'post',
                   params: {
                     id: post.id,
-                    post: post,
+                    post: post
                   }
                 })"
                 class="has-text-grey-dark"
@@ -46,7 +46,17 @@
         <div class="card-content">
           <div class="content">
             <div class="content-post">
-              <div v-html="pagebrake($i18n.locale === 'en' ? post.content_en : post.content_lv)"></div>
+              <posts-content
+                :template="getContent(post)"
+                @to="to({
+                  name: 'post',
+                  params: {
+                    id: post.id,
+                    post: post
+                  }
+                })"
+              >
+              </posts-content>
 
               <div v-if="hasPagebreak($i18n.locale === 'en' ? post.content_en : post.content_lv)">
                 <a @click="to({
@@ -150,12 +160,14 @@
   import QueryHandler from '../../../mixins/query-handler'
   import ErrorHandler from '../../../mixins/error-handler'
   import PageHandler from '../../../mixins/page-handler'
+  import PostsContent from './posts-content.vue'
   import Pagination from '../../pagination.vue'
   import Spinner from '../../spinner.vue'
   import axios from 'axios'
 
   export default {
     components: {
+      PostsContent,
       Pagination,
       Spinner
     },
@@ -203,12 +215,12 @@
             this.handleQuery(response.data.params, 'posts')
 
             if (this.$route.hash) {
-              this.$nextTick(() => {
+              setTimeout(() => {
                 window.scroll({
                   top: document.getElementById(this.$route.hash.substr(1)).getBoundingClientRect().top + window.scrollY - 62,
                   behavior: 'smooth'
                 })
-              })
+              }, 100)
             }
           })
           .catch(error => {
@@ -233,7 +245,23 @@
         })
       },
       hasPagebreak: (postContent) => postContent.includes('<!-- pagebreak -->'),
-      pagebrake: (postContent) => postContent.split('<!-- pagebreak -->')[0]
+      pagebrake: (postContent) => postContent.split('<!-- pagebreak -->')[0],
+      getContent (post) {
+        let dom = new DOMParser()
+        let document = dom.parseFromString(this.pagebrake(this.$i18n.locale === 'en' ? post.content_en : post.content_lv), 'text/html')
+        let images = Array.from(document.getElementsByTagName('img'))
+        images.forEach((image, i) => {
+          image.setAttribute('v-on:click', '$parent.to()')
+          image.classList.add('is-pointer')
+
+          let imgContainer = document.createElement('span')
+          imgContainer.classList.add('image-container-post')
+          image.insertAdjacentElement('beforebegin', imgContainer)
+          imgContainer.appendChild(image)
+        })
+
+        return document.body.innerHTML
+      }
     },
     beforeDestroy () {
       window.onpopstate = null

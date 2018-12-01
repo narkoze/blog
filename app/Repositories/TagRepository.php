@@ -21,12 +21,16 @@ class TagRepository
     {
         $params = $params + $this->params();
 
-        $query = Tag::orderBy($params['sortBy'], $params['sortDirection']);
+        $query = Tag::select([
+            'tags.*',
+        ]);
 
         $search = trim($params['search']);
         if ($search) {
             $query->whereRaw("name_$locale ILIKE ?", "%$search%");
         }
+
+        $query->orderBy($params['sortBy'], $params['sortDirection']);
 
         if ($params['limit']) {
             $query->limit($params['limit']);

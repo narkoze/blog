@@ -58,6 +58,25 @@ Vue.filter('highlight', (text, search) => {
   search = search.trim()
   return text.replace(new RegExp(search, 'ig'), search => `<searchlight class="searchlight">${search}</searchlight>`)
 })
+Vue.filter('filename', name => {
+  if (!name) return ''
+
+  return name.replace(/\.[^/.]+$/, '')
+})
+Vue.filter('filesize', size => {
+  if (!size) return null
+
+  let sizes = [
+    'bytes',
+    'KB',
+    'MB',
+  ]
+
+  let bytes = parseInt(Math.floor(Math.log(size) / Math.log(1024)))
+  if (!bytes) return `${size} ${sizes[bytes]}`
+
+  return (size / Math.pow(1024, bytes)).toFixed(1) + ` ${sizes[bytes]}`
+})
 
 export default new Vue({
   el: '#blog',

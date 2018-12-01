@@ -34,7 +34,7 @@
               <a
                 v-if="tag.id"
                 @click="showModalConfirm = true"
-                :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': deleting }]"
+                :class="['button is-danger is-inverted is-pulled-right', { 'is-loading': destroying }]"
                 :disabled="disabled"
               >
                 {{ $t('destroy') }}
@@ -65,6 +65,7 @@
   import TagFieldsLv from './tag-fields-lv.vue'
   import Spinner from '../../../spinner.vue'
   import axios from 'axios'
+
   export default {
     components: {
       ModalConfirm,
@@ -77,7 +78,7 @@
       return {
         tag: this.$route.params.tag || {},
         creating: false,
-        deleting: false,
+        destroying: false,
         showModalConfirm: false
       }
     },
@@ -153,7 +154,7 @@
           .catch(this.handleError)
       },
       destroy () {
-        this.disabled = this.deleting = true
+        this.disabled = this.destroying = true
 
         axios
           .delete(`admin/tag/${this.tag.id}`)
