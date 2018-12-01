@@ -261,6 +261,8 @@
           ? `admin/post/${this.post.id}`
           : 'admin/post'
 
+        console.log(this.post.content_lv)
+
         axios[method](route, {
           ...this.post,
           save
