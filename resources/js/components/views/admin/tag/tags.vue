@@ -171,7 +171,7 @@
     methods: {
       get (query = null, page = 1) {
         this.disabled = true
-        this.params.page = page
+        this.params.page = query ? query.page : page
 
         axios
           .get('admin/tag', { params: query || this.params })

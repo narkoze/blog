@@ -8,14 +8,14 @@
     </label>
     <multiselect
       ref="multiselect"
+      class="is-multiselect is-pointer"
+      placeholder=""
       :options="options"
       :value="selected"
       :custom-label="customLabel"
       :show-labels="false"
       :show-no-options="false"
       :searchable="false"
-      class="is-multiselect is-pointer"
-      placeholder=""
       @input="selected => $emit('selected', selected)"
     >
       <span

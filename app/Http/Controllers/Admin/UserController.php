@@ -15,8 +15,12 @@ class UserController extends Controller
     {
         $params = $request->all() + $userRepo->params();
 
-        $users = new UserResourceCollection($userRepo->users($locale, $params, $request)
-            ->paginate(10));
+        $users = $userRepo->users($locale, $params, $request);
+        if ($params['page']) {
+            $users = new UserResourceCollection($users->paginate(10));
+        } else {
+            $users = new UserResourceCollection($users->get());
+        }
 
         return $users->additional(compact('params'));
     }

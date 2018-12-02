@@ -4,41 +4,26 @@
       @click="$refs.multiselect.$el.focus()"
       class="label is-for-multiselect"
     >
-      {{ $t('label') }}
+      {{ label }}
     </label>
     <multiselect
       ref="multiselect"
       class="is-multiselect is-text"
       track-by="id"
       placeholder=""
-      :options="options"
+      :options="users"
       :value="selected"
       :custom-label="customLabel"
+      :local-search="false"
       :show-labels="false"
       :show-no-options="false"
-      :multiple="true"
-      :block-keys="['Enter']"
-      @open="search"
       @search-change="search"
-      @input="selected => $emit('selected', selected)"
+      @open="search"
+      @input="user => $emit('selected', user || {})"
     >
       <span slot="noResult">
         {{ $t('noResult') }}
       </span>
-
-      <template
-        slot="tag"
-        slot-scope="props"
-      >
-        <div class="tags has-addons is-multiselect-tags">
-          <span class="tag is-dark">{{ $i18n.locale === 'en' ? props.option.name_en : props.option.name_lv }}</span>
-          <a
-            @mousedown.prevent="removeTag(props.option)"
-            class="tag is-delete"
-          >
-          </a>
-        </div>
-      </template>
 
       <span
         slot="caret"
@@ -60,6 +45,7 @@
   </div>
 </template>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <script>
   import ErrorHandler from '../../mixins/error-handler'
   import Multiselect from 'vue-multiselect'
@@ -68,18 +54,19 @@
   import axios from 'axios'
 
   export default {
+    mixins: [
+      ErrorHandler,
+    ],
     components: {
       Multiselect,
       Spinner
     },
-    mixins: [
-      ErrorHandler,
-    ],
     props: [
       'selected',
+      'label',
     ],
     data: () => ({
-      options: []
+      users: []
     }),
     methods: {
       search: debounce(function (search) {
@@ -91,33 +78,29 @@
         if (search) params.search = search
 
         axios
-          .get('admin/tag', { params })
+          .get('admin/user', { params })
           .then(response => {
             this.disabled = false
-            this.options = response.data.data
+            this.users = response.data.data
           })
           .catch(this.handleError)
       }, 500),
-      removeTag (tag) {
-        this.selected.splice(this.selected.findIndex(selectedTag => selectedTag.id === tag.id), 1)
-      },
-      customLabel (value) {
-        return this.$i18n.locale === 'en' ? value.name_en : value.name_lv
+      customLabel (user) {
+        if (user.hasOwnProperty('name')) {
+          return `${user.name} (${user.email})`
+        }
+        return ''
       }
     }
   }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
 <i18n>
   {
     "en": {
-      "label": "Tags",
       "noResult": "Nothing was found"
     },
     "lv": {
-      "label": "Tēmturi",
       "noResult": "Nekas netika atrasts"
     }
   }

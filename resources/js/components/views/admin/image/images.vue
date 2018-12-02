@@ -24,7 +24,49 @@
           </div>
 
           <div class="columns">
-            <div class="column is-3"></div>
+            <div class="column is-3">
+              <datepicker
+                :label="$t('datefrom')"
+                :value="params.from"
+                @selected="date => params.from = date"
+              >
+              </datepicker>
+
+              <datepicker
+                :label="$t('dateto')"
+                :value="params.to"
+                @selected="date => params.to = date"
+              >
+              </datepicker>
+
+              <multiselect-users
+                :label="$t('author')"
+                :selected="selectedAuthor"
+                @selected="author => {
+                  selectedAuthor = author
+                  params.authorId = author.id
+                }"
+              >
+              </multiselect-users>
+
+              <div class="buttons">
+                <a
+                  @click="filtering || filter()"
+                  :class="['button is-info', { 'is-loading': filtering }]"
+                  :disabled="filtering"
+                >
+                  <span>{{ $t('filter') }}</span>
+                </a>
+
+                <a
+                  @click="removingFilters || removeFilters()"
+                  :class="['button is-white', { 'is-loading': removingFilters }]"
+                  :disabled="removingFilters"
+                >
+                  <span>{{ $t('filter.remove') }}</span>
+                </a>
+              </div>
+            </div>
 
             <div class="column">
               <div class="field">
@@ -68,6 +110,7 @@
                         column="authors.name"
                         :sort="params.sortBy"
                         :direction="params.sortDirection"
+                        :filtered="filteredByAuthor"
                         :disabled="sorting"
                         @changed="sort"
                       >
@@ -78,6 +121,7 @@
                         column="updated_at"
                         :sort="params.sortBy"
                         :direction="params.sortDirection"
+                        :filtered="filteredByUpdated"
                         :disabled="sorting"
                         @changed="sort"
                       >
@@ -125,15 +169,32 @@
                       </td>
 
                       <td>
-                        <a>
+                        <a
+                          @click="() => {
+                            selectedAuthor = image.author
+                            params.authorId = image.author.id
+                            get()
+                          }"
+                          :title="image.author.email"
+                          class="has-title has-filter-icon"
+                        >
                           {{ image.author.name }}
                         </a>
+                        <i class="fas fa-filter fa-xs"></i>
                       </td>
 
                       <td>
-                        <a>
+                        <a
+                          @click="() => {
+                            params.from = params.to = $options.filters.dateString(image.updated_at)
+                            get()
+                          }"
+                          :title="image.updated_at"
+                          class="has-title has-filter-icon"
+                        >
                           {{ image.updated_at | dateString }}
                         </a>
+                        <i class="fas fa-filter fa-xs"></i>
                       </td>
                     </tr>
                   </tbody>
@@ -159,10 +220,12 @@
 
 <script>
   import SortdirectionHandler from '../../../../mixins/sortdirection-handler'
+  import MultiselectUsers from '../../../multiselects/multiselect-users.vue'
   import ErrorHandler from '../../../../mixins/error-handler'
   import QueryHandler from '../../../../mixins/query-handler'
   import PageHandler from '../../../../mixins/page-handler'
   import Sortdirection from '../../../sortdirection.vue'
+  import Datepicker from '../../../datepicker.vue'
   import Pagination from '../../../pagination.vue'
   import Spinner from '../../../spinner.vue'
   import debounce from 'lodash/debounce'
@@ -171,6 +234,8 @@
   export default {
     components: {
       Sortdirection,
+      MultiselectUsers,
+      Datepicker,
       Pagination,
       Spinner
     },
@@ -181,7 +246,12 @@
       PageHandler,
     ],
     data: () => ({
-      images: []
+      images: [],
+      filtering: false,
+      removingFilters: false,
+      filteredByUpdated: false,
+      filteredByAuthor: false,
+      selectedAuthor: {}
     }),
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -209,18 +279,20 @@
     methods: {
       get (query = null, page = 1) {
         this.disabled = true
-        this.params.page = page
+        this.params.page = query ? query.page : page
 
         axios
           .get('admin/image', { params: query || this.params })
           .then(response => {
-            this.disabled = this.sorting = false
+            this.disabled = this.sorting = this.filtering = this.removingFilters = false
+            this.filteredByUpdated = this.params.from || this.params.to
+            this.filteredByAuthor = this.params.authorId
             this.images = response.data.data
             this.handlePage(response.data.meta, response.data.links)
             this.handleQuery(response.data.params, 'admin-images')
           })
           .catch(error => {
-            this.sorting = this.pageChanging = false
+            this.sorting = this.pageChanging = this.filtering = this.removingFilters = false
             this.handleError(error)
           })
       },
@@ -232,7 +304,17 @@
       search: debounce(function (e) {
         this.params.search = e.target.value
         this.get()
-      }, 500)
+      }, 500),
+      filter () {
+        this.filtering = true
+        this.get()
+      },
+      removeFilters () {
+        this.removingFilters = true
+        this.selectedAuthor = {}
+        this.params.authorId = this.params.from = this.params.to = null
+        this.get()
+      }
     },
     beforeDestroy () {
       window.onpopstate = null
@@ -250,7 +332,11 @@
       "name": "Image",
       "author": "Author",
       "updated_at": "Updated",
-      "edit": "Edit"
+      "edit": "Edit",
+      "datefrom": "Date from",
+      "dateto": "Date to",
+      "filter.remove": "Remove filters",
+      "filter": "Filter"
     },
     "lv": {
       "title": "Attēli",
@@ -259,7 +345,11 @@
       "name": "Attēls",
       "author": "Autors",
       "updated_at": "Atjaunots",
-      "edit": "Labot"
+      "edit": "Labot",
+      "datefrom": "Datums no",
+      "dateto": "Datums līdz",
+      "filter.remove": "Noņemt filtrus",
+      "filter": "Filtrēt"
     }
   }
 </i18n>

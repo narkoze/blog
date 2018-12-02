@@ -13,6 +13,36 @@
 
           <div class="columns">
             <div class="column is-3">
+              <datepicker
+                :label="$t('datefrom')"
+                :value="params.from"
+                @selected="date => params.from = date"
+              >
+              </datepicker>
+
+              <datepicker
+                :label="$t('dateto')"
+                :value="params.to"
+                @selected="date => params.to = date"
+              >
+              </datepicker>
+
+              <multiselect-users
+                :label="$t('author')"
+                :selected="selectedAuthor"
+                @selected="author => {
+                  selectedAuthor = author
+                  params.authorId = author.id
+                }"
+              >
+              </multiselect-users>
+
+              <multiselect-tags
+                :selected="selectedTags"
+                @selected="tags => selectedTags = tags"
+              >
+              </multiselect-tags>
+
               <multiselect-state
                 :selected="params.state"
                 @selected="state => params.state = state"
@@ -78,12 +108,18 @@
 
                       <th>
                         {{ $t('tags') }}
+                        <i
+                          v-if="filteredByTags"
+                          class="fas fa-filter fa-xs"
+                        >
+                        </i>
                       </th>
 
                       <sortdirection
                         column="authors.name"
                         :sort="params.sortBy"
                         :direction="params.sortDirection"
+                        :filtered="filteredByAuthor"
                         :disabled="sorting"
                         @changed="sort"
                       >
@@ -94,6 +130,7 @@
                         column="dates"
                         :sort="params.sortBy"
                         :direction="params.sortDirection"
+                        :filtered="filteredByDate"
                         :disabled="sorting"
                         @changed="sort"
                       >
@@ -156,42 +193,65 @@
 
                       <td>
                         <div class="tags">
-                          <span
+                          <a
+                            @click="() => {
+                              selectedTags = [tag]
+                              get()
+                            }"
                             v-for="tag in post.tags"
                             :key="tag.id"
                             class="tag is-dark"
                           >
                             {{ $i18n.locale === 'en' ? tag.name_en : tag.name_lv }}
-                          </span>
+                          </a>
                         </div>
                       </td>
 
-                      <td>
-                        <a>
+                      <td class="is-nowrap">
+                        <a
+                          @click="() => {
+                            selectedAuthor = post.author
+                            params.authorId = post.author.id
+                            get()
+                          }"
+                          :title="post.author.email"
+                          class="has-title has-filter-icon"
+                        >
                           {{ post.author.name }}
                         </a>
+                        <i class="fas fa-filter fa-xs"></i>
                       </td>
 
-                      <td>
+                      <td class="is-nowrap">
                         <div v-if="post.published_at">
                           {{ $t('published') }}
                           <br>
                           <a
+                            @click="() => {
+                              params.from = params.to = $options.filters.dateString(post.published_at)
+                              get()
+                            }"
                             :title="post.published_at"
-                            class="hover"
+                            class="has-title has-filter-icon"
                           >
                             {{ post.published_at | dateString }}
                           </a>
+                          <i class="fas fa-filter fa-xs"></i>
                         </div>
                         <div v-else>
                           {{ $t('saved') }}
                           <br>
                           <a
+                            @click="() => {
+                              params.from = params.to = $options.filters.dateString(post.updated_at)
+                              get()
+                            }"
                             :title="post.updated_at"
-                            class="hover"
+                            class="has-title has-filter-icon"
                           >
                             {{ post.updated_at | dateString }}
                           </a>
+                          <i class="fas fa-filter fa-xs"></i>
                         </div>
                       </td>
                     </tr>
@@ -219,10 +279,13 @@
 <script>
   import SortdirectionHandler from '../../../../mixins/sortdirection-handler'
   import MultiselectState from '../../../multiselects/multiselect-state.vue'
+  import MultiselectUsers from '../../../multiselects/multiselect-users.vue'
+  import MultiselectTags from '../../../multiselects/multiselect-tags.vue'
   import ErrorHandler from '../../../../mixins/error-handler'
   import QueryHandler from '../../../../mixins/query-handler'
   import PageHandler from '../../../../mixins/page-handler'
   import Sortdirection from '../../../sortdirection.vue'
+  import Datepicker from '../../../datepicker.vue'
   import Pagination from '../../../pagination.vue'
   import Spinner from '../../../spinner.vue'
   import debounce from 'lodash/debounce'
@@ -231,7 +294,10 @@
   export default {
     components: {
       MultiselectState,
+      MultiselectUsers,
+      MultiselectTags,
       Sortdirection,
+      Datepicker,
       Pagination,
       Spinner
     },
@@ -244,7 +310,12 @@
     data: () => ({
       posts: [],
       filtering: false,
-      removingFilters: false
+      removingFilters: false,
+      filteredByDate: false,
+      filteredByAuthor: false,
+      filteredByTags: false,
+      selectedAuthor: {},
+      selectedTags: []
     }),
     beforeRouteEnter (to, from, next) {
       next(vm => {
@@ -272,12 +343,16 @@
     methods: {
       get (query = null, page = 1) {
         this.disabled = true
-        this.params.page = page
+        this.params.page = query ? query.page : page
+        this.params.tags = this.selectedTags.map(({ id }) => id)
 
         axios
           .get('admin/post', { params: query || this.params })
           .then(response => {
             this.disabled = this.sorting = this.filtering = this.removingFilters = false
+            this.filteredByAuthor = this.params.authorId
+            this.filteredByTags = this.params.tags && this.params.tags.length
+            this.filteredByDate = this.params.from || this.params.to
             this.posts = response.data.data
             this.handlePage(response.data.meta, response.data.links)
             this.handleQuery(response.data.params, 'admin-posts')
@@ -302,7 +377,9 @@
       },
       removeFilters () {
         this.removingFilters = true
-        this.params.state = null
+        this.selectedAuthor = {}
+        this.selectedTags = this.params.tags = []
+        this.params.state = this.params.authorId = this.params.from = this.params.to = null
         this.get()
       }
     },
@@ -329,7 +406,9 @@
       "search": "Search",
       "title": "Posts",
       "view": "View",
-      "tags": "Tags"
+      "tags": "Tags",
+      "datefrom": "Date from",
+      "dateto": "Date to"
     },
     "lv": {
       "author": "Autors",
@@ -345,7 +424,9 @@
       "search": "Meklēt",
       "title": "Ziņas",
       "view": "Skatīt",
-      "tags": "Tēmturi"
+      "tags": "Tēmturi",
+      "datefrom": "Datums no",
+      "dateto": "Datums līdz"
     }
   }
 </i18n>

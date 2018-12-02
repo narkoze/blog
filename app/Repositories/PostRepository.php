@@ -2,6 +2,7 @@
 
 namespace Blog\Repositories;
 
+use Illuminate\Support\Carbon;
 use Blog\Post;
 
 class PostRepository
@@ -14,6 +15,10 @@ class PostRepository
             'sortDirection' => 'desc',
             'state' => null,
             'search' => null,
+            'from' => null,
+            'to' => null,
+            'authorId' => null,
+            'tags' => [],
         ];
     }
 
@@ -26,11 +31,34 @@ class PostRepository
         ])
         ->with([
             'author',
+            'tags'
         ]);
 
         $search = trim($params['search']);
         if ($search) {
             $query->whereRaw("title_$locale ILIKE ?", "%$search%");
+        }
+
+        if ($params['from']) {
+            $from = Carbon::parse($params['from'])->toDateString();
+            $query->whereRaw('COALESCE(published_at::date, posts.updated_at::date) >= ?', $from);
+        }
+
+        if ($params['to']) {
+            $to = Carbon::parse($params['to'])->toDateString();
+            $query->whereRaw('COALESCE(published_at::date, posts.updated_at::date) <= ?', $to);
+        }
+
+        if ($params['authorId']) {
+            $query->where('author_id', $params['authorId']);
+        }
+
+        if ($params['tags']) {
+            $tags = $params['tags'];
+
+            $query->whereHas('tags', function ($query) use ($tags) {
+                $query->whereIn('id', $tags);
+            });
         }
 
         switch ($params['state']) {

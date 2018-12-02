@@ -82,16 +82,6 @@
         showModalConfirm: false
       }
     },
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        if (Object.keys(to.query).length) {
-          vm.tag = {
-            name_en: to.query.tag,
-            name_lv: to.query.tag
-          }
-        }
-      })
-    },
     created () {
       if (this.tag.id === undefined && this.$route.params.id) {
         this.get()
