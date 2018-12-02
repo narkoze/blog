@@ -173,6 +173,13 @@ a.navbar-item.is-active,
   background-color: #fafafa;
   color: initial;
 }
+.navbar-dropdown {
+  display: none;
+
+  &.is-active {
+    display: inherit;
+  }
+}
 
 
 @import "components/modal";
@@ -772,10 +779,25 @@ ul.infocard {
     }
   }
 }
-
 .has-filter-icon + i {
   visibility: hidden;
 }
 .has-filter-icon:hover + i {
   visibility: visible;
+}
+.scrollTop {
+  cursor: pointer;
+  display: none;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  opacity: .9;
+
+  -webkit-tap-highlight-color: transparent;
+
+  color: $grey-lighter;
+  &:hover {
+    color: $grey-light;
+  }
 }

@@ -304,7 +304,7 @@
           tinymce.activeEditor.insertContent(`
             <img
               class="image"
-              width="${image.width > 365 ? 365 : image.width}"
+              style="max-width: ${image.width > 365 ? 365 : image.width}px"
               src="${image.images.medium}"
               data-title="${image.name}"
               data-original-src="${image.images.original}"

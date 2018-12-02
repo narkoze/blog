@@ -25,7 +25,15 @@ routes.forEach(route => {
     })
   }
 })
-routes.push({ path: '/', redirect: `/${i18n.locale}` })
+routes.push({
+  path: '/',
+  redirect: {
+    name: 'posts',
+    params: {
+      locale: i18n.locale
+    }
+  }
+})
 
 Vue.use(VueRouter)
 const router = new VueRouter({
