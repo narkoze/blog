@@ -1,6 +1,22 @@
 <template>
   <nav class="navbar is-fixed-top is-dark">
     <div class="navbar-brand">
+      <a
+        href="https://github.com/narkoze/blog"
+        target="_blank"
+        class="navbar-item"
+      >
+        <i class="fas fa-code-branch"></i>
+      </a>
+
+      <router-link
+        @click.native="navbarIsActive = false"
+        :to="{ name: 'home' }"
+        class="navbar-item has-text-weight-bold is-active-hidden"
+      >
+        {{ $t('title') }}
+      </router-link>
+
       <router-link
         @click.native="navbarIsActive = false"
         :to="{
@@ -9,9 +25,9 @@
             page: 1
           }
         }"
-        class="navbar-item has-text-weight-bold is-active-hidden"
+        class="navbar-item"
       >
-        {{ $t('title') }}
+        {{ $t('posts') }}
       </router-link>
 
       <div
@@ -23,21 +39,6 @@
     </div>
 
     <div :class="['navbar-menu', { 'is-active': navbarIsActive }]">
-      <div class="navbar-start">
-        <router-link
-          @click.native="navbarIsActive = false"
-          :to="{
-            name: 'posts',
-            query: {
-              page: 1
-            }
-          }"
-          class="navbar-item"
-        >
-          {{ $t('posts') }}
-        </router-link>
-      </div>
-
       <div class="navbar-end">
         <dropdown-user
           v-if="$root.user"

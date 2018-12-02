@@ -153,6 +153,17 @@
         </div>
       </div>
     </transition-group>
+
+    <div
+      ref="scrollTop"
+      class="scrollTop"
+    >
+      <i
+        @click="scrollTop"
+        class="fas fa-arrow-alt-circle-up fa-3x"
+      >
+      </i>
+    </div>
   </div>
 </template>
 
@@ -197,6 +208,15 @@
       window.onpopstate = () => {
         if (this.$route.name === 'posts') {
           this.get(this.$route.query)
+        }
+      }
+    },
+    mounted () {
+      window.onscroll = () => {
+        if (document.body.scrollTop > 352 || document.documentElement.scrollTop > 352) {
+          this.$refs.scrollTop.style.display = 'block'
+        } else {
+          this.$refs.scrollTop.style.display = 'none'
         }
       }
     },
@@ -261,10 +281,18 @@
         })
 
         return document.body.innerHTML
+      },
+      scrollTop () {
+        document
+          .querySelector('.has-navbar-fixed-top')
+          .scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
       }
     },
     beforeDestroy () {
-      window.onpopstate = null
+      window.onpopstate = window.onscroll = null
     }
   }
 </script>

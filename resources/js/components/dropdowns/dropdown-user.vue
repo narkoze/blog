@@ -8,7 +8,7 @@
       {{ $root.user.name }}
     </div>
 
-    <div class="navbar-dropdown">
+    <div :class="['navbar-dropdown', { 'is-active': dropdownIsActive }]">
       <router-link
         :to="{ name: 'profile' }"
         @click.native="$emit('closeNavbar')"

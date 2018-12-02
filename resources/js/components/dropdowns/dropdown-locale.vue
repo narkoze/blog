@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="navbar-dropdown">
+    <div :class="['navbar-dropdown', { 'is-active': dropdownIsActive }]">
       <a
         v-if="$i18n.locale === 'en'"
         @click="handleLocale('lv')"
