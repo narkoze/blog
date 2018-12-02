@@ -15,14 +15,12 @@ html {
   -webkit-background-size: cover;
      -moz-background-size: cover;
       -ms-background-size: cover;
-       -o-background-size: cover;
           background-size: cover;
 
   @media screen and (max-width: $desktop) {
     height: -webkit-calc(100% + 56px);
        height: -moz-calc(100% + 56px);
         height: -ms-calc(100% + 56px);
-         height: -o-calc(100% + 56px);
             height: calc(100% + 56px);
   }
 }
@@ -127,14 +125,12 @@ html {
     -webkit-background-size: cover;
     -moz-background-size: cover;
      -ms-background-size: cover;
-      -o-background-size: cover;
          background-size: cover;
 
     $box-shadow: 2px 0px 5px 0px rgba(10, 10, 10, .5);
     -webkit-box-shadow: $box-shadow;
        -moz-box-shadow: $box-shadow;
         -ms-box-shadow: $box-shadow;
-         -o-box-shadow: $box-shadow;
             box-shadow: $box-shadow;
   }
 
@@ -155,7 +151,6 @@ html {
     -webkit-box-shadow: $box-shadow;
        -moz-box-shadow: $box-shadow;
         -ms-box-shadow: $box-shadow;
-         -o-box-shadow: $box-shadow;
             box-shadow: $box-shadow;
   }
 }
@@ -235,7 +230,6 @@ a.navbar-item.is-active,
   -webkit-box-shadow: $box-shadow;
      -moz-box-shadow: $box-shadow;
       -ms-box-shadow: $box-shadow;
-       -o-box-shadow: $box-shadow;
           box-shadow: $box-shadow;
 
   img.profile {
@@ -564,7 +558,6 @@ a {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-       -o-user-select: none;
           user-select: none;
 }
 .has-hoverable-actions {
@@ -620,7 +613,6 @@ blockquote {
       -webkit-box-shadow: $box-shadow;
          -moz-box-shadow: $box-shadow;
           -ms-box-shadow: $box-shadow;
-           -o-box-shadow: $box-shadow;
               box-shadow: $box-shadow;
 
       &.is-error {
@@ -628,7 +620,6 @@ blockquote {
         -webkit-box-shadow: $box-shadow;
            -moz-box-shadow: $box-shadow;
             -ms-box-shadow: $box-shadow;
-             -o-box-shadow: $box-shadow;
                 box-shadow: $box-shadow;
       }
 
@@ -722,7 +713,6 @@ ul.infocard {
   -webkit-box-shadow: $box-shadow;
      -moz-box-shadow: $box-shadow;
       -ms-box-shadow: $box-shadow;
-       -o-box-shadow: $box-shadow;
           box-shadow: $box-shadow;
 
   width: 100%;
@@ -759,7 +749,6 @@ ul.infocard {
       -webkit-box-shadow: $box-shadow;
          -moz-box-shadow: $box-shadow;
           -ms-box-shadow: $box-shadow;
-           -o-box-shadow: $box-shadow;
               box-shadow: $box-shadow;
 
       &.is-selected {
@@ -767,7 +756,6 @@ ul.infocard {
         -webkit-box-shadow: $box-shadow;
            -moz-box-shadow: $box-shadow;
             -ms-box-shadow: $box-shadow;
-             -o-box-shadow: $box-shadow;
                 box-shadow: $box-shadow;
       }
 

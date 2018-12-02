@@ -333,7 +333,6 @@
       -webkit-box-shadow: $box-shadow;
          -moz-box-shadow: $box-shadow;
           -ms-box-shadow: $box-shadow;
-           -o-box-shadow: $box-shadow;
               box-shadow: $box-shadow;
     }
   }
@@ -342,7 +341,6 @@
       -webkit-box-shadow: $box-shadow;
          -moz-box-shadow: $box-shadow;
           -ms-box-shadow: $box-shadow;
-           -o-box-shadow: $box-shadow;
               box-shadow: $box-shadow;
   }
   .mce-tinymce.mce-container.mce-panel:hover:not(.is-active) {

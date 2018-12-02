@@ -430,7 +430,6 @@
       -webkit-animation: blink .3s step-end infinite;
          -moz-animation: blink .3s step-end infinite;
           -ms-animation: blink .3s step-end infinite;
-           -o-animation: blink .3s step-end infinite;
               animation: blink .3s step-end infinite;
   }
   @-webkit-keyframes blink { 50% { visibility: hidden; }}
