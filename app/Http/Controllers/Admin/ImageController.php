@@ -40,8 +40,18 @@ class ImageController extends Controller
         return new ImageResource($image);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            Image::whereAuthorId($request->user()->id)->count() > 2,
+            403,
+            $locale == 'en'
+                ? 'You can upload only 3 images'
+                : 'Jūs drīkstat augšupielādēt tikai 3 attēlus'
+        );
+
         $request->validate($this->rules);
 
         $image = new Image();
@@ -104,6 +114,16 @@ class ImageController extends Controller
 
     public function update(Request $request, $locale, Image $image)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $image->author->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can edit only your images'
+                : 'Jūs drīkstat labot tikai savus attēlus'
+        );
+
         $request->validate($this->rules);
 
         $image->update($request->all());
@@ -111,8 +131,18 @@ class ImageController extends Controller
         return new ImageResource($image);
     }
 
-    public function destroy($locale, Image $image)
+    public function destroy(Request $request, $locale, Image $image)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $image->author->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can delete only your images'
+                : 'Jūs drīkstat dzēst tikai savus attēlus'
+        );
+
         Storage::disk('public')->delete("image/original/$image->filename");
         Storage::disk('public')->delete("image/medium/$image->filename");
         Storage::disk('public')->delete("image/small/$image->filename");
