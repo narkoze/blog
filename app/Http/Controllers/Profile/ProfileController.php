@@ -45,6 +45,15 @@ class ProfileController extends Controller
 
     public function update(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            $request->user()->id == 1,
+            403,
+            $locale == 'en'
+                ? 'You can not edit current user'
+                : 'Jūs nedrīkstat labot šo lietotāju'
+        );
+
         $user = $request->user();
 
         $rules = $this->rules;
@@ -76,6 +85,15 @@ class ProfileController extends Controller
 
     public function destroy(Request $request, UserService $userServ, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            $request->user()->id == 1,
+            403,
+            $locale == 'en'
+                ? 'You can not delete current user'
+                : 'Jūs nedrīkstat dzēst šo lietotāju'
+        );
+
         $userServ->delete($request->user());
 
         return response()->json();

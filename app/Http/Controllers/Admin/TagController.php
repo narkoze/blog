@@ -41,18 +41,43 @@ class TagController extends Controller
         return new TagResource($tag);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            Tag::whereCreatedBy($request->user()->id)->count() > 2,
+            403,
+            $locale == 'en'
+                ? 'You can create only 3 tags'
+                : 'Jūs drīkstat izveidot tikai 3 tēmturus'
+        );
+
         $rules = $this->rules;
         $rules['name_en'][] = 'unique:tags,name_en';
         $rules['name_lv'][] = 'unique:tags,name_lv';
         $request->validate($rules);
 
-        return new TagResource(Tag::create($request->all()));
+        $tag = new Tag();
+        $tag->fill($request->all());
+        $tag->createdBy()->associate($request->user());
+        $tag->save();
+
+        return new TagResource($tag);
     }
 
     public function update(Request $request, $locale, Tag $tag)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $tag->createdBy->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can edit only your tags'
+                : 'Jūs drīkstat labot tikai savus tēmturus'
+        );
+
         $rules = $this->rules;
         $rules['name_en'][] = "unique:tags,name_en,{$tag->id}";
         $rules['name_lv'][] = "unique:tags,name_lv,{$tag->id}";
@@ -65,6 +90,16 @@ class TagController extends Controller
 
     public function destroy($locale, Tag $tag)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $tag->createdBy->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can delete only your tags'
+                : 'Jūs drīkstat dzēst tikai savus tēmturus'
+        );
+
         $tag->delete();
 
         return response()->json();

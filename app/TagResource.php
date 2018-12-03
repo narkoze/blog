@@ -20,6 +20,7 @@ class TagResource extends JsonResource
             'name_lv' => $this->name_lv,
             // 'created_at' => (string) $this->created_at,
             // 'updated_at' => (string) $this->updated_at,
+            // 'created_by' => $this->createdBy,
         ];
     }
 }

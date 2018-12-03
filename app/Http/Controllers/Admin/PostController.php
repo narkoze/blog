@@ -38,8 +38,18 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            Post::whereAuthorId($request->user()->id)->count() > 2,
+            403,
+            $locale == 'en'
+                ? 'You can create only 3 posts'
+                : 'Jūs drīkstat izveidot tikai 3 ziņas'
+        );
+
         $rules = $this->rules;
         $rules['title_en'][] = 'unique:posts,title_en';
         $rules['title_lv'][] = 'unique:posts,title_lv';
@@ -55,6 +65,16 @@ class PostController extends Controller
 
     public function update(Request $request, $locale, Post $post)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $post->author->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can edit only your posts'
+                : 'Jūs drīkstat labot tikai savas ziņas'
+        );
+
         $rules = $this->rules;
         $rules['title_en'][] = "unique:posts,title_en,{$post->id}";
         $rules['title_lv'][] = "unique:posts,title_lv,{$post->id}";
@@ -65,8 +85,18 @@ class PostController extends Controller
         return new PostResource($post);
     }
 
-    public function destroy($locale, Post $post)
+    public function destroy(Request $request, $locale, Post $post)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            !in_array($request->user()->role->id, [1, 3]) and
+            $post->author->id != $request->user()->id,
+            403,
+            $locale == 'en'
+                ? 'You can delete only your posts'
+                : 'Jūs drīkstat dzēst tikai savas ziņas'
+        );
+
         $post->delete();
 
         return response()->json();

@@ -34,4 +34,12 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class)->whereNull('published_at');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

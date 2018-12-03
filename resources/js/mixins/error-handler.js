@@ -18,9 +18,6 @@ export default {
 
           this.$router.push({ name: 'home' })
           break
-        case 403:
-          this.$router.push({ name: 'home' })
-          break
         case 422:
           this.errors = error.response.data.errors
           break

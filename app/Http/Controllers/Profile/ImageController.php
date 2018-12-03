@@ -17,8 +17,17 @@ class ImageController extends Controller
         ],
     ];
 
-    public function index(Request $request)
+    public function index(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            $request->user()->id == 1,
+            403,
+            $locale == 'en'
+                ? 'You can not edit current user image'
+                : 'Jūs nedrīkstat labot šī lietotāja attēlu'
+        );
+
         $request->validate($this->rules);
 
         $user = $request->user();
@@ -66,8 +75,17 @@ class ImageController extends Controller
         ]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $locale)
     {
+        // Remove abort_if(current project is in production state)
+        abort_if(
+            $request->user()->id == 1,
+            403,
+            $locale == 'en'
+                ? 'You can not delete current user image'
+                : 'Jūs nedrīkstat dzēst šī lietotāja attēlu'
+        );
+
         $user = $request->user();
 
         Storage::disk('public')->delete([
