@@ -460,7 +460,7 @@
       "comments": "Komentāri",
       "comments.description": "Top 10 ziņas ar visvairāk komentāriem",
       "tags": "Tēmturi",
-      "tags.description": "Top 10 kategorijas ar visvairāk ziņām",
+      "tags.description": "Top 10 tēmturi ar visvairāk ziņām",
       "1": "Janvāris",
       "2": "Februāris",
       "3": "Marts",
