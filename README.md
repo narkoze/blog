@@ -10,7 +10,7 @@ More about me https://piemeram.lv/about
 
 ![blog.piemeram.lv](https://raw.githubusercontent.com/narkoze/blog/master/README.png)
 
-## DEMO
+## Demo
 
 https://blog.piemeram.lv
 
