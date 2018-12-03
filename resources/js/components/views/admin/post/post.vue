@@ -203,6 +203,8 @@
           menubar: false,
           branding: false,
           paste_as_text: true,
+          relative_urls: false,
+          remove_script_host: false,
           setup: editor => {
             editor.on('init', () => {
               switch (editor.id) {
