@@ -100,8 +100,13 @@
     ],
     data: () => ({
       email: 'demo@piemeram.lv',
-      password: 'demons'
+      password: 'demons',
+      scrollY: null
     }),
+    created () {
+      this.scrollY = window.scrollY
+      window.addEventListener('scroll', this.lockScroll)
+    },
     methods: {
       signin () {
         this.disabled = true
@@ -128,7 +133,13 @@
             this.$emit('close')
           })
           .catch(this.handleError)
+      },
+      lockScroll () {
+        window.scrollTo(window.scrollX, this.scrollY)
       }
+    },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.lockScroll)
     }
   }
 </script>

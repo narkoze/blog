@@ -57,8 +57,13 @@
       ErrorHandler,
     ],
     data: () => ({
-      email: null
+      email: null,
+      scrollY: null
     }),
+    created () {
+      this.scrollY = window.scrollY
+      window.addEventListener('scroll', this.lockScroll)
+    },
     methods: {
       sendResetLink () {
         this.disabled = true
@@ -74,7 +79,13 @@
             this.$root.notify('success', this.$t('sendResetLink.success'))
           })
           .catch(this.handleError)
+      },
+      lockScroll () {
+        window.scrollTo(window.scrollX, this.scrollY)
       }
+    },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.lockScroll)
     }
   }
 </script>

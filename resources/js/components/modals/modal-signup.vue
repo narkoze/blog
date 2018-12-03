@@ -119,8 +119,13 @@
       name: null,
       email: null,
       password: null,
-      password_confirmation: null
+      password_confirmation: null,
+      scrollY: null
     }),
+    created () {
+      this.scrollY = window.scrollY
+      window.addEventListener('scroll', this.lockScroll)
+    },
     methods: {
       signup () {
         this.disabled = true
@@ -139,7 +144,13 @@
             this.$root.notify('success', this.$t('signup.success'))
           })
           .catch(this.handleError)
+      },
+      lockScroll () {
+        window.scrollTo(window.scrollX, this.scrollY)
       }
+    },
+    beforeDestroy () {
+      window.removeEventListener('scroll', this.lockScroll)
     }
   }
 </script>
