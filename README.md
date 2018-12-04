@@ -29,14 +29,16 @@ https://blog.piemeram.lv
 - Laravel for backend
 - Bulma for style
 
-## Build
+## Build and Launch
 
 ``` bash
 # For production
 ./bin/build.production.sh
-
 # For development
 ./bin/build.sh
+
+mv .env.example .env
+./artisan key:generate
 ```
 
 ## License
