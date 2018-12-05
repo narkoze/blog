@@ -44,6 +44,7 @@ mv .env.example .env
 
 # Passport
 ./artisan passport:install
+echo PASSPORT_ENDPOINT=\"\${APP_URL}/oauth/token\" >> .env
 ```
 
 ## License
