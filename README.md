@@ -32,8 +32,7 @@ https://blog.piemeram.lv
 ## Build and Launch
 
 ``` bash
-# For production
-./bin/build.production.sh
+# For production ./bin/build.production.sh
 # For development
 ./bin/build.sh
 
