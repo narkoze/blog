@@ -19,6 +19,11 @@ class CreateTagsTable extends Migration
             $table->string('name_en');
             $table->string('name_lv');
 
+            $table->integer('created_by');
+            $table->foreign('created_by')
+                ->references('id')
+                ->on('users');
+
             $table->timestamps();
         });
 

@@ -21,6 +21,16 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->timestamps();
         });
+
+        $now = now();
+        DB::table('users')->insert([
+            'name' => 'Demo',
+            'email' => 'demo@piemeram.lv',
+            'email_verified_at' => $now,
+            'password' => bcrypt('demons'),
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
     }
 
     /**

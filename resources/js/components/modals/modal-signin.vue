@@ -147,9 +147,9 @@
 <i18n>
   {
     "en": {
-      "signin": "Sing in",
+      "signin": "Sign in",
       "rememberme": "Remember me",
-      "signup": "Sing up",
+      "signup": "Sign up",
       "email": "E-mail",
       "password": "Password",
       "forgotpassword": "Forgot the password?",
