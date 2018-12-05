@@ -37,8 +37,13 @@ https://blog.piemeram.lv
 # For development
 ./bin/build.sh
 
+# Laravel
 mv .env.example .env
 ./artisan key:generate
+./artisan migrate
+
+# Passport
+./artisan passport:install
 ```
 
 ## License
