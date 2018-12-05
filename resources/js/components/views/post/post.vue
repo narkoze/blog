@@ -136,6 +136,7 @@
                   <div class="content">
                     <p>
                       <strong>{{ comment.author.name }}</strong>
+                      <small>({{ comment.author.email }})</small>
 
                       <span
                         v-if="$root.user && ($root.user.id === comment.author.id || [1,3].includes($root.user.role.id))"

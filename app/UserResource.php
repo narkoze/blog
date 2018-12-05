@@ -14,20 +14,19 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->when(true, function () use ($request) {
-                if ($request->user() and in_array($request->user()->role->id, [1, 3])) {
+                if ($request->user('api') and
+                    (
+                        in_array($request->user('api')->role->id, [1, 3]) or
+                        $request->user('api')->id == $this->id
+                    )
+                ) {
                     return $this->email;
                 }
-
-                if ($request->user() and $request->user()->id == $this->id) {
-                    return $this->email;
-                } else {
-                    return $this->email_masked;
-                }
+                return $this->email_masked;
             }),
             'email_verified' => (bool) $this->email_verified_at,
             // 'created_at' => (string) $this->created_at,
