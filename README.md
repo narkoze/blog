@@ -39,6 +39,8 @@ https://blog.piemeram.lv
 # Laravel
 mv .env.example .env
 ./artisan key:generate
+
+# Database (make sure you have correct DB_ configurations)
 ./artisan migrate
 
 # Passport
