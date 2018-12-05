@@ -83,6 +83,12 @@ html {
     vertical-align: middle;
   }
 }
+figure.media-left {
+  @media screen and (max-width: $desktop) {
+    margin: 0 .5em 0 0 !important;
+  }
+}
+
 
 
 // @import "components/menu";
@@ -199,14 +205,16 @@ a.navbar-item.is-active,
     margin-bottom: 3rem;
   }
 }
-.card-header-post {
-  padding: 1em;
-}
 .card-footer-post {
   padding: 1em 2em;
   width: 100%;
   background-color: $white-ter;
   line-height: 2.2;
+
+  @media screen and (max-width: $desktop) {
+    padding: .5em 1em;
+    line-height: 1.5;
+  }
 }
 .card.dashboard {
   min-height: 150px;
@@ -293,10 +301,6 @@ a.navbar-item.is-active,
 }
 
 @import "elements/content";
-.content-post {
-  padding: 1em 1em 0 1em;
-}
-
 
 $notification-radius: 0;
 @import "elements/notification";
@@ -799,5 +803,25 @@ ul.infocard {
   color: $grey-lighter;
   &:hover {
     color: $grey-light;
+  }
+}
+.is-post-title {
+  padding: .75em .5em;
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.33;
+
+  @media screen and (max-width: $desktop) {
+    padding: .5em .5em;
+    font-size: 1.5rem;
+  }
+}
+.is-comment-title {
+  padding: .5em;
+  font-weight: 500;
+  font-size: 1.8rem;
+
+  @media screen and (max-width: $desktop) {
+    font-size: 1.2rem;
   }
 }

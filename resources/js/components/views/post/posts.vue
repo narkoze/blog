@@ -25,22 +25,20 @@
         class="card is-medium has-margin-bottom"
       >
         <header class="card-header">
-          <div class="card-header-post">
-            <h1 class="subtitle is-2">
-              <a
-                @click="to({
-                  name: 'post',
-                  params: {
-                    id: post.id,
-                    post: post
-                  }
-                })"
-                class="has-text-grey-dark"
-              >
-                {{ $i18n.locale === 'en' ? post.title_en : post.title_lv }}
-              </a>
-            </h1>
-          </div>
+          <h1 class="is-post-title">
+            <a
+              @click="to({
+                name: 'post',
+                params: {
+                  id: post.id,
+                  post: post
+                }
+              })"
+              class="has-text-grey-dark"
+            >
+              {{ $i18n.locale === 'en' ? post.title_en : post.title_lv }}
+            </a>
+          </h1>
         </header>
 
         <div class="card-content">
@@ -90,12 +88,12 @@
               <i class="far fa-calendar-alt"></i>
               {{ post.published_at | dateString }}
 
-              &nbsp;&nbsp;
+              &nbsp;
 
               <i class="fas fa-user"></i>
               {{ post.author.name }}
 
-              &nbsp;&nbsp;
+              &nbsp;
 
               <span class="is-nowrap">
                 <i class="fas fa-comments"></i>
@@ -117,7 +115,7 @@
                 </span>
               </span>
 
-              &nbsp;&nbsp;
+              &nbsp;
 
               <router-link
                 v-if="$root.user && $root.user.role.id !== 2"

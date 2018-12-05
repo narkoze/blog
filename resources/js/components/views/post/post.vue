@@ -21,11 +21,9 @@
       >
         <div class="card is-medium">
           <header class="card-header">
-            <div class="card-header-post">
-              <h1 class="subtitle is-2 has-text-grey-dark">
-                {{ $i18n.locale === 'en' ? post.title_en : post.title_lv }}
-              </h1>
-            </div>
+            <h1 class="is-post-title has-text-grey-darker">
+              {{ $i18n.locale === 'en' ? post.title_en : post.title_lv }}
+            </h1>
           </header>
 
           <div class="card-content">
@@ -100,15 +98,13 @@
       >
         <div class="card is-medium has-margin-bottom">
           <header class="card-header">
-            <div class="card-header-post">
-              <h1 class="subtitle is-4 has-text-grey-dark">
-                {{ $t('comments') }}
+            <h1 class="is-comment-title has-text-grey-dark">
+              {{ $t('comments') }}
 
-                <span v-if="commentsLoading">
-                  (<spinner></spinner>)
-                </span>
-              </h1>
-            </div>
+              <span v-if="commentsLoading">
+                (<spinner></spinner>)
+              </span>
+            </h1>
           </header>
 
           <div class="card-content">
@@ -142,15 +138,11 @@
                         v-if="$root.user && ($root.user.id === comment.author.id || [1,3].includes($root.user.role.id))"
                         class="is-pulled-right hoverable-actions"
                       >
-                        <a
-                          @click="setComment(comment)"
-                        >
+                        <a @click="setComment(comment)">
                           <small>{{ $t('updateComment') }}</small>
                         </a>
                         <span class="is-link-divider">|</span>
-                        <a
-                          @click="destroyingComment || (showModalConfirm = comment.id)"
-                        >
+                        <a @click="destroyingComment || (showModalConfirm = comment.id)">
                           <small>{{ $t('destroyComment') }}</small>
                         </a>
                       </span>
@@ -195,6 +187,7 @@
                         :class="['textarea', { 'is-danger': errors.comment }]"
                         :placeholder="$t('writeComment')"
                         :disabled="creatingComment"
+                        rows="2"
                       >
                       </textarea>
                     </p>
