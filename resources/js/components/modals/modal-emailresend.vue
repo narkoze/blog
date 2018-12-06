@@ -36,7 +36,6 @@
 
 <script>
   import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -53,7 +52,7 @@
       resend () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`emailresend/${this.$root.user.id}`)
           .then(() => {
             this.$emit('close')

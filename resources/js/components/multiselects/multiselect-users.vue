@@ -51,7 +51,6 @@
   import Multiselect from 'vue-multiselect'
   import debounce from 'lodash/debounce'
   import Spinner from '../spinner.vue'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -77,7 +76,7 @@
         }
         if (search) params.search = search
 
-        axios
+        this.$axios
           .get('admin/user', { params })
           .then(response => {
             this.disabled = false

@@ -139,7 +139,6 @@
   import ErrorHandler from '../../../../mixins/error-handler'
   import Photoswipe from '../../../photoswipe.vue'
   import Spinner from '../../../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -168,7 +167,7 @@
       get () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`admin/image/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
@@ -179,7 +178,7 @@
       update () {
         this.disabled = this.updating = true
 
-        axios
+        this.$axios
           .put(`admin/image/${this.image.id}`, this.image)
           .then(response => {
             this.disabled = this.updating = false
@@ -194,7 +193,7 @@
       destroy () {
         this.disabled = this.destroying = true
 
-        axios
+        this.$axios
           .delete(`admin/image/${this.image.id}`)
           .then(() => {
             this.$router.push({ name: 'admin-images' })

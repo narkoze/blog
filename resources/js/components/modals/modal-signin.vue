@@ -91,7 +91,6 @@
 <script>
   import LocaleHandler from '../../mixins/locale-handler'
   import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -112,7 +111,7 @@
         this.disabled = true
         this.errors = {}
 
-        axios
+        this.$axios
           .post('signin', {
             email: this.email,
             password: this.password
@@ -121,7 +120,7 @@
             this.disabled = false
 
             let token = response.data.token
-            axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
+            this.$axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
             localStorage.setItem('token', JSON.stringify(token))
 
             let user = response.data.user

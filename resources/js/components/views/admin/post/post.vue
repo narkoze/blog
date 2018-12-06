@@ -114,7 +114,6 @@
   import 'tinymce/plugins/paste'
   import 'tinymce/plugins/link'
   import 'tinymce/plugins/hr'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -243,7 +242,7 @@
       get () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`admin/post/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
@@ -263,7 +262,7 @@
           ? `admin/post/${this.post.id}`
           : 'admin/post'
 
-        axios[method](route, {
+        this.$axios[method](route, {
           ...this.post,
           save
         })
@@ -293,7 +292,7 @@
       destroy () {
         this.disabled = this.destroying = true
 
-        axios
+        this.$axios
           .delete(`admin/post/${this.post.id}`)
           .then(() => {
             this.$router.push({ name: 'admin-posts' })

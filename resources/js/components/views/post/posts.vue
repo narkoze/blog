@@ -172,7 +172,6 @@
   import PostsContent from './posts-content.vue'
   import Pagination from '../../pagination.vue'
   import Spinner from '../../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -223,7 +222,7 @@
         this.disabled = true
         this.params.page = query ? query.page : page
 
-        axios
+        this.$axios
           .get('post', { params: query || this.params })
           .then(response => {
             this.disabled = false

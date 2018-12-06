@@ -8,6 +8,9 @@ import axios from 'axios'
 import Vue from 'vue'
 import moment from 'moment'
 
+Vue.prototype.$events = new Vue()
+Vue.prototype.$axios = axios
+
 Vue.use(VueI18n)
 const i18n = new VueI18n({
   locale: document.querySelector('html').getAttribute('lang'),
@@ -50,8 +53,6 @@ router.beforeEach((to, from, next) => {
 
   next()
 })
-
-Vue.prototype.$events = new Vue()
 
 Vue.filter('dateString', value => {
   let date = moment(value)

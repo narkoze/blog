@@ -160,7 +160,6 @@
   import Pagination from '../..//pagination.vue'
   import Spinner from '../../spinner.vue'
   import debounce from 'lodash/debounce'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -210,7 +209,7 @@
         this.disabled = true
         this.params.page = query ? query.page : page
 
-        axios
+        this.$axios
           .get('admin/user', { params: query || this.params })
           .then(response => {
             this.disabled = this.sorting = false
@@ -239,7 +238,7 @@
       getRoles () {
         this.rolesLoading = true
 
-        axios
+        this.$axios
           .get('admin/role')
           .then(response => {
             this.rolesLoading = false
@@ -253,7 +252,7 @@
       updateUser (user) {
         user.role_changing = true
 
-        axios
+        this.$axios
           .put(`admin/user/${user.id}`, {
             role_id: user.role.id
           })

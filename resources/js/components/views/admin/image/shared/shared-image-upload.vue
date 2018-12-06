@@ -141,7 +141,6 @@
   import Photoswipe from '../../../../photoswipe.vue'
   import Circlebar from '../../../../circlebar.vue'
   import Spinner from '../../../../spinner.vue'
-  import axios from 'axios'
   import exif from 'exif-js'
 
   export default {
@@ -258,8 +257,8 @@
         data.append('image', image.image)
         data.append('name', image.name)
 
-        const CancelToken = axios.CancelToken
-        axios
+        const CancelToken = this.$axios.CancelToken
+        this.$axios
           .post('admin/image', data, {
             cancelToken: new CancelToken(cancel => {
               this.cancel = cancel
@@ -281,7 +280,7 @@
 
             image.disabled = image.uploading = false
 
-            if (!axios.isCancel(error)) {
+            if (!this.$axios.isCancel(error)) {
               this.uploadInLoop = false
 
               if (error.response.status === 422) {

@@ -109,7 +109,6 @@
 
 <script>
   import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -131,7 +130,7 @@
         this.disabled = true
         this.errors = {}
 
-        axios
+        this.$axios
           .post('signup', {
             name: this.name,
             email: this.email,

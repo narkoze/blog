@@ -165,7 +165,6 @@
   import Pagination from '../../../pagination.vue'
   import Spinner from '../../../spinner.vue'
   import debounce from 'lodash/debounce'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -210,7 +209,7 @@
         this.disabled = true
         this.params.page = query ? query.page : page
 
-        axios
+        this.$axios
           .get('admin/role', { params: query || this.params })
           .then(response => {
             this.disabled = this.sorting = false

@@ -247,7 +247,6 @@
   import Photoswipe from '../../photoswipe.vue'
   import PostContent from './post-content.vue'
   import Spinner from '../../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -292,7 +291,7 @@
       get () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`post/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
@@ -328,7 +327,7 @@
       getComments () {
         this.commentsLoading = true
 
-        axios
+        this.$axios
           .get(`post/${this.$route.params.id}/comment`)
           .then(response => {
             this.commentsLoading = false
@@ -348,7 +347,7 @@
           ? `post/${this.post.id}/comment/${this.comment.id}`
           : `post/${this.post.id}/comment`
 
-        axios[method](route, {
+        this.$axios[method](route, {
           ...this.comment
         })
           .then(() => {
@@ -375,7 +374,7 @@
       destroyComment (commentId) {
         this.destroyingComment = true
 
-        axios
+        this.$axios
           .delete(`post/${this.post.id}/comment/${commentId}`)
           .then(() => {
             this.destroyingComment = false

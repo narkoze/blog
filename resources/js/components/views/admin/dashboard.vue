@@ -139,7 +139,6 @@
   import Spinner from '../../spinner.vue'
   import Chart from 'chart.js'
   import moment from 'moment'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -180,7 +179,7 @@
       getCounts () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get('admin/dashboard/counts')
           .then(response => {
             this.disabled = false
@@ -194,7 +193,7 @@
 
         scroll && this.scrollToChart()
 
-        axios
+        this.$axios
           .get('admin/dashboard/users')
           .then(response => {
             if (this.$route.name !== 'admin-dashboard') return
@@ -237,7 +236,7 @@
 
         scroll && this.scrollToChart()
 
-        axios
+        this.$axios
           .get('admin/dashboard/posts')
           .then(response => {
             if (this.$route.name !== 'admin-dashboard') return
@@ -290,7 +289,7 @@
 
         scroll && this.scrollToChart()
 
-        axios
+        this.$axios
           .get('admin/dashboard/comments')
           .then(response => {
             if (this.$route.name !== 'admin-dashboard') return
@@ -325,7 +324,7 @@
 
         scroll && this.scrollToChart()
 
-        axios
+        this.$axios
           .get('admin/dashboard/tags')
           .then(response => {
             if (this.$route.name !== 'admin-dashboard') return

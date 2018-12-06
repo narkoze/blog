@@ -13,7 +13,6 @@
 
 <script>
   import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -23,12 +22,12 @@
       signout () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get('signout')
           .then(response => {
             this.disabled = false
 
-            delete axios.defaults.headers.common.Authorization
+            delete this.$axios.defaults.headers.common.Authorization
             localStorage.removeItem('token')
 
             this.$root.user = null

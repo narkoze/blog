@@ -64,7 +64,6 @@
   import RoleFieldsEn from './role-fields-en.vue'
   import RoleFieldsLv from './role-fields-lv.vue'
   import Spinner from '../../../spinner.vue'
-  import axios from 'axios'
   export default {
     components: {
       ModalConfirm,
@@ -109,7 +108,7 @@
       get () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`admin/role/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
@@ -126,7 +125,7 @@
           ? `admin/role/${this.role.id}`
           : 'admin/role'
 
-        axios[method](route, this.role)
+        this.$axios[method](route, this.role)
           .then(response => {
             this.$root.notify('success', this.$t(`${method}.success`, { title: this.$i18n.locale === 'en' ? this.role.name_en : this.role.name_lv }))
 
@@ -145,7 +144,7 @@
       destroy () {
         this.disabled = this.destroying = true
 
-        axios
+        this.$axios
           .delete(`admin/role/${this.role.id}`)
           .then(() => {
             this.$router.push({ name: 'admin-roles' })

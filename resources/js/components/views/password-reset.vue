@@ -80,7 +80,6 @@
 
 <script>
   import ErrorHandler from '../../mixins/error-handler'
-  import axios from 'axios'
 
   export default {
     mixins: [
@@ -98,7 +97,7 @@
         this.disabled = true
         this.errors = {}
 
-        axios
+        this.$axios
           .post('passwordreset', {
             email: this.email,
             password: this.password,

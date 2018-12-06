@@ -289,7 +289,6 @@
   import Pagination from '../../../pagination.vue'
   import Spinner from '../../../spinner.vue'
   import debounce from 'lodash/debounce'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -346,7 +345,7 @@
         this.params.page = query ? query.page : page
         this.params.tags = this.selectedTags.map(({ id }) => id)
 
-        axios
+        this.$axios
           .get('admin/post', { params: query || this.params })
           .then(response => {
             this.disabled = this.sorting = this.filtering = this.removingFilters = false

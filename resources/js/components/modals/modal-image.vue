@@ -116,7 +116,6 @@
   import Pagination from '../pagination.vue'
   import debounce from 'lodash/debounce'
   import Spinner from '../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -146,7 +145,7 @@
         this.disabled = true
         this.params.page = page
 
-        axios
+        this.$axios
           .get('admin/image', { params: this.params })
           .then(response => {
             this.disabled = false

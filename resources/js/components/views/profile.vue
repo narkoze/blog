@@ -313,7 +313,6 @@
   import ErrorHandler from '../../mixins/error-handler'
   import Photoswipe from '../photoswipe.vue'
   import Spinner from '../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -342,7 +341,7 @@
         this.disabled = true
         this.errors = {}
 
-        axios
+        this.$axios
           .get('profile')
           .then(response => {
             this.disabled = false
@@ -358,7 +357,7 @@
         this.disabled = this.updating = true
         this.errors = {}
 
-        axios
+        this.$axios
           .put('profile', this.user)
           .then(response => {
             this.disabled = this.updating = false
@@ -379,7 +378,7 @@
       destroy () {
         this.disabled = this.destroying = true
 
-        axios
+        this.$axios
           .delete('profile')
           .then(() => {
             localStorage.removeItem('token')
@@ -402,7 +401,7 @@
         const data = new FormData()
         data.append('image', e.target.files[0])
 
-        axios
+        this.$axios
           .post('profile/image', data)
           .then(response => {
             this.uploadingImage = false
@@ -418,7 +417,7 @@
       destroyImage () {
         this.destroyingImage = true
 
-        axios
+        this.$axios
           .delete('profile/image')
           .then(() => {
             this.destroyingImage = false

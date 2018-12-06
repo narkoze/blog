@@ -64,7 +64,6 @@
   import TagFieldsEn from './tag-fields-en.vue'
   import TagFieldsLv from './tag-fields-lv.vue'
   import Spinner from '../../../spinner.vue'
-  import axios from 'axios'
 
   export default {
     components: {
@@ -110,7 +109,7 @@
       get () {
         this.disabled = true
 
-        axios
+        this.$axios
           .get(`admin/tag/${this.$route.params.id}`)
           .then(response => {
             this.disabled = false
@@ -127,7 +126,7 @@
           ? `admin/tag/${this.tag.id}`
           : 'admin/tag'
 
-        axios[method](route, this.tag)
+        this.$axios[method](route, this.tag)
           .then(response => {
             this.$root.notify('success', this.$t(`${method}.success`, { title: this.$i18n.locale === 'en' ? this.tag.name_en : this.tag.name_lv }))
 
@@ -146,7 +145,7 @@
       destroy () {
         this.disabled = this.destroying = true
 
-        axios
+        this.$axios
           .delete(`admin/tag/${this.tag.id}`)
           .then(() => {
             this.$router.push({ name: 'admin-tags' })
