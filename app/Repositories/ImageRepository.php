@@ -32,7 +32,7 @@ class ImageRepository
 
         $search = trim($params['search']);
         if ($search) {
-            $query->whereRaw("name ILIKE ?", "%$search%");
+            $query->whereRaw("images.name ILIKE ?", "%$search%");
         }
 
         if ($params['from']) {
