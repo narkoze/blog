@@ -7,6 +7,7 @@
 
     <title>@lang('welcome.title')</title>
 
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
     <link rel="stylesheet" href="{{ mix('css/blog.css') }}">
   </head>
   <body class="has-navbar-fixed-top">
