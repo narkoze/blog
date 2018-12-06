@@ -3,18 +3,16 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @if (config('app.google_analytics_id'))
-      <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id={{ config('app.google_analytics_id') }}"
-      >
-      </script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('app.google_analytics_id') }}"></script>
       <script>
         window.dataLayer = window.dataLayer || []
-        function gtag() {
+        window.google_analytics_id = '{{ config('app.google_analytics_id') }}'
+
+        function gtag () {
           dataLayer.push(arguments)
         }
         gtag('js', new Date())
-        gtag('config', @json(config('app.google_analytics_id')))
+        gtag('config', window.google_analytics_id)
       </script>
     @endif
 

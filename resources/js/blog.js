@@ -54,6 +54,12 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
+router.afterEach(to => {
+  gtag('config', window.google_analytics_id, {
+    'page_path': to.path
+  })
+})
+
 Vue.filter('dateString', value => {
   let date = moment(value)
 
