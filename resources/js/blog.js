@@ -55,9 +55,13 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(to => {
-  gtag('config', window.google_analytics_id, {
-    'page_path': to.path
-  })
+  document.title = `${i18n.locale === 'en' ? 'Blog' : 'Emuārs'}${to.path}`
+
+  if (typeof gtag === 'function') {
+    gtag('config', window.google_analytics_id, {
+      'page_path': to.path
+    })
+  }
 })
 
 Vue.filter('dateString', value => {
@@ -122,11 +126,6 @@ export default new Vue({
     if (tokenStorage) {
       let token = JSON.parse(tokenStorage)
       axios.defaults.headers.common.Authorization = `${token.token_type} ${token.access_token}`
-    }
-  },
-  watch: {
-    '$route.path' (path) {
-      document.title = `${i18n.locale === 'en' ? 'Blog' : 'Emuārs'}${path}`
     }
   },
   methods: {
