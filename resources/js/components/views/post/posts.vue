@@ -156,11 +156,12 @@
       ref="scrollTop"
       class="scrollTop"
     >
-      <i
+      <a
         @click="scrollTop"
-        class="fas fa-arrow-alt-circle-up fa-3x"
+        class="button is-rounded"
       >
-      </i>
+       {{ $t('scrollTop') }}
+      </a>
     </div>
   </div>
 </template>
@@ -308,12 +309,14 @@
     "en": {
       "edit": "Edit",
       "pagebrake": "Keep reading...",
-      "comments": "{count} Comments"
+      "comments": "{count} Comments",
+      "scrollTop": "Up"
     },
     "lv": {
       "edit": "Labot",
       "pagebrake": "Turpini lasīt...",
-      "comments": "{count} Komentāri"
+      "comments": "{count} Komentāri",
+      "scrollTop": "Uz augšu"
     }
   }
 </i18n>

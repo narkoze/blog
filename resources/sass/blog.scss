@@ -209,6 +209,7 @@ a.navbar-item.is-active,
   padding: 1em 2em;
   width: 100%;
   background-color: $white-ter;
+  font-size: .8em;
   line-height: 2.2;
 
   @media screen and (max-width: $desktop) {
@@ -790,20 +791,12 @@ ul.infocard {
   visibility: visible;
 }
 .scrollTop {
-  cursor: pointer;
   display: none;
   position: fixed;
-  bottom: 0;
+  bottom: 6px;
   text-align: center;
   width: 100%;
-  opacity: .9;
-
   -webkit-tap-highlight-color: transparent;
-
-  color: $grey-lighter;
-  &:hover {
-    color: $grey-light;
-  }
 }
 .is-post-title {
   padding: .75em .5em;
