@@ -2,19 +2,21 @@
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id={{ config('app.google_analytics_id') }}"
-    >
-    </script>
-    <script>
-      window.dataLayer = window.dataLayer || []
-      function gtag() {
-        dataLayer.push(arguments)
-      }
-      gtag('js', new Date())
-      gtag('config', @json(config('app.google_analytics_id')))
-    </script>
+    @if (config('app.google_analytics_id'))
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id={{ config('app.google_analytics_id') }}"
+      >
+      </script>
+      <script>
+        window.dataLayer = window.dataLayer || []
+        function gtag() {
+          dataLayer.push(arguments)
+        }
+        gtag('js', new Date())
+        gtag('config', @json(config('app.google_analytics_id')))
+      </script>
+    @endif
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
