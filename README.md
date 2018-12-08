@@ -17,7 +17,8 @@ https://blog.piemeram.lv
 ## Features
 
 - Authentication [Passport](https://laravel.com/docs/passport)
-- Route management [Vue-Router](https://router.vuejs.org)
+- Internationalization [Vue I18n](https://kazupon.github.io/vue-i18n/)
+- Route management [Vue Router](https://router.vuejs.org)
 - Dashboard [Chart.js](https://www.chartjs.org)
 - Post editor [TinyMCE](https://www.tiny.cloud)
 - Datepicker [vuejs-datepicker](https://github.com/charliekassel/vuejs-datepicker)
