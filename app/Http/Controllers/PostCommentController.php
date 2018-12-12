@@ -50,7 +50,7 @@ class PostCommentController extends Controller
         return new CommentResource($comment);
     }
 
-    public function destroy($locale, Post $post, Comment $comment)
+    public function destroy(Request $request, $locale, Post $post, Comment $comment)
     {
         abort_if($comment->author->id != auth()->user()->id and !in_array($request->user()->role->id, [1, 3]), 403);
 
