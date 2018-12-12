@@ -17,12 +17,21 @@ https://blog.piemeram.lv
 ## Features
 
 - Authentication [Passport](https://laravel.com/docs/passport)
-- Route management [Vue-Router](https://router.vuejs.org)
+  - Registration with e-mail confirmation
+  - Reset password
+  - Login
+  - Profile page
+- Internationalization [Vue I18n](https://kazupon.github.io/vue-i18n/)
+  - Option to change preferred default language
+  - Notification e-mails in selected language
+- Route management [Vue Router](https://router.vuejs.org)
+  - Routes contain the currently selected language
 - Dashboard [Chart.js](https://www.chartjs.org)
 - Post editor [TinyMCE](https://www.tiny.cloud)
 - Datepicker [vuejs-datepicker](https://github.com/charliekassel/vuejs-datepicker)
 - Selects [vue-multiselect](https://github.com/shentao/vue-multiselect)
 - Photo viewer [PhotoSwipe](http://photoswipe.com)
+  - Images added to the post can be viewed in photo viewer
 - Progressbar [ProgressBar.js](https://kimmobrunfeldt.github.io/progressbar.js/)
 - Icons [Font Awesome](https://fontawesome.com)
 - Vue.js for frontend

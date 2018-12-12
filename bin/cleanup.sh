@@ -8,6 +8,5 @@ rm -rf ./public/js/*
 rm -rf ./public/css/*
 rm -rf ./public/fonts/*
 rm -rf ./public/images/*
-rm -rf ./storage/debugbar/*
 
 cd -
