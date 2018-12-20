@@ -2,7 +2,6 @@
 
 namespace Blog\Services;
 
-use Blog\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
